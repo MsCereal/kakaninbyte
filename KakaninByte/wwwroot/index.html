@@ -1009,8 +1009,8 @@ document.addEventListener('keydown', e => {
 <!-- QR CODE LIBRARY -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-    // Generate QR pointing to current page URL
-    const appUrl = window.location.href.split('#')[0].split('?')[0];
+    // Generate QR pointing to the live GitHub Pages URL
+    const appUrl = 'https://mscereal.github.io/kakaninbyte/';
     document.getElementById('qrUrlDisplay').textContent = appUrl;
 
     new QRCode(document.getElementById('qrcode'), {
