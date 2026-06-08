@@ -1,0 +1,1034 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KakaninByte — Filipino Kakanin</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:       #0d1117;
+            --bg2:      #161b22;
+            --bg3:      #21262d;
+            --border:   #30363d;
+            --text:     #e6edf3;
+            --muted:    #8b949e;
+            --purple:   #d2a8ff;
+            --blue:     #79c0ff;
+            --green:    #56d364;
+            --orange:   #ffa657;
+            --red:      #ff7b72;
+            --yellow:   #e3b341;
+            --pink:     #f778ba;
+            --teal:     #39d353;
+            --dot-red:  #ff5f57;
+            --dot-yel:  #febc2e;
+            --dot-grn:  #28c840;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Fira Code', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-logo {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--purple);
+            letter-spacing: 1px;
+        }
+        .nav-logo span { color: var(--orange); }
+        .nav-tagline {
+            font-size: 0.72rem;
+            color: var(--muted);
+            font-style: italic;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+        .hero-comment { color: var(--muted); font-size: 0.8rem; margin-bottom: 10px; }
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--purple);
+            line-height: 1.1;
+        }
+        .hero-title .brace { color: var(--orange); }
+        .hero-sub {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            max-width: 500px;
+            margin-inline: auto;
+            line-height: 1.7;
+        }
+        .hero-sub .keyword { color: var(--blue); }
+
+        /* ── FOOD GRID ── */
+        .section {
+            padding: 40px 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-header {
+            color: var(--muted);
+            font-size: 0.78rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .food-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .food-card:hover {
+            border-color: var(--purple);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(210,168,255,0.15);
+        }
+        .card-titlebar {
+            background: var(--bg3);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+        .dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+        .dot.r { background: var(--dot-red); }
+        .dot.y { background: var(--dot-yel); }
+        .dot.g { background: var(--dot-grn); }
+        .card-filename {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-left: 4px;
+        }
+        .card-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background: var(--bg);
+        }
+        .card-img-wrap canvas {
+            width: 100%;
+            height: 180px;
+            display: block;
+            transition: transform 0.35s ease, filter 0.35s ease;
+            filter: drop-shadow(0 4px 16px rgba(0,0,0,0.45));
+        }
+        .food-card:hover .card-img-wrap canvas {
+            transform: scale(1.06) translateY(-3px);
+            filter: drop-shadow(0 10px 28px rgba(0,0,0,0.75));
+        }
+        .card-img-placeholder {
+            width: 100%;
+            height: 180px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        .card-body {
+            padding: 14px;
+        }
+        .card-keyword { color: var(--orange); font-size: 0.7rem; }
+        .card-name {
+            color: var(--purple);
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 4px 0;
+            line-height: 1.2;
+        }
+        .card-sub {
+            color: var(--muted);
+            font-size: 0.7rem;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        .card-desc {
+            color: var(--text);
+            font-size: 0.72rem;
+            line-height: 1.6;
+        }
+        .card-tag {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.62rem;
+            border: 1px solid;
+        }
+        .tag-sweet  { color: var(--pink);   border-color: var(--pink);   }
+        .tag-sticky { color: var(--teal);   border-color: var(--teal);  }
+        .tag-coco   { color: var(--yellow); border-color: var(--yellow); }
+
+        /* ── MODAL ── */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 200;
+            overflow-y: auto;
+            padding: 30px 16px;
+        }
+        .overlay.active { display: flex; align-items: flex-start; justify-content: center; }
+
+        .modal {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 860px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-titlebar {
+            background: var(--bg3);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+        .modal-titlebar .filename {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-left: 6px;
+        }
+        .modal-titlebar .close-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0 4px;
+        }
+        .modal-titlebar .close-btn:hover { color: var(--red); }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        @media (max-width: 640px) {
+            .modal-body { grid-template-columns: 1fr; }
+        }
+
+        .modal-img-panel {
+            border-right: 1px solid var(--border);
+            padding: 0;
+            position: relative;
+            background: var(--bg);
+        }
+        .modal-img {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            filter: drop-shadow(0 6px 24px rgba(0,0,0,0.6));
+            background: transparent;
+        }
+        .modal-img-placeholder {
+            width: 100%;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            background: var(--bg);
+        }
+        .modal-img-caption {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+        .modal-img-caption .food-name {
+            color: var(--purple);
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+        .modal-img-caption .food-alt {
+            color: var(--orange);
+            font-size: 0.8rem;
+            margin-top: 2px;
+        }
+        .modal-img-caption .food-blurb {
+            color: var(--muted);
+            font-size: 0.73rem;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+        .tag-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .modal-info-panel {
+            padding: 0;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        /* video block */
+        .video-block {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .video-block .cb-header {
+            color: var(--muted);
+            font-size: 0.68rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .video-block .cb-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #000;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .video-label {
+            font-size: 0.65rem;
+            color: var(--muted);
+            margin-top: 6px;
+            text-align: right;
+        }
+        .video-label a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+        .video-label a:hover { text-decoration: underline; }
+
+        /* code-block panels */
+        .code-block {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.72rem;
+            line-height: 1.8;
+        }
+        .code-block:last-child { border-bottom: none; }
+        .cb-header {
+            color: var(--muted);
+            font-size: 0.68rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cb-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        .cb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+
+        /* ingredient line */
+        .ing-line { display: flex; align-items: baseline; gap: 6px; margin: 2px 0; }
+        .ing-qty { color: var(--orange); font-weight: 600; min-width: 80px; }
+        .ing-name { color: var(--text); }
+        .ing-note { color: var(--muted); font-style: italic; font-size: 0.68rem; }
+
+        /* instruction steps */
+        .step { display: flex; gap: 10px; margin: 6px 0; align-items: flex-start; }
+        .step-num { color: var(--muted); min-width: 24px; font-size: 0.68rem; padding-top: 1px; }
+        .step-comment { color: var(--green); }
+        .step-body { color: var(--text); font-size: 0.72rem; }
+
+        /* tips */
+        .tip-line { color: var(--muted); margin: 3px 0; }
+        .tip-line::before { content: '/* '; color: var(--green); }
+        .tip-line::after  { content: ' */'; color: var(--green); }
+
+        /* enjoy bar */
+        .enjoy-bar {
+            background: var(--bg3);
+            border-top: 1px solid var(--border);
+            padding: 12px 16px;
+            font-size: 0.73rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .enjoy-bar .kw { color: var(--orange); }
+        .enjoy-bar .val { color: var(--green); }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid var(--border);
+            background: var(--bg2);
+            padding: 24px 32px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.72rem;
+        }
+        footer .accent { color: var(--purple); }
+
+        /* scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+        /* ── QR SECTION ── */
+        .qr-section {
+            border-top: 1px solid var(--border);
+            padding: 40px 32px;
+            background: var(--bg2);
+        }
+        .qr-inner {
+            max-width: 640px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        @media (max-width: 560px) {
+            .qr-inner { flex-direction: column; gap: 24px; text-align: center; }
+        }
+        .qr-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .qr-label-top {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            color: var(--muted);
+        }
+        .qr-label-bot {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--orange);
+            font-weight: 600;
+        }
+        #qrcode {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid var(--orange);
+            line-height: 0;
+        }
+        #qrcode canvas, #qrcode img { display: block; }
+        .qr-right {
+            flex: 1;
+        }
+        .qr-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--purple);
+            margin-bottom: 10px;
+        }
+        .qr-desc {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+        .qr-url {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--blue);
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        .qr-copy-btn {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            background: var(--orange);
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .qr-copy-btn:hover { opacity: 0.85; }
+        .qr-copied {
+            display: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            color: var(--green);
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div>
+        <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
+        <div class="nav-tagline">// a love letter to Filipino kakanin</div>
+    </div>
+    <div style="color:var(--muted);font-size:0.72rem">🇵🇭 &nbsp;Meryenda ready</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-comment">// Welcome to KakaninByte</div>
+    <div class="hero-title">
+        <span class="brace">const</span> kakanin <span class="brace">=</span> Filipino<span class="brace">.</span>soul<span class="brace">();</span>
+    </div>
+    <div class="hero-sub">
+        Mga <span class="keyword">traditional</span> na kakanin ng Pilipinas —
+        sticky, sweet, and made with <span class="keyword">puso</span>.
+        Click any card to see the full recipe.
+    </div>
+</div>
+
+<!-- FOOD GRID -->
+<div class="section">
+    <div class="section-header">
+        <span style="color:var(--orange)">export</span> const foods<span style="color:var(--muted)">[]</span>
+    </div>
+    <div class="food-grid" id="foodGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+        <div class="modal-titlebar">
+            <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+            <span class="filename" id="modalFilename">.recipe</span>
+            <button class="close-btn" onclick="closeModalBtn()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-img-panel">
+                <div id="modalImgWrap"></div>
+                <div class="modal-img-caption">
+                    <div class="food-name" id="modalName"></div>
+                    <div class="food-alt"  id="modalAlt"></div>
+                    <div class="food-blurb" id="modalBlurb"></div>
+                    <div class="tag-row" id="modalTags"></div>
+                </div>
+            </div>
+            <div class="modal-info-panel" id="modalInfo"></div>
+        </div>
+        <div class="enjoy-bar">
+            <span class="kw">.enjoy</span>
+            <span style="color:var(--muted)">{</span>
+            <span class="val" id="modalEnjoy"></span>
+            <span style="color:var(--muted)">}</span>
+        </div>
+    </div>
+</div>
+
+<!-- QR CODE SECTION -->
+<div class="qr-section">
+    <div class="qr-inner">
+        <div class="qr-left">
+            <div class="qr-label-top">// scan to open</div>
+            <div id="qrcode"></div>
+            <div class="qr-label-bot">KakaninByte 🇵🇭</div>
+        </div>
+        <div class="qr-right">
+            <div class="qr-title">📱 Ibahagi ang KakaninByte</div>
+            <div class="qr-desc">I-scan ang QR code para buksan ang app sa kahit anong device. I-share sa mga kaibigan at pamilya — ipagdiwang ang ating mga kakanin!</div>
+            <div class="qr-url" id="qrUrlDisplay"></div>
+            <button class="qr-copy-btn" onclick="copyUrl()">📋 Copy Link</button>
+            <div class="qr-copied" id="qrCopied">✓ Copied!</div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div><span class="accent">KakaninByte</span> — handcrafted with <span style="color:var(--red)">♥</span> &amp; coconut milk</div>
+    <div style="margin-top:6px">// Mabuhay ang mga kakanin ng ating lupain 🌴</div>
+</footer>
+
+<script>
+const foods = [
+    {
+        id: "bibingka-malagkit",
+        filename: ".bibingka-malagkit",
+        emoji: "🍚",
+        image: "ZIUart4MHUZUtqk4KddEY_59RFkS57.png",
+        zoom: 0.8,
+        offsetY: 23,
+        removeBg: false,
+        name: "Bibingka Malagkit",
+        alt: "(Glutinous Rice Cake)",
+        blurb: "Dense, chewy, and glossy — this holiday staple is a warm hug from Nanay. Slow-cooked with coconut milk and crowned with a caramelized coconut-sugar glaze.",
+        tags: [
+            { label: "sweet",  cls: "tag-sweet"  },
+            { label: "sticky", cls: "tag-sticky" },
+            { label: "coconut",cls: "tag-coco"   }
+        ],
+        cardDesc: "A traditional Filipino kakanin made from glutinous rice cooked with coconut milk and topped with a thick caramelized coconut-sugar glaze. A Christmas season classic.",
+        ingredients: [
+            { qty: "2 cups",       name: "glutinous rice flour", note: "(galapong malagkit)" },
+            { qty: "2 cups",       name: "coconut milk",         note: "(gata)" },
+            { qty: "1 cup",        name: "brown sugar",          note: "or muscovado" },
+            { qty: "½ tsp",        name: "salt",                 note: "" },
+            { qty: "½ cup",        name: "coconut cream",        note: "for topping (kakang gata)" },
+            { qty: "¼ cup",        name: "brown sugar",          note: "for glaze" },
+            { qty: "banana leaves",name: "",                     note: "lightly toasted, for lining" }
+        ],
+        steps: [
+            { comment: "/* Mix the batter */",  body: "Whisk glutinous rice flour, coconut milk, brown sugar, and salt until smooth and lump-free." },
+            { comment: "/* Prepare the pan */", body: "Line an 8×8 or 9×9 baking pan with softened banana leaves. Lightly grease with oil." },
+            { comment: "/* Pour & bake */",     body: "Pour batter into the pan. Bake at 175°C (350°F) for 30 minutes until set." },
+            { comment: "/* Make the glaze */",  body: "Combine coconut cream and brown sugar in a pan. Simmer, stirring until thick and caramel-colored." },
+            { comment: "/* Top & finish */",    body: "Spread the coconut glaze over the cake. Return to oven or broil for 5–8 minutes until the top is golden and slightly crispy." },
+            { comment: "/* Slice & serve */",   body: "Cool completely. Cut into squares or diamond shapes. Serve on banana leaf for that festive Filipino touch." }
+        ],
+        tips: [
+            "For best flavor, use fresh coconut milk (piga ng niyog), not canned.",
+            "The banana leaf lining adds a subtle earthy aroma — don't skip it!",
+            "Muscovado sugar gives a deeper, molasses-like sweetness.",
+            "Store leftovers at room temperature, covered. Reheat briefly in a pan."
+        ],
+        videoId: "lLCzMv2WfBk",
+        enjoy: "Enjoy with hot salabat (ginger tea) or kapeng barako! ☕"
+    },
+    {
+        id: "bibingka-pinipig",
+        filename: ".bibingka-pinipig",
+        emoji: "🌿",
+        image: "bibikinag pinipig.png",
+        zoom: 1.0,
+        offsetY: 0,
+        removeBg: false,
+        name: "Bibingka Pinipig",
+        alt: "(Young Glutinous Rice Cake)",
+        blurb: "Born from the paddy fields of Bulacan and Nueva Ecija, this jade-tinted delicacy carries the toasted aroma of young rice. A rare provincial treasure.",
+        tags: [
+            { label: "toasted",  cls: "tag-sticky" },
+            { label: "sweet",    cls: "tag-sweet"  },
+            { label: "coconut",  cls: "tag-coco"   }
+        ],
+        cardDesc: "Made from pinipig — young glutinous rice grains harvested green, roasted and flattened. Soft, chewy, and greenish, with a toasted-rice aroma and coconut richness.",
+        ingredients: [
+            { qty: "2 cups",       name: "ground pinipig",     note: "(toasted & pounded)" },
+            { qty: "1½ cups",      name: "coconut milk",       note: "(gata)" },
+            { qty: "¾ cup",        name: "white sugar",        note: "" },
+            { qty: "2",            name: "eggs",               note: "" },
+            { qty: "¼ tsp",        name: "salt",               note: "" },
+            { qty: "½ cup",        name: "grated coconut",     note: "for topping (niyog)" },
+            { qty: "banana leaves",name: "",                   note: "for lining" }
+        ],
+        steps: [
+            { comment: "/* Toast the pinipig */", body: "Dry-toast pinipig in a pan over medium heat, stirring, until fragrant and lightly golden. Let cool then pound or blend into a coarse flour." },
+            { comment: "/* Mix batter */",         body: "Combine ground pinipig, coconut milk, sugar, eggs, and salt. Mix well until smooth." },
+            { comment: "/* Rest the batter */",    body: "Let the batter rest for 15 minutes so the pinipig absorbs the liquid." },
+            { comment: "/* Line & pour */",        body: "Line banana leaf–lined molds or muffin cups. Pour batter in, filling ¾ full." },
+            { comment: "/* Bake */",               body: "Bake at 175°C (350°F) for 20–25 minutes until set and lightly browned on top." },
+            { comment: "/* Top & serve */",        body: "Top with fresh grated coconut. Serve warm on a banana leaf square." }
+        ],
+        tips: [
+            "Pinipig is typically available in specialty Filipino markets or palengke (wet markets).",
+            "The natural green tint from young rice fades when toasted — that's normal.",
+            "For a sweeter version, add latik (coconut caramel) on top instead of grated coconut.",
+            "A Nueva Ecija classic — best enjoyed during town fiestas!"
+        ],
+        videoId: "Z7TbBLmDLHE",
+        enjoy: "Best eaten warm during merienda with hot tsokolate (tablea chocolate)! 🍫"
+    },
+    {
+        id: "kalamay-ube",
+        filename: ".kalamay-ube",
+        emoji: "🟣",
+        image: "278bd31e-51f9-40dc-b81f-2b84e24260c6.png",
+        zoom: 1.0,
+        offsetY: -30,
+        removeBg: false,
+        name: "Kalamay Ube",
+        alt: "(Ube Kalamay)",
+        blurb: "Purple, sticky, and deeply satisfying. Ube's earthy sweetness meets the richness of coconut milk in this slow-stirred labor of love — worth every minute.",
+        tags: [
+            { label: "ube",    cls: "tag-sweet"  },
+            { label: "sticky", cls: "tag-sticky" },
+            { label: "coconut",cls: "tag-coco"   }
+        ],
+        cardDesc: "Sweet purple kalamay made from ube (purple yam), glutinous rice flour, and coconut milk. Slow-cooked until thick and sticky, topped with latik or grated coconut.",
+        ingredients: [
+            { qty: "2 cups",    name: "grated or mashed ube", note: "(cooked purple yam)" },
+            { qty: "1 cup",     name: "glutinous rice flour",  note: "(galapong malagkit)" },
+            { qty: "2 cups",    name: "coconut milk",          note: "(gata)" },
+            { qty: "1 cup",     name: "brown sugar",           note: "or white sugar" },
+            { qty: "2 tbsp",    name: "butter or margarine",   note: "(optional, for richness)" },
+            { qty: "½ cup",     name: "coconut cream",         note: "(optional, for topping)" },
+            { qty: "1–2 tsp",   name: "ube extract",           note: "(optional, for deeper color)" },
+            { qty: "latik",     name: "or grated coconut",     note: "for garnish" }
+        ],
+        steps: [
+            { comment: "/* Prepare the mixture */", body: "In a bowl, dissolve the glutinous rice flour in 1 cup of the coconut milk until smooth and lump-free." },
+            { comment: "/* Cook the base */",       body: "In a large pan over medium heat, combine remaining coconut milk, sugar, and mashed ube. Stir until sugar dissolves." },
+            { comment: "/* Add rice flour */",      body: "Slowly pour in the dissolved glutinous rice flour while stirring constantly to prevent lumps." },
+            { comment: "/* Cook until thick */",    body: "Continue stirring for 20–30 minutes until the mixture becomes thick, sticky, and pulls away from the sides of the pan." },
+            { comment: "/* Finish */",              body: "Stir in butter or margarine if using. Add ube extract for a richer purple color. Cook 2–3 minutes more." },
+            { comment: "/* Transfer & cool */",     body: "Pour into a lightly greased tray. Smooth the surface with a spatula." },
+            { comment: "/* Add toppings */",        body: "Drizzle with coconut cream or sprinkle with latik or grated coconut. Let cool before slicing." }
+        ],
+        tips: [
+            "Stir continuously while cooking to avoid scorching at the bottom.",
+            "For a softer kalamay, reduce glutinous rice flour to ¾ cup.",
+            "Ube extract deepens both the color and flavor — use sparingly.",
+            "Yields about 8–10 servings. Can be served warm or chilled."
+        ],
+        videoId: "cRmVxW4OQUE",
+        enjoy: "Enjoy your homemade kalamay ube with coffee or tsaa (tea)! ☕🟣"
+    },
+    {
+        id: "maja-blanca",
+        filename: ".maja-blanca",
+        emoji: "🤍",
+        image: "0927b764-6b0f-418f-8828-32a7abe0b13c.png",
+        zoom: 1.0,
+        offsetY: 0,
+        removeBg: false,
+        name: "Maja Blanca",
+        alt: "(Filipino Coconut Pudding)",
+        blurb: "Soft, silky, and pearly white — this Hispanicized Filipino delicacy has graced every family fiesta table for generations. Simple ingredients, unforgettable flavor.",
+        tags: [
+            { label: "creamy",  cls: "tag-sweet"  },
+            { label: "corn",    cls: "tag-sticky" },
+            { label: "coconut", cls: "tag-coco"   }
+        ],
+        cardDesc: "A silky Filipino coconut pudding adapted from Spanish blancmange. Made with coconut milk, cornstarch, and sweet corn kernels. Topped with latik — a fiesta must-have.",
+        ingredients: [
+            { qty: "3 cups",  name: "coconut milk",      note: "(gata)" },
+            { qty: "1 cup",   name: "whole milk",         note: "or evaporated milk" },
+            { qty: "½ cup",   name: "cornstarch",         note: "" },
+            { qty: "¾ cup",   name: "sugar",              note: "" },
+            { qty: "1 cup",   name: "sweet corn kernels", note: "(mais; canned or fresh)" },
+            { qty: "pinch",   name: "salt",               note: "" },
+            { qty: "latik",   name: "(coconut curds)",    note: "for topping — the soul of the dish" }
+        ],
+        steps: [
+            { comment: "/* Make the latik first */",  body: "In a pan, cook coconut cream over medium heat, stirring, until curds separate and turn golden brown. Set aside the latik; reserve the coconut oil." },
+            { comment: "/* Mix the base */",          body: "Dissolve cornstarch in 1 cup of coconut milk. Set aside. In a pot, combine remaining coconut milk, whole milk, and sugar. Heat over medium." },
+            { comment: "/* Add cornstarch mix */",    body: "Once the milk mixture is warm (not boiling), pour in the dissolved cornstarch while stirring constantly." },
+            { comment: "/* Add corn */",              body: "Add sweet corn kernels and a pinch of salt. Continue stirring until the mixture thickens into a smooth, pudding-like consistency (about 10–15 min)." },
+            { comment: "/* Pour & set */",            body: "Grease a tray or individual molds with the reserved coconut oil. Pour in the maja blanca mixture and smooth the surface." },
+            { comment: "/* Top with latik */",        body: "Sprinkle generously with golden latik while still warm. Let cool to room temperature, then refrigerate for 2 hours before serving." }
+        ],
+        tips: [
+            "Latik is the golden key — don't skip it! It adds texture and a nutty coconut depth.",
+            "For a firmer maja, increase cornstarch to ¾ cup.",
+            "Con maíz (with corn) is the most popular version — the corn adds sweetness and texture.",
+            "Adapted from Spanish manjar blanco, now fully claimed as ours. 🇵🇭"
+        ],
+        videoId: "I39OGiSFU9Q",
+        enjoy: "Best served chilled at fiestas, Noche Buena, and Sunday family gatherings! 🎉"
+    }
+];
+
+/* ── CANVAS IMAGE RENDERER ── */
+
+// removes near-white pixels (handles checker/white bg on PNGs)
+function removeWhiteBg(ctx, W, H, tolerance) {
+    const data = ctx.getImageData(0, 0, W, H);
+    const d = data.data;
+    for (let i = 0; i < d.length; i += 4) {
+        const r = d[i], g = d[i+1], b = d[i+2];
+        // if pixel is near-white or near-checker-gray, make transparent
+        if (r > 220 && g > 220 && b > 220) {
+            // soften edges — partial transparency based on how white it is
+            const whiteness = Math.min(r, g, b);
+            const alpha = 1 - ((whiteness - 220) / 35);
+            d[i+3] = Math.max(0, Math.floor(alpha * d[i+3]));
+        }
+    }
+    ctx.putImageData(data, 0, 0);
+}
+
+function renderFoodCanvas(canvasEl, src, zoom, offsetY, removeBg) {
+    const W = canvasEl.width  = 480;
+    const H = canvasEl.height = 360;
+    const ctx = canvasEl.getContext('2d');
+
+    ctx.fillStyle = '#0d1117';
+    ctx.fillRect(0, 0, W, H);
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+        // offscreen canvas to process the image first
+        const off = document.createElement('canvas');
+        off.width  = img.width;
+        off.height = img.height;
+        const offCtx = off.getContext('2d');
+        offCtx.drawImage(img, 0, 0);
+
+        if (removeBg) removeWhiteBg(offCtx, img.width, img.height, 35);
+
+        const base  = Math.max(W / img.width, H / img.height);
+        const scale = base * zoom;
+        const dw = img.width  * scale;
+        const dh = img.height * scale;
+        const dx = (W - dw) / 2;
+        const dy = (H - dh) / 2 + (offsetY || 0);
+
+        ctx.drawImage(off, dx, dy, dw, dh);
+    };
+    img.onerror = () => {
+        const grad = ctx.createLinearGradient(0, 0, W, H);
+        grad.addColorStop(0, '#21262d');
+        grad.addColorStop(1, '#0d1117');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+    };
+    img.src = src;
+}
+
+function renderModalCanvas(canvasEl, src, zoom, offsetY, removeBg) {
+    const W = canvasEl.width  = 640;
+    const H = canvasEl.height = 480;
+    const ctx = canvasEl.getContext('2d');
+
+    ctx.fillStyle = '#0d1117';
+    ctx.fillRect(0, 0, W, H);
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+        const off = document.createElement('canvas');
+        off.width  = img.width;
+        off.height = img.height;
+        const offCtx = off.getContext('2d');
+        offCtx.drawImage(img, 0, 0);
+
+        if (removeBg) removeWhiteBg(offCtx, img.width, img.height, 35);
+
+        const base  = Math.max(W / img.width, H / img.height);
+        const scale = base * zoom;
+        const dw = img.width  * scale;
+        const dh = img.height * scale;
+        const dx = (W - dw) / 2;
+        const dy = (H - dh) / 2 + (offsetY || 0);
+
+        ctx.drawImage(off, dx, dy, dw, dh);
+    };
+    img.src = src;
+}
+
+/* ── RENDER CARDS ── */
+const grid = document.getElementById('foodGrid');
+foods.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'food-card';
+    card.onclick = () => openModal(f.id);
+    card.innerHTML = `
+        <div class="card-titlebar">
+            <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+            <span class="card-filename">${f.filename}</span>
+        </div>
+        <div class="card-img-wrap">
+            <canvas id="canvas-${f.id}"></canvas>
+            <div class="card-img-placeholder" style="display:none">${f.emoji}</div>
+        </div>        <div class="card-body">
+            <div class="card-keyword">.recipe {</div>
+            <div class="card-name">${f.name}</div>
+            <div class="card-sub">${f.alt}</div>
+            <div class="card-desc">${f.cardDesc}</div>
+            <div style="margin-top:10px">
+                ${f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join(' ')}
+            </div>
+            <div class="card-keyword" style="margin-top:8px">}</div>
+        </div>
+    `;
+    grid.appendChild(card);
+    renderFoodCanvas(document.getElementById(`canvas-${f.id}`), f.image, f.zoom, f.offsetY, f.removeBg);
+});
+
+/* ── MODAL ── */
+function openModal(id) {
+    const f = foods.find(x => x.id === id);
+    if (!f) return;
+
+    document.getElementById('modalFilename').textContent = f.filename + ' {';
+    document.getElementById('modalName').textContent   = f.name;
+    document.getElementById('modalAlt').textContent    = f.alt;
+    document.getElementById('modalBlurb').textContent  = f.blurb;
+    document.getElementById('modalEnjoy').textContent  = f.enjoy;
+
+    document.getElementById('modalImgWrap').innerHTML =
+        `<canvas id="modal-canvas" style="width:100%;height:280px;display:block;"></canvas>`;
+    // render after DOM update
+    requestAnimationFrame(() => {
+        const mc = document.getElementById('modal-canvas');
+        if (mc) renderModalCanvas(mc, f.image, f.zoom, f.offsetY, f.removeBg);
+    });
+
+    document.getElementById('modalTags').innerHTML =
+        f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join('');
+
+    // Ingredients
+    const ingHtml = `
+        <div class="code-block">
+            <div class="cb-header"><div class="cb-dot"></div>.ingredients {</div>
+            ${f.ingredients.map(i => `
+                <div class="ing-line">
+                    <span class="ing-qty">${i.qty}</span>
+                    <span class="ing-name">${i.name}</span>
+                    ${i.note ? `<span class="ing-note">${i.note}</span>` : ''}
+                </div>
+            `).join('')}
+            <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
+        </div>
+    `;
+
+    // Instructions
+    const stepsHtml = `
+        <div class="code-block">
+            <div class="cb-header"><div class="cb-dot"></div>.instructions {</div>
+            ${f.steps.map((s, i) => `
+                <div class="step">
+                    <span class="step-num">${String(i+1).padStart(2,'0')}</span>
+                    <div>
+                        <div class="step-comment">${s.comment}</div>
+                        <div class="step-body">${s.body}</div>
+                    </div>
+                </div>
+            `).join('')}
+            <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
+        </div>
+    `;
+
+    // Tips
+    const tipsHtml = `
+        <div class="code-block">
+            <div class="cb-header"><div class="cb-dot"></div>.tips {</div>
+            ${f.tips.map(t => `<div class="tip-line">${t}</div>`).join('')}
+            <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
+        </div>
+    `;
+
+    // Video tutorial
+    const videoHtml = `
+        <div class="video-block">
+            <div class="cb-header"><div class="cb-dot"></div>.tutorial { // how to cook 📺 </div>
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/${f.videoId}?rel=0&modestbranding=1"
+                    title="How to cook ${f.name}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-label">
+                📺 Can't see it? <a href="https://www.youtube.com/watch?v=${f.videoId}" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('modalInfo').innerHTML = ingHtml + stepsHtml + tipsHtml + videoHtml;
+    document.getElementById('overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModalBtn() {
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function closeModal(e) {
+    if (e.target === document.getElementById('overlay')) closeModalBtn();
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModalBtn();
+});
+</script>
+<!-- QR CODE LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    // Generate QR pointing to current page URL
+    const appUrl = window.location.href.split('#')[0].split('?')[0];
+    document.getElementById('qrUrlDisplay').textContent = appUrl;
+
+    new QRCode(document.getElementById('qrcode'), {
+        text: appUrl,
+        width: 160,
+        height: 160,
+        colorDark: '#0d1117',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+    });
+
+    function copyUrl() {
+        navigator.clipboard.writeText(appUrl).then(() => {
+            const el = document.getElementById('qrCopied');
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 2000);
+        });
+    }
+</script>
+</body>
+</html>
