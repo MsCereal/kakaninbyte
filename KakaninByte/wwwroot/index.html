@@ -334,6 +334,7 @@
             <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
             <button class="lang-btn" id="btnFIL" onclick="setLang('fil')">FIL</button>
         </div>
+        <a href="quiz.html" style="font-size:0.72rem;background:var(--purple);color:#000;border:none;padding:5px 14px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">🎮 Quiz</a>
         <div style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--muted)">
             <svg width="22" height="14" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
                 <rect width="36" height="12" fill="#0038A8"/>
@@ -366,9 +367,11 @@
         <span class="brace">const</span> kakanin <span class="brace">=</span> Filipino<span class="brace">.</span>soul<span class="brace">();</span>
     </div>
     <div class="hero-sub">
-        Mga <span class="keyword">traditional</span> na kakanin ng Pilipinas —
-        sticky, sweet, and made with <span class="keyword">puso</span>.
-        <br><i data-en="Click any card to see the full recipe." data-fil="I-click ang kahit anong card para makita ang buong recipe.">Click any card to see the full recipe.</i>
+        <span data-en="Mga traditional na kakanin ng Pilipinas — sticky, sweet, and made with puso."
+              data-fil="Mga tradisyonal na kakanin ng Pilipinas — malagkit, matamis, at gawa sa puso.">
+            Mga traditional na kakanin ng Pilipinas — sticky, sweet, and made with puso.
+        </span>
+        <br><i id="heroSub2" data-en="Click any card to see the full recipe." data-fil="I-click ang kahit anong card para makita ang buong recipe.">Click any card to see the full recipe.</i>
     </div>
 </div>
 
@@ -727,28 +730,29 @@ function openModal(id) {
     document.getElementById('modalTags').innerHTML =
         f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join('');
 
-    // Saan Makikita map
+    // Saan Makikita map — dynamic region highlights
+    const luzonRegions   = ["Luzon","Metro Manila","Pampanga","Bulacan","Nueva Ecija","Central Luzon","Ilocos","Pangasinan","Tagalog Region","Nationwide"];
+    const visayasRegions = ["Visayas","Capiz","Bohol","Cebu"];
+    const mindanaoRegions= ["Mindanao","Davao","Zamboanga"];
+    const inLuzon    = f.regions.some(r => luzonRegions.includes(r));
+    const inVisayas  = f.regions.some(r => visayasRegions.includes(r));
+    const inMindanao = f.regions.some(r => mindanaoRegions.includes(r));
     const mapHtml = `
         <div class="map-block">
             <div class="cb-header"><div class="cb-dot"></div>📍 ${lang === 'fil' ? 'Saan Makikita' : 'Where to Find'} {</div>
             <div class="ph-map-wrap">
                 <svg class="ph-map-svg" width="90" height="120" viewBox="0 0 90 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Simplified Philippines silhouette -->
                     <path d="M45 5 C40 8 35 12 33 18 C30 25 32 32 30 38 C28 44 24 48 22 54 C20 62 24 70 28 76 C32 82 38 86 42 92 C44 96 44 102 46 106 C48 110 52 112 54 108 C56 104 54 98 56 94 C58 88 64 84 66 78 C68 72 66 64 64 58 C62 52 58 48 58 42 C58 36 62 30 60 24 C58 18 53 12 48 8 Z" fill="var(--bg3)" stroke="var(--border)" stroke-width="1.5"/>
-                    <!-- Visayas area highlight -->
-                    <circle cx="45" cy="70" r="4" fill="var(--blue)" opacity="0.6"/>
-                    <!-- Luzon highlight -->
-                    <circle cx="44" cy="30" r="4" fill="var(--orange)" opacity="0.6"/>
-                    <!-- Mindanao -->
-                    <circle cx="50" cy="100" r="3" fill="var(--green)" opacity="0.6"/>
-                    <!-- Labels -->
-                    <text x="52" y="32" font-size="5" fill="var(--muted)">Luzon</text>
-                    <text x="52" y="72" font-size="5" fill="var(--muted)">Visayas</text>
-                    <text x="38" y="105" font-size="5" fill="var(--muted)">Mindanao</text>
+                    <circle cx="44" cy="30" r="${inLuzon ? 6 : 3}" fill="${inLuzon ? 'var(--orange)' : 'var(--border)'}"/>
+                    <circle cx="45" cy="70" r="${inVisayas ? 6 : 3}" fill="${inVisayas ? 'var(--blue)' : 'var(--border)'}"/>
+                    <circle cx="50" cy="100" r="${inMindanao ? 5 : 3}" fill="${inMindanao ? 'var(--green)' : 'var(--border)'}"/>
+                    <text x="52" y="32" font-size="5" fill="${inLuzon ? 'var(--orange)' : 'var(--muted)'}">Luzon</text>
+                    <text x="52" y="72" font-size="5" fill="${inVisayas ? 'var(--blue)' : 'var(--muted)'}">Visayas</text>
+                    <text x="34" y="107" font-size="5" fill="${inMindanao ? 'var(--green)' : 'var(--muted)'}">Mindanao</text>
                 </svg>
                 <div class="map-info">
                     <div class="map-region-list">
-                        ${f.regions.map(r => `<span class="map-region-badge">📍 ${r}</span>`).join('')}
+                        ${f.regions.map(r => `<span class="map-region-badge active">📍 ${r}</span>`).join('')}
                     </div>
                     <div class="fun-fact-bar">${f.funFact}</div>
                     <div class="serve-row" style="margin-top:8px"><strong>🍵 ${lang === 'fil' ? 'Ihain kasama' : 'Serve with'}:</strong> ${f.serveWith}</div>
