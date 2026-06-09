@@ -26,15 +26,8 @@
             --dot-yel:  #febc2e;
             --dot-grn:  #28c840;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Fira Code', monospace;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
+        body { font-family: 'Fira Code', monospace; background: var(--bg); color: var(--text); min-height: 100vh; }
 
         /* ── NAV ── */
         nav {
@@ -48,18 +41,33 @@
             top: 0;
             z-index: 100;
         }
-        .nav-logo {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--purple);
-            letter-spacing: 1px;
-        }
+        .nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--purple); letter-spacing: 1px; }
         .nav-logo span { color: var(--orange); }
-        .nav-tagline {
-            font-size: 0.72rem;
-            color: var(--muted);
-            font-style: italic;
+        .nav-tagline { font-size: 0.72rem; color: var(--muted); font-style: italic; }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+
+        /* ── LANG TOGGLE ── */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            font-size: 0.65rem;
         }
+        .lang-btn {
+            padding: 4px 10px;
+            background: var(--bg3);
+            color: var(--muted);
+            border: none;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            transition: background 0.15s, color 0.15s;
+        }
+        .lang-btn.active { background: var(--orange); color: #000; font-weight: 700; }
+        .lang-btn:hover:not(.active) { background: var(--bg2); color: var(--text); }
 
         /* ── HERO ── */
         .hero {
@@ -67,23 +75,13 @@
             padding: 60px 20px 40px;
             background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
             border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
         }
         .hero-comment { color: var(--muted); font-size: 0.8rem; margin-bottom: 10px; }
-        .hero-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            color: var(--purple);
-            line-height: 1.1;
-        }
+        .hero-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; color: var(--purple); line-height: 1.1; }
         .hero-title .brace { color: var(--orange); }
-        .hero-sub {
-            margin-top: 12px;
-            color: var(--muted);
-            font-size: 0.85rem;
-            max-width: 500px;
-            margin-inline: auto;
-            line-height: 1.7;
-        }
+        .hero-sub { margin-top: 12px; color: var(--muted); font-size: 0.85rem; max-width: 500px; margin-inline: auto; line-height: 1.7; }
         .hero-sub .keyword { color: var(--blue); }
 
         /* ── SPARKLES ── */
@@ -98,125 +96,28 @@
             0%,100% { transform: translateY(0) scale(1); opacity: 0.6; }
             50%      { transform: translateY(-12px) scale(1.2); opacity: 1; }
         }
-        .hero { position: relative; overflow: hidden; }
 
         /* ── BACK TO TOP ── */
         .back-top {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: var(--orange);
-            color: #000;
-            border: none;
-            border-radius: 50%;
-            width: 42px; height: 42px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            z-index: 150;
-            display: none;
+            position: fixed; bottom: 24px; right: 24px;
+            background: var(--orange); color: #000;
+            border: none; border-radius: 50%;
+            width: 42px; height: 42px; font-size: 1.1rem;
+            cursor: pointer; z-index: 150; display: none;
             box-shadow: 0 4px 16px rgba(255,166,87,0.4);
             transition: opacity 0.2s, transform 0.2s;
         }
         .back-top:hover { transform: scale(1.1); }
         .back-top.visible { display: flex; align-items: center; justify-content: center; }
 
-        /* ── DID YOU KNOW ── */
-        .fun-fact-bar {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 10px 14px;
-            margin-top: 10px;
-            font-size: 0.68rem;
-            color: var(--yellow);
-            line-height: 1.6;
-        }
-        .fun-fact-bar span { color: var(--muted); }
-
-        /* ── REGION BADGE ── */
-        .region-row {
-            margin-top: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        .region-badge {
-            font-size: 0.62rem;
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 2px 7px;
-            color: var(--blue);
-        }
-
-        /* ── SERVE WITH ── */
-        .serve-row {
-            margin-top: 8px;
-            font-size: 0.68rem;
-            color: var(--muted);
-            line-height: 1.6;
-        }
-        .serve-row strong { color: var(--green); }
-
-        /* ── SHARE BUTTONS ── */
-        .share-row {
-            padding: 12px 16px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .share-label {
-            font-size: 0.68rem;
-            color: var(--muted);
-            margin-right: 4px;
-        }
-        .share-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: var(--bg3);
-            color: var(--text);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.65rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: border-color 0.2s, background 0.2s;
-        }
-        .share-btn:hover { border-color: var(--orange); background: var(--bg2); }
-        .share-btn.fb:hover  { border-color: #1877f2; }
-        .share-btn.tw:hover  { border-color: #1da1f2; }
-        .share-btn.native { background: var(--orange); color: #000; border-color: var(--orange); font-weight: 700; }
-        .share-btn.native:hover { opacity: 0.85; }
-            padding: 40px 32px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .section-header-wrap {
-            padding: 20px 32px 0;
-        }
+        /* ── FOOD GRID ── */
+        .section { padding: 40px 32px; max-width: 1200px; margin: 0 auto; }
         .section-header {
-            color: var(--text);
-            font-size: 0.95rem;
-            font-weight: 400;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            color: var(--text); font-size: 0.95rem; font-weight: 400;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
         }
-        .section-header::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        .sh-text {
-            white-space: nowrap;
-        }
+        .section-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .sh-text { white-space: nowrap; }
 
         .food-grid {
             display: grid;
@@ -224,57 +125,32 @@
             gap: 16px;
             justify-content: center;
         }
-        @media (max-width: 900px) {
-            .food-grid { grid-template-columns: repeat(2, minmax(0, 260px)); }
-        }
-        @media (max-width: 560px) {
-            .food-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 900px) { .food-grid { grid-template-columns: repeat(2, minmax(0, 260px)); } }
+        @media (max-width: 560px) { .food-grid { grid-template-columns: 1fr; } }
 
         .food-card {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
+            background: var(--bg2); border: 1px solid var(--border);
+            border-radius: 8px; overflow: hidden; cursor: pointer;
             transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
         }
         .food-card:hover {
-            border-color: var(--purple);
-            transform: translateY(-3px);
+            border-color: var(--purple); transform: translateY(-3px);
             box-shadow: 0 8px 24px rgba(210,168,255,0.15);
         }
         .card-titlebar {
-            background: var(--bg3);
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            background: var(--bg3); padding: 8px 12px;
+            display: flex; align-items: center; gap: 6px;
             border-bottom: 1px solid var(--border);
         }
-        .dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
         .dot.r { background: var(--dot-red); }
         .dot.y { background: var(--dot-yel); }
         .dot.g { background: var(--dot-grn); }
-        .card-filename {
-            font-size: 0.7rem;
-            color: var(--muted);
-            margin-left: 4px;
-        }
-        .card-img-wrap {
-            position: relative;
-            width: 100%;
-            height: 180px;
-            overflow: hidden;
-            background: var(--bg);
-        }
+        .card-filename { font-size: 0.7rem; color: var(--muted); margin-left: 4px; }
+
+        .card-img-wrap { position: relative; width: 100%; height: 180px; overflow: hidden; background: var(--bg); }
         .card-img-wrap canvas {
-            width: 100%;
-            height: 180px;
-            display: block;
+            width: 100%; height: 180px; display: block;
             transition: transform 0.35s ease, filter 0.35s ease;
             filter: drop-shadow(0 4px 16px rgba(0,0,0,0.45));
         }
@@ -283,270 +159,157 @@
             filter: drop-shadow(0 10px 28px rgba(0,0,0,0.75));
         }
         .card-img-placeholder {
-            width: 100%;
-            height: 180px;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
+            width: 100%; height: 180px; background: var(--bg);
+            display: flex; align-items: center; justify-content: center; font-size: 3rem;
         }
-        .card-body {
-            padding: 14px;
-            text-align: left;
-        }
+        .card-body { padding: 14px; text-align: left; }
         .card-keyword { color: var(--orange); font-size: 0.7rem; }
-        .card-name {
-            color: var(--purple);
-            font-size: 1rem;
-            font-weight: 700;
-            margin: 4px 0;
-            line-height: 1.2;
+        .card-name { color: var(--purple); font-size: 1rem; font-weight: 700; margin: 4px 0; line-height: 1.2; }
+        .card-sub { color: var(--muted); font-size: 0.7rem; margin-bottom: 8px; font-style: italic; }
+        .card-desc { color: var(--text); font-size: 0.72rem; line-height: 1.6; text-align: justify; }
+
+        /* ── DIFFICULTY + META ── */
+        .card-meta {
+            display: flex; align-items: center; gap: 8px;
+            margin-top: 8px; flex-wrap: wrap;
         }
-        .card-sub {
-            color: var(--muted);
-            font-size: 0.7rem;
-            margin-bottom: 10px;
-            font-style: italic;
+        .diff-badge {
+            font-size: 0.6rem; padding: 2px 8px;
+            border-radius: 20px; border: 1px solid; font-weight: 600;
         }
-        .card-desc {
-            color: var(--text);
-            font-size: 0.72rem;
-            line-height: 1.6;
-            text-align: justify;
-        }
+        .diff-easy   { color: var(--green);  border-color: var(--green);  }
+        .diff-medium { color: var(--yellow); border-color: var(--yellow); }
+        .diff-hard   { color: var(--red);    border-color: var(--red);    }
+        .card-prep   { font-size: 0.6rem; color: var(--muted); }
+
         .card-tag {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.62rem;
-            border: 1px solid;
+            display: inline-block; margin-top: 10px;
+            padding: 2px 8px; border-radius: 20px; font-size: 0.62rem; border: 1px solid;
         }
         .tag-sweet  { color: var(--pink);   border-color: var(--pink);   }
-        .tag-sticky { color: var(--teal);   border-color: var(--teal);  }
+        .tag-sticky { color: var(--teal);   border-color: var(--teal);   }
         .tag-coco   { color: var(--yellow); border-color: var(--yellow); }
 
         /* ── MODAL ── */
         .overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.75);
-            z-index: 200;
-            overflow-y: auto;
-            padding: 30px 16px;
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.75); z-index: 200;
+            overflow-y: auto; padding: 30px 16px;
         }
         .overlay.active { display: flex; align-items: flex-start; justify-content: center; }
-
         .modal {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            width: 100%;
-            max-width: 860px;
-            overflow: hidden;
-            position: relative;
+            background: var(--bg2); border: 1px solid var(--border);
+            border-radius: 10px; width: 100%; max-width: 860px;
+            overflow: hidden; position: relative;
         }
-
         .modal-titlebar {
-            background: var(--bg3);
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            background: var(--bg3); padding: 10px 16px;
+            display: flex; align-items: center; gap: 6px;
             border-bottom: 1px solid var(--border);
         }
-        .modal-titlebar .filename {
-            font-size: 0.75rem;
-            color: var(--muted);
-            margin-left: 6px;
-        }
+        .modal-titlebar .filename { font-size: 0.75rem; color: var(--muted); margin-left: 6px; }
         .modal-titlebar .close-btn {
-            margin-left: auto;
-            background: none;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0 4px;
+            margin-left: auto; background: none; border: none;
+            color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0 4px;
         }
         .modal-titlebar .close-btn:hover { color: var(--red); }
-
-        .modal-body {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-        }
-        @media (max-width: 640px) {
-            .modal-body { grid-template-columns: 1fr; }
-        }
-
-        .modal-img-panel {
-            border-right: 1px solid var(--border);
-            padding: 0;
-            position: relative;
-            background: var(--bg);
-        }
-        .modal-img {
-            width: 100%;
-            height: 280px;
-            object-fit: contain;
-            object-position: center;
-            display: block;
-            filter: drop-shadow(0 6px 24px rgba(0,0,0,0.6));
-            background: transparent;
-        }
-        .modal-img-placeholder {
-            width: 100%;
-            height: 280px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5rem;
-            background: var(--bg);
-        }
-        .modal-img-caption {
-            padding: 12px 16px;
-            border-top: 1px solid var(--border);
-        }
-        .modal-img-caption .food-name {
-            color: var(--purple);
-            font-size: 1.4rem;
-            font-weight: 700;
-            line-height: 1.1;
-        }
-        .modal-img-caption .food-alt {
-            color: var(--orange);
-            font-size: 0.8rem;
-            margin-top: 2px;
-        }
-        .modal-img-caption .food-blurb {
-            color: var(--muted);
-            font-size: 0.73rem;
-            margin-top: 8px;
-            line-height: 1.6;
-            text-align: justify;
-        }
+        .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        @media (max-width: 640px) { .modal-body { grid-template-columns: 1fr; } }
+        .modal-img-panel { border-right: 1px solid var(--border); padding: 0; position: relative; background: var(--bg); }
+        .modal-img-placeholder { width: 100%; height: 280px; display: flex; align-items: center; justify-content: center; font-size: 5rem; background: var(--bg); }
+        .modal-img-caption { padding: 12px 16px; border-top: 1px solid var(--border); }
+        .modal-img-caption .food-name { color: var(--purple); font-size: 1.4rem; font-weight: 700; line-height: 1.1; }
+        .modal-img-caption .food-alt { color: var(--orange); font-size: 0.8rem; margin-top: 2px; }
+        .modal-img-caption .food-blurb { color: var(--muted); font-size: 0.73rem; margin-top: 8px; line-height: 1.6; text-align: justify; }
         .tag-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
+        .modal-info-panel { padding: 0; overflow-y: auto; max-height: 600px; }
 
-        .modal-info-panel {
-            padding: 0;
-            overflow-y: auto;
-            max-height: 600px;
+        /* ── SAAN MAKIKITA MAP ── */
+        .map-block { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+        .map-block .cb-header { color: var(--muted); font-size: 0.68rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .map-block .cb-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .ph-map-wrap { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+        .ph-map-svg { flex-shrink: 0; }
+        .map-info { flex: 1; min-width: 140px; }
+        .map-region-list { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+        .map-region-badge {
+            font-size: 0.6rem; padding: 3px 8px;
+            border-radius: 4px; border: 1px solid var(--blue);
+            color: var(--blue); background: rgba(121,192,255,0.1);
+            cursor: pointer; transition: background 0.15s;
+        }
+        .map-region-badge:hover, .map-region-badge.active {
+            background: rgba(121,192,255,0.25);
+        }
+        .serve-row { margin-top: 8px; font-size: 0.68rem; color: var(--muted); line-height: 1.6; }
+        .serve-row strong { color: var(--green); }
+
+        /* ── FUN FACT ── */
+        .fun-fact-bar {
+            background: var(--bg3); border: 1px solid var(--border);
+            border-radius: 6px; padding: 10px 14px; margin-top: 8px;
+            font-size: 0.68rem; color: var(--yellow); line-height: 1.6;
         }
 
-        /* video block */
-        .video-block {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
+        /* ── SHARE ── */
+        .share-row {
+            padding: 12px 16px; border-top: 1px solid var(--border);
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
         }
-        .video-block .cb-header {
-            color: var(--muted);
-            font-size: 0.68rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .share-label { font-size: 0.68rem; color: var(--muted); margin-right: 4px; }
+        .share-btn {
+            display: flex; align-items: center; gap: 5px;
+            padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--bg3); color: var(--text);
+            font-family: 'Fira Code', monospace; font-size: 0.65rem;
+            cursor: pointer; text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
         }
-        .video-block .cb-header::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            background: #000;
-        }
-        .video-wrapper iframe {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .video-label {
-            font-size: 0.65rem;
-            color: var(--muted);
-            margin-top: 6px;
-            text-align: right;
-        }
-        .video-label a {
-            color: var(--blue);
-            text-decoration: none;
-        }
+        .share-btn:hover { border-color: var(--orange); background: var(--bg2); }
+        .share-btn.fb:hover  { border-color: #1877f2; }
+        .share-btn.tw:hover  { border-color: #1da1f2; }
+        .share-btn.native { background: var(--orange); color: #000; border-color: var(--orange); font-weight: 700; }
+        .share-btn.native:hover { opacity: 0.85; }
+
+        /* ── VIDEO ── */
+        .video-block { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+        .video-block .cb-header { color: var(--muted); font-size: 0.68rem; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .video-block .cb-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .video-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: #000; }
+        .video-wrapper iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+        .video-label { font-size: 0.65rem; color: var(--muted); margin-top: 6px; text-align: right; }
+        .video-label a { color: var(--blue); text-decoration: none; }
         .video-label a:hover { text-decoration: underline; }
 
-        /* code-block panels */
-        .code-block {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.72rem;
-            line-height: 1.8;
-        }
+        /* ── CODE BLOCKS ── */
+        .code-block { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 0.72rem; line-height: 1.8; }
         .code-block:last-child { border-bottom: none; }
-        .cb-header {
-            color: var(--muted);
-            font-size: 0.68rem;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .cb-header::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
+        .cb-header { color: var(--muted); font-size: 0.68rem; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .cb-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
         .cb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
-
-        /* ingredient line */
         .ing-line { display: flex; align-items: baseline; gap: 6px; margin: 2px 0; }
         .ing-qty { color: var(--orange); font-weight: 600; min-width: 80px; }
         .ing-name { color: var(--text); }
         .ing-note { color: var(--muted); font-style: italic; font-size: 0.68rem; }
-
-        /* instruction steps */
         .step { display: flex; gap: 10px; margin: 6px 0; align-items: flex-start; }
         .step-num { color: var(--muted); min-width: 24px; font-size: 0.68rem; padding-top: 1px; }
         .step-comment { color: var(--green); }
         .step-body { color: var(--text); font-size: 0.72rem; }
-
-        /* tips */
         .tip-line { color: var(--muted); margin: 3px 0; }
         .tip-line::before { content: '/* '; color: var(--green); }
         .tip-line::after  { content: ' */'; color: var(--green); }
 
-        /* enjoy bar */
+        /* ── ENJOY BAR ── */
         .enjoy-bar {
-            background: var(--bg3);
-            border-top: 1px solid var(--border);
-            padding: 12px 16px;
-            font-size: 0.73rem;
-            color: var(--muted);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: var(--bg3); border-top: 1px solid var(--border);
+            padding: 12px 16px; font-size: 0.73rem; color: var(--muted);
+            display: flex; align-items: center; gap: 8px;
         }
         .enjoy-bar .kw { color: var(--orange); }
         .enjoy-bar .val { color: var(--green); }
 
         /* ── FOOTER ── */
-        footer {
-            border-top: 1px solid var(--border);
-            background: var(--bg2);
-            padding: 24px 32px;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.72rem;
-        }
+        footer { border-top: 1px solid var(--border); background: var(--bg2); padding: 24px 32px; text-align: center; color: var(--muted); font-size: 0.72rem; }
         footer .accent { color: var(--purple); }
 
         /* scrollbar */
@@ -554,13 +317,10 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-        /* ── QR SECTION (legacy, unused) ── */
     </style>
 </head>
 <body>
 
-<!-- BACK TO TOP -->
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- NAV -->
@@ -569,7 +329,34 @@
         <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
         <div class="nav-tagline">// a love letter to Filipino kakanin</div>
     </div>
-    <div style="color:var(--muted);font-size:0.72rem">🇵🇭 &nbsp;<b>Meryenda Ready!</b></div>
+    <div class="nav-right">
+        <div class="lang-toggle">
+            <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" id="btnFIL" onclick="setLang('fil')">FIL</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--muted)">
+            <svg width="22" height="14" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+                <rect width="36" height="12" fill="#0038A8"/>
+                <rect y="12" width="36" height="12" fill="#CE1126"/>
+                <polygon points="0,0 18,12 0,24" fill="white"/>
+                <circle cx="7" cy="12" r="2.5" fill="#FCD116"/>
+                <g fill="#FCD116">
+                    <rect x="6.6" y="7.5" width="0.8" height="2" rx="0.4"/>
+                    <rect x="6.6" y="14.5" width="0.8" height="2" rx="0.4" transform="rotate(180 7 16)"/>
+                    <rect x="4" y="11.6" width="2" height="0.8" rx="0.4"/>
+                    <rect x="9" y="11.6" width="2" height="0.8" rx="0.4"/>
+                    <rect x="5" y="8.9" width="2" height="0.8" rx="0.4" transform="rotate(45 6 9.3)"/>
+                    <rect x="9" y="8.9" width="2" height="0.8" rx="0.4" transform="rotate(-45 10 9.3)"/>
+                    <rect x="5" y="14.3" width="2" height="0.8" rx="0.4" transform="rotate(-45 6 14.7)"/>
+                    <rect x="9" y="14.3" width="2" height="0.8" rx="0.4" transform="rotate(45 10 14.7)"/>
+                </g>
+                <text x="2.5" y="5.5" font-size="3" fill="#FCD116">★</text>
+                <text x="13" y="4" font-size="3" fill="#FCD116">★</text>
+                <text x="13" y="21" font-size="3" fill="#FCD116">★</text>
+            </svg>
+            <span>🇵🇭 &nbsp;<b data-en="Meryenda Ready!" data-fil="Handa na ang Meryenda!">Meryenda Ready!</b></span>
+        </div>
+    </div>
 </nav>
 
 <!-- HERO -->
@@ -581,14 +368,14 @@
     <div class="hero-sub">
         Mga <span class="keyword">traditional</span> na kakanin ng Pilipinas —
         sticky, sweet, and made with <span class="keyword">puso</span>.
-        Click any card to see the full recipe.
+        <br><i data-en="Click any card to see the full recipe." data-fil="I-click ang kahit anong card para makita ang buong recipe.">Click any card to see the full recipe.</i>
     </div>
 </div>
 
 <!-- FOOD GRID -->
 <div class="section">
     <div class="section-header">
-        <span class="sh-text"><span style="color:var(--orange)">export</span> const foods <span style="color:var(--muted)">[]</span></span>
+        <span class="sh-text"><span style="color:var(--orange)">export const</span><span style="color:var(--purple)"> foods</span> <span style="color:var(--muted)">{}</span></span>
     </div>
     <div class="food-grid" id="foodGrid"></div>
 </div>
@@ -606,7 +393,7 @@
                 <div id="modalImgWrap"></div>
                 <div class="modal-img-caption">
                     <div class="food-name" id="modalName"></div>
-                    <div class="food-alt"  id="modalAlt"></div>
+                    <div class="food-alt" id="modalAlt"></div>
                     <div class="food-blurb" id="modalBlurb"></div>
                     <div class="tag-row" id="modalTags"></div>
                 </div>
@@ -629,24 +416,41 @@
 </footer>
 
 <script>
+/* ── LANGUAGE ── */
+let currentLang = 'en';
+function setLang(lang) {
+    currentLang = lang;
+    document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+    document.getElementById('btnFIL').classList.toggle('active', lang === 'fil');
+    document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang);
+    });
+    // re-render cards with new lang
+    grid.innerHTML = '';
+    renderCards();
+}
+
+/* ── FOOD DATA ── */
 const foods = [
     {
         id: "bibingka-malagkit",
         filename: ".bibingka-malagkit",
         emoji: "🍚",
         image: "ZIUart4MHUZUtqk4KddEY_59RFkS57.png",
-        zoom: 0.8,
-        offsetY: 23,
-        removeBg: false,
-        name: "Bibingka Malagkit",
-        alt: "(Glutinous Rice Cake)",
-        blurb: "Dense, chewy, and glossy — this holiday staple is a warm hug from Nanay. Slow-cooked with coconut milk and crowned with a caramelized coconut-sugar glaze.",
+        zoom: 0.8, offsetY: 23, removeBg: false,
+        name:    { en: "Bibingka Malagkit",     fil: "Bibingkang Malagkit" },
+        alt:     { en: "(Glutinous Rice Cake)",  fil: "(Malagkit na Kakanin)" },
+        blurb:   { en: "Dense, chewy, and glossy — this holiday staple is a warm hug from Nanay. Slow-cooked with coconut milk and crowned with a caramelized coconut-sugar glaze.",
+                   fil: "Masinsin, makunat, at makintab — ang paboritong kakanin sa Pasko. Niluto nang dahan-dahan sa gata at nilagyan ng matamis na karamelisadong latik." },
+        cardDesc:{ en: "A traditional Filipino kakanin made from glutinous rice cooked with coconut milk and topped with a thick caramelized coconut-sugar glaze. A Christmas season classic.",
+                   fil: "Tradisyonal na Filipino kakanin mula sa malagkit na bigas, niluto sa gata at nilagyan ng makapal na karamelisadong glaze. Klasikong pagkain tuwing Pasko." },
+        difficulty: { label: "Medium", cls: "diff-medium", fil: "Katamtaman" },
+        prepTime: "45 min", servings: "8–10",
         tags: [
-            { label: "sweet",  cls: "tag-sweet"  },
-            { label: "sticky", cls: "tag-sticky" },
-            { label: "coconut",cls: "tag-coco"   }
+            { label: "sweet",   cls: "tag-sweet"  },
+            { label: "sticky",  cls: "tag-sticky" },
+            { label: "coconut", cls: "tag-coco"   }
         ],
-        cardDesc: "A traditional Filipino kakanin made from glutinous rice cooked with coconut milk and topped with a thick caramelized coconut-sugar glaze. A Christmas season classic.",
         ingredients: [
             { qty: "2 cups",       name: "glutinous rice flour", note: "(galapong malagkit)" },
             { qty: "2 cups",       name: "coconut milk",         note: "(gata)" },
@@ -681,18 +485,20 @@ const foods = [
         filename: ".bibingka-pinipig",
         emoji: "🌿",
         image: "bibikinag pinipig.png",
-        zoom: 1.0,
-        offsetY: 0,
-        removeBg: false,
-        name: "Bibingka Pinipig",
-        alt: "(Immature Glutinous Rice Cake)",
-        blurb: "Born from the paddy fields of Bulacan and Nueva Ecija, this jade-tinted delicacy carries the toasted aroma of young rice. A rare provincial treasure.",
+        zoom: 1.0, offsetY: 0, removeBg: false,
+        name:    { en: "Bibingka Pinipig",               fil: "Bibingkang Pinipig" },
+        alt:     { en: "(Young Glutinous Rice Cake)",     fil: "(Kakanin ng Bagong Pinipig)" },
+        blurb:   { en: "Born from the paddy fields of Bulacan and Nueva Ecija, this jade-tinted delicacy carries the toasted aroma of young rice. A rare provincial treasure.",
+                   fil: "Ipinanganak sa mga palayan ng Bulacan at Nueva Ecija, ang berdeng kakanin na ito ay may natatanging amoy ng inihaw na bagong bigas. Isang bihirang kayamanan ng probinsya." },
+        cardDesc:{ en: "Made from pinipig — young glutinous rice grains harvested green, roasted and flattened. Soft, chewy, and greenish, with a toasted-rice aroma and coconut richness.",
+                   fil: "Gawa sa pinipig — batang malagkit na bigas na inani nang berde, inihaw at pinatagilid. Malambot, makunat, at berde ang kulay, na may amoy ng inihaw na bigas at gata." },
+        difficulty: { label: "Medium", cls: "diff-medium", fil: "Katamtaman" },
+        prepTime: "40 min", servings: "6–8",
         tags: [
-            { label: "toasted",  cls: "tag-sticky" },
-            { label: "sweet",    cls: "tag-sweet"  },
-            { label: "coconut",  cls: "tag-coco"   }
+            { label: "toasted", cls: "tag-sticky" },
+            { label: "sweet",   cls: "tag-sweet"  },
+            { label: "coconut", cls: "tag-coco"   }
         ],
-        cardDesc: "Made from pinipig — immature glutinous rice grains harvested green, roasted and flattened. Soft, chewy, and greenish, with a toasted-rice aroma and coconut richness.",
         ingredients: [
             { qty: "2 cups",       name: "ground pinipig",     note: "(toasted & pounded)" },
             { qty: "1½ cups",      name: "coconut milk",       note: "(gata)" },
@@ -717,37 +523,39 @@ const foods = [
             "A Nueva Ecija classic — best enjoyed during town fiestas!"
         ],
         videoId: "BFQ7qI35m2A",
-        funFact: "💡 Pinipig is made from young palay (rice) harvested before full maturity — pounded flat while still green. Nueva Ecija and Bulacan are the heartland of pinipig production in the Philippines.",
+        funFact: "💡 Pinipig is made from young palay harvested before full maturity — pounded flat while still green. Nueva Ecija and Bulacan are the heartland of pinipig production.",
         regions: ["Nueva Ecija", "Bulacan", "Central Luzon"],
-        serveWith: "Hot tsokolate de batirol (tablea chocolate) or barako coffee. A rare merienda treat best fresh from the palengke.",
-        enjoy: "Best eaten warm during merienda with hot tsokolate (tablea chocolate)! 🍫"
+        serveWith: "Hot tsokolate de batirol (tablea chocolate) or barako coffee. Best fresh from the palengke.",
+        enjoy: "Best eaten warm during merienda with hot tsokolate! 🍫"
     },
     {
         id: "kalamay-ube",
         filename: ".kalamay-ube",
         emoji: "🟣",
         image: "278bd31e-51f9-40dc-b81f-2b84e24260c6.png",
-        zoom: 1.0,
-        offsetY: -30,
-        removeBg: false,
-        name: "Kalamay Ube",
-        alt: "(Purple Yam Sticky Rice Cake)",
-        blurb: "Purple, sticky, and deeply satisfying. Ube's earthy sweetness meets the richness of coconut milk in this slow-stirred labor of love — worth every minute.",
+        zoom: 1.0, offsetY: -30, removeBg: false,
+        name:    { en: "Kalamay Ube",                fil: "Kalamay Ube" },
+        alt:     { en: "(Ube Kalamay)",              fil: "(Kalamay na Ube)" },
+        blurb:   { en: "Purple, sticky, and deeply satisfying. Ube's earthy sweetness meets the richness of coconut milk in this slow-stirred labor of love.",
+                   fil: "Lila, malagkit, at tunay na kasiya-siya. Ang matamis na ube ay nagsasama sa kayamanan ng gata sa matagal na paghahalo ng pagmamahal." },
+        cardDesc:{ en: "Sweet purple kalamay made from ube (purple yam), glutinous rice flour, and coconut milk. Slow-cooked until thick and sticky, topped with latik or grated coconut.",
+                   fil: "Matamis na lilang kalamay mula sa ube, galapong malagkit, at gata. Niluto nang matagal hanggang makapal at malagkit, nilagyan ng latik o niyog." },
+        difficulty: { label: "Requires patience 😅", cls: "diff-hard", fil: "Kailangan ng Pasensya 😅" },
+        prepTime: "60 min", servings: "8–10",
         tags: [
-            { label: "ube",    cls: "tag-sweet"  },
-            { label: "sticky", cls: "tag-sticky" },
-            { label: "coconut",cls: "tag-coco"   }
+            { label: "ube",     cls: "tag-sweet"  },
+            { label: "sticky",  cls: "tag-sticky" },
+            { label: "coconut", cls: "tag-coco"   }
         ],
-        cardDesc: "Sweet purple kalamay made from ube (purple yam), glutinous rice flour, and coconut milk. Slow-cooked until thick and sticky, topped with latik or grated coconut.",
         ingredients: [
-            { qty: "2 cups",    name: "grated or mashed ube", note: "(cooked purple yam)" },
-            { qty: "1 cup",     name: "glutinous rice flour",  note: "(galapong malagkit)" },
-            { qty: "2 cups",    name: "coconut milk",          note: "(gata)" },
-            { qty: "1 cup",     name: "brown sugar",           note: "or white sugar" },
-            { qty: "2 tbsp",    name: "butter or margarine",   note: "(optional, for richness)" },
-            { qty: "½ cup",     name: "coconut cream",         note: "(optional, for topping)" },
-            { qty: "1–2 tsp",   name: "ube extract",           note: "(optional, for deeper color)" },
-            { qty: "latik",     name: "or grated coconut",     note: "for garnish" }
+            { qty: "2 cups",  name: "grated or mashed ube", note: "(cooked purple yam)" },
+            { qty: "1 cup",   name: "glutinous rice flour",  note: "(galapong malagkit)" },
+            { qty: "2 cups",  name: "coconut milk",          note: "(gata)" },
+            { qty: "1 cup",   name: "brown sugar",           note: "or white sugar" },
+            { qty: "2 tbsp",  name: "butter or margarine",   note: "(optional)" },
+            { qty: "½ cup",   name: "coconut cream",         note: "(optional, for topping)" },
+            { qty: "1–2 tsp", name: "ube extract",           note: "(optional, for deeper color)" },
+            { qty: "latik",   name: "or grated coconut",     note: "for garnish" }
         ],
         steps: [
             { comment: "/* Prepare the mixture */", body: "In a bowl, dissolve the glutinous rice flour in 1 cup of the coconut milk until smooth and lump-free." },
@@ -765,218 +573,191 @@ const foods = [
             "Yields about 8–10 servings. Can be served warm or chilled."
         ],
         videoId: "71CMZuOvy3Y",
-        funFact: "💡 The word 'kalamay' comes from the Sanskrit 'kala' (black) — referring to the dark color of the coconut caramel topping (latik). An old Kapampangan recipe takes 4 hours of constant stirring!",
+        funFact: "💡 The word 'kalamay' comes from Sanskrit 'kala' — referring to the dark latik topping. An old Kapampangan recipe takes 4 hours of constant stirring!",
         regions: ["Capiz", "Bohol", "Pampanga", "Visayas", "Mindanao"],
         serveWith: "Black coffee, barako, or warm ginger tea. The purple complements the bitterness of coffee perfectly.",
-        enjoy: "Enjoy your homemade kalamay ube with coffee or tsaa (tea)! ☕🟣"
+        enjoy: "Enjoy with coffee or tsaa (tea)! ☕🟣"
     },
     {
         id: "maja-blanca",
         filename: ".maja-blanca",
         emoji: "🤍",
         image: "0927b764-6b0f-418f-8828-32a7abe0b13c.png",
-        zoom: 1.0,
-        offsetY: 0,
-        removeBg: false,
-        name: "Maja Blanca",
-        alt: "(Filipino Coconut Pudding)",
-        blurb: "Soft, silky, and pearly white — this Hispanicized Filipino delicacy has graced every family fiesta table for generations. Simple ingredients, unforgettable flavor.",
+        zoom: 1.0, offsetY: 0, removeBg: false,
+        name:    { en: "Maja Blanca",                    fil: "Maja Blanca" },
+        alt:     { en: "(Filipino Coconut Pudding)",      fil: "(Filipino na Gata Pudding)" },
+        blurb:   { en: "Soft, silky, and pearly white — this Hispanicized Filipino delicacy has graced every family fiesta table for generations.",
+                   fil: "Malambot, makinang, at puti — ang kakanin na ito na may impluwensyang Espanyol ay palaging naroon sa bawat hapag ng pamilya sa bawat fiesta." },
+        cardDesc:{ en: "A silky Filipino coconut pudding adapted from Spanish blancmange. Made with coconut milk, cornstarch, and sweet corn kernels. Topped with latik — a fiesta must-have.",
+                   fil: "Malambot na pudding ng gata na hango sa Espanyol na blancmange. Gawa sa gata, cornstarch, at mais. Nilagyan ng latik — kailangan sa bawat fiesta." },
+        difficulty: { label: "Easy", cls: "diff-easy", fil: "Madali" },
+        prepTime: "30 min + chill", servings: "10–12",
         tags: [
             { label: "creamy",  cls: "tag-sweet"  },
             { label: "corn",    cls: "tag-sticky" },
             { label: "coconut", cls: "tag-coco"   }
         ],
-        cardDesc: "A silky Filipino coconut pudding adapted from Spanish blancmange. Made with coconut milk, cornstarch, and sweet corn kernels. Topped with latik — a fiesta must-have.",
         ingredients: [
-            { qty: "3 cups",  name: "coconut milk",      note: "(gata)" },
-            { qty: "1 cup",   name: "whole milk",         note: "or evaporated milk" },
-            { qty: "½ cup",   name: "cornstarch",         note: "" },
-            { qty: "¾ cup",   name: "sugar",              note: "" },
-            { qty: "1 cup",   name: "sweet corn kernels", note: "(mais; canned or fresh)" },
-            { qty: "pinch",   name: "salt",               note: "" },
-            { qty: "latik",   name: "(coconut curds)",    note: "for topping — the soul of the dish" }
+            { qty: "3 cups", name: "coconut milk",      note: "(gata)" },
+            { qty: "1 cup",  name: "whole milk",         note: "or evaporated milk" },
+            { qty: "½ cup",  name: "cornstarch",         note: "" },
+            { qty: "¾ cup",  name: "sugar",              note: "" },
+            { qty: "1 cup",  name: "sweet corn kernels", note: "(mais; canned or fresh)" },
+            { qty: "pinch",  name: "salt",               note: "" },
+            { qty: "latik",  name: "(coconut curds)",    note: "for topping — the soul of the dish" }
         ],
         steps: [
             { comment: "/* Make the latik first */",  body: "In a pan, cook coconut cream over medium heat, stirring, until curds separate and turn golden brown. Set aside the latik; reserve the coconut oil." },
             { comment: "/* Mix the base */",          body: "Dissolve cornstarch in 1 cup of coconut milk. Set aside. In a pot, combine remaining coconut milk, whole milk, and sugar. Heat over medium." },
             { comment: "/* Add cornstarch mix */",    body: "Once the milk mixture is warm (not boiling), pour in the dissolved cornstarch while stirring constantly." },
-            { comment: "/* Add corn */",              body: "Add sweet corn kernels and a pinch of salt. Continue stirring until the mixture thickens into a smooth, pudding-like consistency (about 10–15 min)." },
-            { comment: "/* Pour & set */",            body: "Grease a tray or individual molds with the reserved coconut oil. Pour in the maja blanca mixture and smooth the surface." },
-            { comment: "/* Top with latik */",        body: "Sprinkle generously with golden latik while still warm. Let cool to room temperature, then refrigerate for 2 hours before serving." }
+            { comment: "/* Add corn */",              body: "Add sweet corn kernels and a pinch of salt. Continue stirring until the mixture thickens into a smooth pudding-like consistency (about 10–15 min)." },
+            { comment: "/* Pour & set */",            body: "Grease a tray with reserved coconut oil. Pour in the maja blanca mixture and smooth the surface." },
+            { comment: "/* Top with latik */",        body: "Sprinkle generously with golden latik while still warm. Let cool to room temp, then refrigerate 2 hours before serving." }
         ],
         tips: [
             "Latik is the golden key — don't skip it! It adds texture and a nutty coconut depth.",
             "For a firmer maja, increase cornstarch to ¾ cup.",
-            "Con maíz (with corn) is the most popular version — the corn adds sweetness and texture.",
+            "Con maíz (with corn) is the most popular version.",
             "Adapted from Spanish manjar blanco, now fully claimed as ours. 🇵🇭"
         ],
         videoId: "PDEH-USSy0o",
-        funFact: "💡 Maja Blanca was adapted from the Spanish 'manjar blanco' during the colonial era. Filipinos swapped almonds and rice flour for coconut milk and corn — making it entirely ours. 🇵🇭",
+        funFact: "💡 Maja Blanca was adapted from Spanish 'manjar blanco' during the colonial era. Filipinos swapped almonds and rice flour for coconut milk and corn — making it entirely ours. 🇵🇭",
         regions: ["Nationwide", "Tagalog Region", "Pampanga", "Ilocos", "Pangasinan"],
-        serveWith: "Serve chilled at room temp. Pairs beautifully with hot salabat or as a palate cleanser between savory dishes at fiestas.",
-        enjoy: "Best served chilled at fiestas, Noche Buena, and Sunday family gatherings! 🎉"
+        serveWith: "Serve chilled. Pairs beautifully with hot salabat or as a palate cleanser between savory dishes at fiestas.",
+        enjoy: "Best served chilled at fiestas and Noche Buena! 🎉"
     }
 ];
 
-/* ── CANVAS IMAGE RENDERER ── */
-
-// removes near-white pixels (handles checker/white bg on PNGs)
-function removeWhiteBg(ctx, W, H, tolerance) {
+/* ── CANVAS RENDERERS ── */
+function removeWhiteBg(ctx, W, H) {
     const data = ctx.getImageData(0, 0, W, H);
     const d = data.data;
     for (let i = 0; i < d.length; i += 4) {
-        const r = d[i], g = d[i+1], b = d[i+2];
-        // if pixel is near-white or near-checker-gray, make transparent
-        if (r > 220 && g > 220 && b > 220) {
-            // soften edges — partial transparency based on how white it is
-            const whiteness = Math.min(r, g, b);
-            const alpha = 1 - ((whiteness - 220) / 35);
-            d[i+3] = Math.max(0, Math.floor(alpha * d[i+3]));
+        if (d[i] > 220 && d[i+1] > 220 && d[i+2] > 220) {
+            const w = Math.min(d[i], d[i+1], d[i+2]);
+            d[i+3] = Math.max(0, Math.floor((1 - (w - 220) / 35) * d[i+3]));
         }
     }
     ctx.putImageData(data, 0, 0);
 }
 
-function renderFoodCanvas(canvasEl, src, zoom, offsetY, removeBg) {
-    const W = canvasEl.width  = 480;
-    const H = canvasEl.height = 360;
+function renderCanvas(canvasEl, src, zoom, offsetY, removeBg, W, H) {
+    canvasEl.width = W; canvasEl.height = H;
     const ctx = canvasEl.getContext('2d');
-
     ctx.fillStyle = '#0d1117';
     ctx.fillRect(0, 0, W, H);
-
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
-        // offscreen canvas to process the image first
         const off = document.createElement('canvas');
-        off.width  = img.width;
-        off.height = img.height;
+        off.width = img.width; off.height = img.height;
         const offCtx = off.getContext('2d');
         offCtx.drawImage(img, 0, 0);
-
-        if (removeBg) removeWhiteBg(offCtx, img.width, img.height, 35);
-
-        const base  = Math.max(W / img.width, H / img.height);
-        const scale = base * zoom;
-        const dw = img.width  * scale;
-        const dh = img.height * scale;
-        const dx = (W - dw) / 2;
-        const dy = (H - dh) / 2 + (offsetY || 0);
-
-        ctx.drawImage(off, dx, dy, dw, dh);
+        if (removeBg) removeWhiteBg(offCtx, img.width, img.height);
+        const scale = Math.max(W / img.width, H / img.height) * zoom;
+        const dw = img.width * scale, dh = img.height * scale;
+        ctx.drawImage(off, (W - dw) / 2, (H - dh) / 2 + (offsetY || 0), dw, dh);
     };
     img.onerror = () => {
-        const grad = ctx.createLinearGradient(0, 0, W, H);
-        grad.addColorStop(0, '#21262d');
-        grad.addColorStop(1, '#0d1117');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, W, H);
-    };
-    img.src = src;
-}
-
-function renderModalCanvas(canvasEl, src, zoom, offsetY, removeBg) {
-    const W = canvasEl.width  = 640;
-    const H = canvasEl.height = 480;
-    const ctx = canvasEl.getContext('2d');
-
-    ctx.fillStyle = '#0d1117';
-    ctx.fillRect(0, 0, W, H);
-
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-        const off = document.createElement('canvas');
-        off.width  = img.width;
-        off.height = img.height;
-        const offCtx = off.getContext('2d');
-        offCtx.drawImage(img, 0, 0);
-
-        if (removeBg) removeWhiteBg(offCtx, img.width, img.height, 35);
-
-        const base  = Math.max(W / img.width, H / img.height);
-        const scale = base * zoom;
-        const dw = img.width  * scale;
-        const dh = img.height * scale;
-        const dx = (W - dw) / 2;
-        const dy = (H - dh) / 2 + (offsetY || 0);
-
-        ctx.drawImage(off, dx, dy, dw, dh);
+        const g = ctx.createLinearGradient(0,0,W,H);
+        g.addColorStop(0,'#21262d'); g.addColorStop(1,'#0d1117');
+        ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
     };
     img.src = src;
 }
 
 /* ── RENDER CARDS ── */
 const grid = document.getElementById('foodGrid');
-foods.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'food-card';
-    card.onclick = () => openModal(f.id);
-    card.innerHTML = `
-        <div class="card-titlebar">
-            <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-            <span class="card-filename">${f.filename}</span>
-        </div>
-        <div class="card-img-wrap">
-            <canvas id="canvas-${f.id}"></canvas>
-            <div class="card-img-placeholder" style="display:none">${f.emoji}</div>
-        </div>        <div class="card-body">
-            <div class="card-keyword">.recipe {</div>
-            <div class="card-name">${f.name}</div>
-            <div class="card-sub">${f.alt}</div>
-            <div class="card-desc">${f.cardDesc}</div>
-            <div style="margin-top:10px">
-                ${f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join(' ')}
+function renderCards() {
+    foods.forEach(f => {
+        const lang = currentLang;
+        const diffLabel = lang === 'fil' ? f.difficulty.fil : f.difficulty.label;
+        const card = document.createElement('div');
+        card.className = 'food-card';
+        card.onclick = () => openModal(f.id);
+        card.innerHTML = `
+            <div class="card-titlebar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="card-filename">${f.filename}</span>
             </div>
-            <div class="card-keyword" style="margin-top:8px">}</div>
-        </div>
-    `;
-    grid.appendChild(card);
-    renderFoodCanvas(document.getElementById(`canvas-${f.id}`), f.image, f.zoom, f.offsetY, f.removeBg);
-});
+            <div class="card-img-wrap">
+                <canvas id="canvas-${f.id}"></canvas>
+                <div class="card-img-placeholder" style="display:none">${f.emoji}</div>
+            </div>
+            <div class="card-body">
+                <div class="card-keyword">.recipe {</div>
+                <div class="card-name">${f.name[lang]}</div>
+                <div class="card-sub">${f.alt[lang]}</div>
+                <div class="card-meta">
+                    <span class="diff-badge ${f.difficulty.cls}">${diffLabel}</span>
+                    <span class="card-prep">⏱ ${f.prepTime} · 🍽 ${f.servings} servings</span>
+                </div>
+                <div class="card-desc" style="margin-top:8px">${f.cardDesc[lang]}</div>
+                <div style="margin-top:10px">
+                    ${f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join(' ')}
+                </div>
+                <div class="card-keyword" style="margin-top:8px">}</div>
+            </div>
+        `;
+        grid.appendChild(card);
+        renderCanvas(document.getElementById(`canvas-${f.id}`), f.image, f.zoom, f.offsetY, f.removeBg, 480, 360);
+    });
+}
+renderCards();
 
 /* ── MODAL ── */
 function openModal(id) {
     const f = foods.find(x => x.id === id);
     if (!f) return;
+    const lang = currentLang;
 
     document.getElementById('modalFilename').textContent = f.filename + ' {';
-    document.getElementById('modalName').textContent   = f.name;
-    document.getElementById('modalAlt').textContent    = f.alt;
-    document.getElementById('modalBlurb').textContent  = f.blurb;
-    document.getElementById('modalEnjoy').textContent  = f.enjoy;
+    document.getElementById('modalName').textContent  = f.name[lang];
+    document.getElementById('modalAlt').textContent   = f.alt[lang];
+    document.getElementById('modalBlurb').textContent = f.blurb[lang];
+    document.getElementById('modalEnjoy').textContent = f.enjoy;
 
     document.getElementById('modalImgWrap').innerHTML =
         `<canvas id="modal-canvas" style="width:100%;height:280px;display:block;"></canvas>`;
-    // render after DOM update
     requestAnimationFrame(() => {
         const mc = document.getElementById('modal-canvas');
-        if (mc) renderModalCanvas(mc, f.image, f.zoom, f.offsetY, f.removeBg);
+        if (mc) renderCanvas(mc, f.image, f.zoom, f.offsetY, f.removeBg, 640, 480);
     });
 
     document.getElementById('modalTags').innerHTML =
         f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join('');
 
-    // Fun fact + regions + serve with — first block in the RIGHT info panel
-    const infoTopHtml = `
-        <div class="code-block">
-            <div class="cb-header"><div class="cb-dot"></div>.about {</div>
-            <div class="fun-fact-bar">${f.funFact}</div>
-            <div class="region-row">${f.regions.map(r => `<span class="region-badge">📍 ${r}</span>`).join('')}</div>
-            <div class="serve-row"><strong>🍵 Serve with:</strong> ${f.serveWith}</div>
-            <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
+    // Saan Makikita map
+    const mapHtml = `
+        <div class="map-block">
+            <div class="cb-header"><div class="cb-dot"></div>📍 ${lang === 'fil' ? 'Saan Makikita' : 'Where to Find'} {</div>
+            <div class="ph-map-wrap">
+                <svg class="ph-map-svg" width="90" height="120" viewBox="0 0 90 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Simplified Philippines silhouette -->
+                    <path d="M45 5 C40 8 35 12 33 18 C30 25 32 32 30 38 C28 44 24 48 22 54 C20 62 24 70 28 76 C32 82 38 86 42 92 C44 96 44 102 46 106 C48 110 52 112 54 108 C56 104 54 98 56 94 C58 88 64 84 66 78 C68 72 66 64 64 58 C62 52 58 48 58 42 C58 36 62 30 60 24 C58 18 53 12 48 8 Z" fill="var(--bg3)" stroke="var(--border)" stroke-width="1.5"/>
+                    <!-- Visayas area highlight -->
+                    <circle cx="45" cy="70" r="4" fill="var(--blue)" opacity="0.6"/>
+                    <!-- Luzon highlight -->
+                    <circle cx="44" cy="30" r="4" fill="var(--orange)" opacity="0.6"/>
+                    <!-- Mindanao -->
+                    <circle cx="50" cy="100" r="3" fill="var(--green)" opacity="0.6"/>
+                    <!-- Labels -->
+                    <text x="52" y="32" font-size="5" fill="var(--muted)">Luzon</text>
+                    <text x="52" y="72" font-size="5" fill="var(--muted)">Visayas</text>
+                    <text x="38" y="105" font-size="5" fill="var(--muted)">Mindanao</text>
+                </svg>
+                <div class="map-info">
+                    <div class="map-region-list">
+                        ${f.regions.map(r => `<span class="map-region-badge">📍 ${r}</span>`).join('')}
+                    </div>
+                    <div class="fun-fact-bar">${f.funFact}</div>
+                    <div class="serve-row" style="margin-top:8px"><strong>🍵 ${lang === 'fil' ? 'Ihain kasama' : 'Serve with'}:</strong> ${f.serveWith}</div>
+                </div>
+            </div>
+            <div style="color:var(--muted);font-size:0.68rem;margin-top:8px">}</div>
         </div>
     `;
 
-    // Fun fact + regions + serve with — shown in left panel under tags
-    document.getElementById('modalTags').innerHTML =
-        f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join('') +
-        `<div class="fun-fact-bar"><span>💡 Did you know?</span><br>${f.funFact.replace('💡 ','')}</div>
-         <div class="region-row">${f.regions.map(r => `<span class="region-badge">📍 ${r}</span>`).join('')}</div>
-         <div class="serve-row"><strong>🍵 Serve with:</strong> ${f.serveWith}</div>`;
-
-    // Ingredients
     const ingHtml = `
         <div class="code-block">
             <div class="cb-header"><div class="cb-dot"></div>.ingredients {</div>
@@ -988,10 +769,8 @@ function openModal(id) {
                 </div>
             `).join('')}
             <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
-        </div>
-    `;
+        </div>`;
 
-    // Instructions
     const stepsHtml = `
         <div class="code-block">
             <div class="cb-header"><div class="cb-dot"></div>.instructions {</div>
@@ -1002,42 +781,30 @@ function openModal(id) {
                         <div class="step-comment">${s.comment}</div>
                         <div class="step-body">${s.body}</div>
                     </div>
-                </div>
-            `).join('')}
+                </div>`).join('')}
             <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
-        </div>
-    `;
+        </div>`;
 
-    // Tips
     const tipsHtml = `
         <div class="code-block">
             <div class="cb-header"><div class="cb-dot"></div>.tips {</div>
             ${f.tips.map(t => `<div class="tip-line">${t}</div>`).join('')}
             <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
-        </div>
-    `;
+        </div>`;
 
-    // Video tutorial
     const videoHtml = `
         <div class="video-block">
-            <div class="cb-header"><div class="cb-dot"></div>.tutorial { // how to cook 📺 </div>
+            <div class="cb-header"><div class="cb-dot"></div>.tutorial { // how to cook 📺</div>
             <div class="video-wrapper">
-                <iframe
-                    src="https://www.youtube.com/embed/${f.videoId}?rel=0&modestbranding=1"
-                    title="How to cook ${f.name}"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+                <iframe src="https://www.youtube.com/embed/${f.videoId}?rel=0&modestbranding=1"
+                    title="How to cook ${f.name.en}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <div class="video-label">
-                📺 Can't see it? <a href="https://www.youtube.com/watch?v=${f.videoId}" target="_blank" rel="noopener">Watch on YouTube ↗</a>
-            </div>
-        </div>
-    `;
+            <div class="video-label">📺 <a href="https://www.youtube.com/watch?v=${f.videoId}" target="_blank" rel="noopener">Watch on YouTube ↗</a></div>
+        </div>`;
 
-    // Share buttons
-    const shareUrl = encodeURIComponent(`https://mscereal.github.io/kakaninbyte/`);
-    const shareText = encodeURIComponent(`Check out this ${f.name} recipe on KakaninByte! 🇵🇭`);
+    const shareUrl = encodeURIComponent('https://mscereal.github.io/kakaninbyte/');
+    const shareText = encodeURIComponent(`Check out this ${f.name.en} recipe on KakaninByte! 🇵🇭`);
     const shareHtml = `
         <div class="share-row">
             <span class="share-label">// ibahagi:</span>
@@ -1045,10 +812,9 @@ function openModal(id) {
             <a class="share-btn tw" href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener">🐦 Twitter</a>
             <button class="share-btn native" onclick="copyShareLink()">🔗 Copy Link</button>
             <span id="shareCopied" style="display:none;font-size:0.65rem;color:var(--green)">✓ Copied!</span>
-        </div>
-    `;
+        </div>`;
 
-    document.getElementById('modalInfo').innerHTML = infoTopHtml + ingHtml + stepsHtml + tipsHtml + videoHtml + shareHtml;
+    document.getElementById('modalInfo').innerHTML = mapHtml + ingHtml + stepsHtml + tipsHtml + videoHtml + shareHtml;
     document.getElementById('overlay').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -1057,29 +823,20 @@ function closeModalBtn() {
     document.getElementById('overlay').classList.remove('active');
     document.body.style.overflow = '';
 }
-
 function closeModal(e) {
     if (e.target === document.getElementById('overlay')) closeModalBtn();
 }
-
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModalBtn();
-});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
 
 /* ── SPARKLES ── */
 const heroEl = document.querySelector('.hero');
-const sparkleEmojis = ['✨','⭐','🌟','💫','🌸','🎋'];
-for (let i = 0; i < 10; i++) {
+['✨','⭐','🌟','💫','🌸','🎋'].forEach((em, i) => {
     const s = document.createElement('span');
     s.className = 'sparkle';
-    s.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
-    s.style.left = Math.random() * 100 + '%';
-    s.style.top  = Math.random() * 100 + '%';
-    s.style.animationDelay = (Math.random() * 3) + 's';
-    s.style.animationDuration = (2 + Math.random() * 2) + 's';
-    s.style.fontSize = (0.7 + Math.random() * 0.8) + 'rem';
+    s.textContent = em;
+    s.style.cssText = `left:${10+i*15}%;top:${20+Math.random()*60}%;animation-delay:${i*0.5}s;animation-duration:${2.5+Math.random()}s;font-size:${0.7+Math.random()*0.6}rem`;
     heroEl.appendChild(s);
-}
+});
 
 /* ── BACK TO TOP ── */
 window.addEventListener('scroll', () => {
