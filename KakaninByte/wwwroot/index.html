@@ -115,6 +115,7 @@
         @media (max-width: 640px) {
             .float-char { font-size: 0.9rem !important; opacity: 0.4; }
             .sparkle    { font-size: 0.6rem !important; opacity: 0.35; }
+            .hide-mobile { display: none; }
         }
 
         /* ── CARD HOVER BOUNCE ── */
@@ -420,31 +421,21 @@
             <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
             <button class="lang-btn" id="btnFIL" onclick="setLang('fil')">FIL</button>
         </div>
-        <a href="quiz.html" class="quiz-nav-btn" onclick="fadeToPage(event, 'quiz.html')" style="font-size:0.72rem;background:var(--purple);color:#000;border:none;padding:5px 14px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">🎮 Quiz</a>
-        <a href="memory.html" onclick="fadeToPage(event,'memory.html')" style="font-size:0.72rem;background:var(--teal);color:#000;border:none;padding:5px 14px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">🃏 Memory</a>
+        <a href="quiz.html" onclick="fadeToPage(event, 'quiz.html')" style="font-size:0.7rem;background:var(--purple);color:#000;border:none;padding:5px 10px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;white-space:nowrap">🎮 Quiz</a>
+        <a href="memory.html" onclick="fadeToPage(event,'memory.html')" style="font-size:0.7rem;background:var(--teal);color:#000;border:none;padding:5px 10px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;white-space:nowrap">🃏 Memory</a>
         <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
-        <div style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--muted)">
-            <svg width="22" height="14" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+        <span style="font-size:0.7rem;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:4px">
+            <svg width="18" height="12" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
                 <rect width="36" height="12" fill="#0038A8"/>
                 <rect y="12" width="36" height="12" fill="#CE1126"/>
                 <polygon points="0,0 18,12 0,24" fill="white"/>
                 <circle cx="7" cy="12" r="2.5" fill="#FCD116"/>
-                <g fill="#FCD116">
-                    <rect x="6.6" y="7.5" width="0.8" height="2" rx="0.4"/>
-                    <rect x="6.6" y="14.5" width="0.8" height="2" rx="0.4" transform="rotate(180 7 16)"/>
-                    <rect x="4" y="11.6" width="2" height="0.8" rx="0.4"/>
-                    <rect x="9" y="11.6" width="2" height="0.8" rx="0.4"/>
-                    <rect x="5" y="8.9" width="2" height="0.8" rx="0.4" transform="rotate(45 6 9.3)"/>
-                    <rect x="9" y="8.9" width="2" height="0.8" rx="0.4" transform="rotate(-45 10 9.3)"/>
-                    <rect x="5" y="14.3" width="2" height="0.8" rx="0.4" transform="rotate(-45 6 14.7)"/>
-                    <rect x="9" y="14.3" width="2" height="0.8" rx="0.4" transform="rotate(45 10 14.7)"/>
-                </g>
                 <text x="2.5" y="5.5" font-size="3" fill="#FCD116">★</text>
                 <text x="13" y="4" font-size="3" fill="#FCD116">★</text>
                 <text x="13" y="21" font-size="3" fill="#FCD116">★</text>
             </svg>
-            <span>🇵🇭 &nbsp;<b data-en="Meryenda Ready!" data-fil="Handa na ang Meryenda!">Meryenda Ready!</b></span>
-        </div>
+            <span class="hide-mobile"><b data-en="Meryenda Ready!" data-fil="Handa na!">Meryenda Ready!</b></span>
+        </span>
     </div>
 </nav>
 
