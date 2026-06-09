@@ -587,24 +587,6 @@
     </div>
 </div>
 
-<!-- QR CODE SECTION -->
-<div class="qr-section">
-    <div class="qr-inner">
-        <div class="qr-left">
-            <div class="qr-label-top">// scan to open</div>
-            <div id="qrcode"></div>
-            <div class="qr-label-bot">KakaninByte 🇵🇭</div>
-        </div>
-        <div class="qr-right">
-            <div class="qr-title">📱 Ibahagi ang KakaninByte</div>
-            <div class="qr-desc">I-scan ang QR code para buksan ang app sa kahit anong device. I-share sa mga kaibigan at pamilya — ipagdiwang ang ating mga kakanin!</div>
-            <div class="qr-url" id="qrUrlDisplay"></div>
-            <button class="qr-copy-btn" onclick="copyUrl()">📋 Copy Link</button>
-            <div class="qr-copied" id="qrCopied">✓ Copied!</div>
-        </div>
-    </div>
-</div>
-
 <!-- FOOTER -->
 <footer>
     <div><span class="accent">KakaninByte</span> — handcrafted with <span style="color:var(--red)">♥</span> &amp; coconut milk</div>
@@ -653,7 +635,7 @@ const foods = [
             "Muscovado sugar gives a deeper, molasses-like sweetness.",
             "Store leftovers at room temperature, covered. Reheat briefly in a pan."
         ],
-        videoId: "lLCzMv2WfBk",
+        videoId: "hY47V4husOM",
         enjoy: "Enjoy with hot salabat (ginger tea) or kapeng barako! ☕"
     },
     {
@@ -696,7 +678,7 @@ const foods = [
             "For a sweeter version, add latik (coconut caramel) on top instead of grated coconut.",
             "A Nueva Ecija classic — best enjoyed during town fiestas!"
         ],
-        videoId: "Z7TbBLmDLHE",
+        videoId: "BFQ7qI35m2A",
         enjoy: "Best eaten warm during merienda with hot tsokolate (tablea chocolate)! 🍫"
     },
     {
@@ -741,7 +723,7 @@ const foods = [
             "Ube extract deepens both the color and flavor — use sparingly.",
             "Yields about 8–10 servings. Can be served warm or chilled."
         ],
-        videoId: "cRmVxW4OQUE",
+        videoId: "71CMZuOvy3Y",
         enjoy: "Enjoy your homemade kalamay ube with coffee or tsaa (tea)! ☕🟣"
     },
     {
@@ -784,7 +766,7 @@ const foods = [
             "Con maíz (with corn) is the most popular version — the corn adds sweetness and texture.",
             "Adapted from Spanish manjar blanco, now fully claimed as ours. 🇵🇭"
         ],
-        videoId: "I39OGiSFU9Q",
+        videoId: "PDEH-USSy0o",
         enjoy: "Best served chilled at fiestas, Noche Buena, and Sunday family gatherings! 🎉"
     }
 ];
@@ -1005,30 +987,6 @@ function closeModal(e) {
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModalBtn();
 });
-</script>
-<!-- QR CODE LIBRARY -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-    // Generate QR pointing to the live GitHub Pages URL
-    const appUrl = 'https://mscereal.github.io/kakaninbyte/';
-    document.getElementById('qrUrlDisplay').textContent = appUrl;
-
-    new QRCode(document.getElementById('qrcode'), {
-        text: appUrl,
-        width: 160,
-        height: 160,
-        colorDark: '#0d1117',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-    });
-
-    function copyUrl() {
-        navigator.clipboard.writeText(appUrl).then(() => {
-            const el = document.getElementById('qrCopied');
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 2000);
-        });
-    }
 </script>
 </body>
 </html>
