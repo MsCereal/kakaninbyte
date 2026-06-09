@@ -30,12 +30,12 @@
 
         nav {
             background: var(--bg2); border-bottom: 1px solid var(--border);
-            padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 6px;
+            padding: 8px 16px; display: flex; flex-direction: column; gap: 3px;
+            position: sticky; top: 0; z-index: 100;
         }
-        .nav-logo { font-size: 1rem; font-weight: 700; color: var(--purple); }
+        .nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--purple); }
         .nav-logo span { color: var(--orange); }
-        .nav-right { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
+        .nav-right { display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; }
         .back-link {
             font-size: 0.65rem; color: var(--muted); text-decoration: none;
             border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px;
@@ -45,7 +45,7 @@
         .theme-btn {
             background: var(--bg3); border: 1px solid var(--border); color: var(--text);
             border-radius: 6px; padding: 4px 8px; font-size: 0.72rem; cursor: pointer;
-            font-family: 'Fira Code', monospace; transition: border-color 0.2s; flex-shrink: 0;
+            font-family: 'Fira Code', monospace; transition: border-color 0.2s;
         }
         .theme-btn:hover { border-color: var(--orange); }
         @media (max-width: 480px) {
@@ -161,11 +161,28 @@
 <canvas id="confetti-canvas"></canvas>
 
 <nav>
-    <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
-    <div class="nav-right">
-        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
-        <a class="back-link" href="memory.html" onclick="fadeToPage(event,'memory.html')" style="background:var(--teal);color:#000;border-color:var(--teal);font-weight:700;text-decoration:none;">🃏 Memory</a>
-        <a class="back-link" href="index.html" onclick="fadeToPage(event,'index.html')">← Recipes</a>
+    <div class="nav-logo" style="display:flex;align-items:center;justify-content:space-between;width:100%">
+        <span>Kakanin<span style="color:var(--orange)">Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></span>
+        <div class="nav-right">
+            <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+            <a class="back-link" href="memory.html" onclick="fadeToPage(event,'memory.html')" style="background:var(--teal);color:#000;border-color:var(--teal);font-weight:700;text-decoration:none;font-size:0.65rem;padding:4px 8px;">🃏 Memory</a>
+            <a class="back-link" href="index.html" onclick="fadeToPage(event,'index.html')" style="font-size:0.65rem;padding:4px 8px;">← Recipes</a>
+        </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px">
+        <span style="font-size:0.62rem;color:var(--muted);font-style:italic">// test your kakanin knowledge</span>
+        <div style="display:flex;align-items:center;gap:5px">
+            <svg width="20" height="13" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0;display:block" xmlns="http://www.w3.org/2000/svg">
+                <rect width="36" height="12" fill="#0038A8"/>
+                <rect y="12" width="36" height="12" fill="#CE1126"/>
+                <polygon points="0,0 18,12 0,24" fill="white"/>
+                <circle cx="7" cy="12" r="2.5" fill="#FCD116"/>
+                <text x="2.5" y="5.5" font-size="3" fill="#FCD116">★</text>
+                <text x="13" y="4" font-size="3" fill="#FCD116">★</text>
+                <text x="13" y="21" font-size="3" fill="#FCD116">★</text>
+            </svg>
+            <span style="font-size:0.68rem;color:var(--muted);font-weight:700">Meryenda Ready!</span>
+        </div>
     </div>
 </nav>
 

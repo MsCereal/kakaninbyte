@@ -30,20 +30,29 @@
         /* NAV */
         nav {
             background: var(--bg2); border-bottom: 1px solid var(--border);
-            padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 100; gap: 6px;
+            padding: 8px 16px; display: flex; flex-direction: column; gap: 3px;
+            position: sticky; top: 0; z-index: 100;
         }
-        .nav-logo { font-size: 1rem; font-weight: 700; color: var(--purple); }
+        .nav-row1 { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+        .nav-row2 { display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--purple); white-space: nowrap; }
         .nav-logo span { color: var(--orange); }
-        .nav-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: nowrap; }
-        .nav-btn {
-            font-size: 0.7rem; color: var(--muted); text-decoration: none;
-            border: 1px solid var(--border); padding: 4px 12px; border-radius: 6px;
-            font-family: 'Fira Code', monospace; background: none; cursor: pointer;
-            transition: color 0.2s, border-color 0.2s;
+        .nav-sub { font-size: 0.6rem; color: var(--muted); font-style: italic; }
+        .nav-right { display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; }
+        .nav-flag { display: flex; align-items: center; gap: 5px; font-size: 0.95rem; }
+        .nav-flag-text { font-size: 0.68rem; color: var(--muted); font-weight: 700; white-space: nowrap; }
+        .nbtn {
+            font-size: 0.68rem; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--bg3); color: var(--muted); cursor: pointer; text-decoration: none;
+            font-family: 'Fira Code', monospace; white-space: nowrap; transition: all 0.15s;
         }
-        .nav-btn:hover { color: var(--orange); border-color: var(--orange); }
-        .theme-btn { font-size: 0.75rem; }
+        .nbtn:hover { border-color: var(--orange); color: var(--text); }
+        .nbtn.purple { background: var(--purple); color: #000; border-color: var(--purple); font-weight: 700; }
+        .theme-btn {
+            background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+            border-radius: 6px; padding: 4px 8px; font-size: 0.75rem; cursor: pointer;
+            font-family: 'Fira Code', monospace;
+        }
 
         /* WRAP */
         .game-wrap { max-width: 860px; margin: 0 auto; padding: 30px 20px; }
@@ -87,7 +96,12 @@
         }
         .board.easy   { grid-template-columns: repeat(4, 1fr); max-width: 440px; margin-inline: auto; }
         .board.medium { grid-template-columns: repeat(4, 1fr); max-width: 560px; margin-inline: auto; }
-        .board.hard   { grid-template-columns: repeat(6, 1fr); max-width: 660px; margin-inline: auto; }
+        .board.hard   { grid-template-columns: repeat(4, 1fr); max-width: 560px; margin-inline: auto; }
+        @media (max-width: 480px) {
+            .board.easy   { grid-template-columns: repeat(3, 1fr); }
+            .board.medium { grid-template-columns: repeat(3, 1fr); }
+            .board.hard   { grid-template-columns: repeat(4, 1fr); }
+        }
 
         /* CARD */
         .card {
@@ -156,14 +170,14 @@
             background: rgba(86,211,100,0.08);
         }
         .name-card-text {
-            color: var(--purple); font-size: 0.72rem; font-weight: 700;
-            line-height: 1.3; text-align: center;
+            color: var(--purple); font-size: 0.65rem; font-weight: 700;
+            line-height: 1.2; text-align: center;
         }
         .name-card-sub {
-            color: var(--muted); font-size: 0.58rem; text-align: center;
-            line-height: 1.3;
+            color: var(--muted); font-size: 0.52rem; text-align: center;
+            line-height: 1.2;
         }
-        .name-card-emoji { font-size: 1.4rem; }
+        .name-card-emoji { font-size: 1.2rem; }
 
         /* RESULT */
         .result-screen {
@@ -273,18 +287,35 @@
 <canvas id="confetti-canvas"></canvas>
 
 <nav>
-    <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
-    <div class="nav-right">
-        <button class="nav-btn theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
-        <a class="nav-btn" href="quiz.html" onclick="fadeToPage(event,'quiz.html')">🎮 Quiz</a>
-        <a class="nav-btn" href="index.html" onclick="fadeToPage(event,'index.html')">← Recipes</a>
+    <div class="nav-row1">
+        <div class="nav-logo">Kakanin<span>Byte</span><span style="color:var(--muted);font-weight:300">{}</span></div>
+        <div class="nav-right">
+            <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+            <a class="nbtn purple" href="quiz.html" onclick="fadeToPage(event,'quiz.html')">🎮 Quiz</a>
+            <a class="nbtn" href="index.html" onclick="fadeToPage(event,'index.html')">← Recipes</a>
+        </div>
+    </div>
+    <div class="nav-row2">
+        <div class="nav-sub">// flip & match Filipino kakanin</div>
+        <div class="nav-flag">
+            <svg width="20" height="13" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0;display:block" xmlns="http://www.w3.org/2000/svg">
+                <rect width="36" height="12" fill="#0038A8"/>
+                <rect y="12" width="36" height="12" fill="#CE1126"/>
+                <polygon points="0,0 18,12 0,24" fill="white"/>
+                <circle cx="7" cy="12" r="2.5" fill="#FCD116"/>
+                <text x="2.5" y="5.5" font-size="3" fill="#FCD116">★</text>
+                <text x="13" y="4" font-size="3" fill="#FCD116">★</text>
+                <text x="13" y="21" font-size="3" fill="#FCD116">★</text>
+            </svg>
+            <span class="nav-flag-text">Meryenda Ready!</span>
+        </div>
     </div>
 </nav>
 
 <div class="game-wrap">
     <div class="game-header">
         <h1>🃏 Kakanin Memory</h1>
-        <p>Match each kakanin image to its name. Find all pairs to win!</p>
+        <p>Match each kakanin image to its name, origins and details. Find all pairs to win!</p>
     </div>
 
     <!-- CUTE FLOATING CHARS — fixed to viewport edges -->
@@ -376,17 +407,26 @@ function fadeToPage(e, url) {
 }
 
 /* ── FOOD DATA ── */
-const allFoods = [
-    { id: 'bibingka-malagkit', name: 'Bibingka Malagkit', sub: '(Glutinous Rice Cake)',   emoji: '🍚', image: 'ZIUart4MHUZUtqk4KddEY_59RFkS57.png',           zoom: 0.8, offsetY: 23,  tint: '#1a0e00' },
-    { id: 'bibingka-pinipig',  name: 'Bibingka Pinipig',  sub: '(Young Glutinous Rice)',   emoji: '🌿', image: 'bibikinag pinipig.png',                         zoom: 1.0, offsetY: 0,   tint: '#041004' },
-    { id: 'kalamay-ube',       name: 'Kalamay Ube',       sub: '(Purple Yam Sticky Cake)', emoji: '🟣', image: '278bd31e-51f9-40dc-b81f-2b84e24260c6.png',      zoom: 1.0, offsetY: -30, tint: '#0e0014' },
-    { id: 'maja-blanca',       name: 'Maja Blanca',       sub: '(Coconut Pudding)',         emoji: '🤍', image: '0927b764-6b0f-418f-8828-32a7abe0b13c.png',      zoom: 1.0, offsetY: 0,   tint: '#0f0e08' },
-    // extra cards for medium/hard — name variants
-    { id: 'bibingka-malagkit-b', name: 'Bibingka Malagkit', sub: '(Christmas Kakanin)',   emoji: '🎄', image: 'ZIUart4MHUZUtqk4KddEY_59RFkS57.png',            zoom: 0.9, offsetY: 10,  tint: '#1a0e00' },
-    { id: 'bibingka-pinipig-b',  name: 'Bibingka Pinipig',  sub: '(Provincial Treasure)', emoji: '🌾', image: 'bibikinag pinipig.png',                          zoom: 0.9, offsetY: 0,   tint: '#041004' },
-    { id: 'kalamay-ube-b',       name: 'Kalamay Ube',       sub: '(Ube Kalamay)',          emoji: '💜', image: '278bd31e-51f9-40dc-b81f-2b84e24260c6.png',      zoom: 0.9, offsetY: -10, tint: '#0e0014' },
-    { id: 'maja-blanca-b',       name: 'Maja Blanca',       sub: '(con Maíz)',             emoji: '🌽', image: '0927b764-6b0f-418f-8828-32a7abe0b13c.png',      zoom: 0.9, offsetY: 0,   tint: '#0f0e08' },
+const imageFoods = [
+    { id: 'bibingka-malagkit', name: 'Bibingka Malagkit', sub: '(Glutinous Rice Cake)',   emoji: '🍚', image: 'ZIUart4MHUZUtqk4KddEY_59RFkS57.png',      zoom: 0.8, offsetY: 23,  tint: '#1a0e00' },
+    { id: 'bibingka-pinipig',  name: 'Bibingka Pinipig',  sub: '(Young Glutinous Rice)',   emoji: '🌿', image: 'bibikinag pinipig.png',                   zoom: 1.0, offsetY: 0,   tint: '#041004' },
+    { id: 'kalamay-ube',       name: 'Kalamay Ube',       sub: '(Purple Yam Sticky Cake)', emoji: '🟣', image: '278bd31e-51f9-40dc-b81f-2b84e24260c6.png', zoom: 1.0, offsetY: -30, tint: '#0e0014' },
+    { id: 'maja-blanca',       name: 'Maja Blanca',       sub: '(Coconut Pudding)',         emoji: '🤍', image: '0927b764-6b0f-418f-8828-32a7abe0b13c.png', zoom: 1.0, offsetY: 0,   tint: '#0f0e08' },
 ];
+
+// Extra pairs for medium/hard: trivia match cards
+const triviaFoods = [
+    { id: 'trivia-1', name: 'Bibingka Malagkit', sub: 'Key Topping', emoji: '🍯',
+      factCard: true, fact: 'Latik glaze\n= caramelized\ncoconut cream', image: null, tint: '#1a0e00' },
+    { id: 'trivia-2', name: 'Bibingka Pinipig', sub: 'Made from', emoji: '🌾',
+      factCard: true, fact: 'Young green\nglutinous rice\n(pinipig)', image: null, tint: '#041004' },
+    { id: 'trivia-3', name: 'Kalamay Ube', sub: 'Purple from', emoji: '💜',
+      factCard: true, fact: 'Ube extract\n= purple yam\nfrom Luzon', image: null, tint: '#0e0014' },
+    { id: 'trivia-4', name: 'Maja Blanca', sub: 'Spanish roots', emoji: '🌽',
+      factCard: true, fact: 'Adapted from\nmanjar blanco\n+ coconut milk', image: null, tint: '#0f0e08' },
+];
+
+const allFoods = [...imageFoods, ...triviaFoods];
 
 let difficulty = 'easy';
 let pairs = 4;
@@ -436,8 +476,11 @@ function startGame() {
     document.getElementById('statPairs').textContent = `0/${pairs}`;
     document.getElementById('resultScreen').classList.remove('show');
 
-    // pick foods and create pairs (image + name)
-    const selected = allFoods.slice(0, pairs);
+    // pick foods based on difficulty — use all 8 variants for hard
+    const pool = difficulty === 'easy' ? allFoods.slice(0,4)
+               : difficulty === 'medium' ? allFoods.slice(0,6)
+               : allFoods.slice(0,8);
+    const selected = pool;
     const deck = [];
     selected.forEach((f, i) => {
         deck.push({ uid: `img-${i}`, pairId: i, type: 'image', food: f });
@@ -457,14 +500,19 @@ function startGame() {
         el.dataset.idx = idx;
 
         if (c.type === 'image') {
+            const isFactCard = c.food.factCard;
             el.innerHTML = `
                 <div class="card-inner">
                     <div class="card-back">
                         <div class="card-back-logo">🍚</div>
                         <div class="card-back-text">KAKANIN</div>
                     </div>
-                    <div class="card-front">
-                        <canvas></canvas>
+                    <div class="card-front${isFactCard ? ' name-card' : ''}">
+                        ${isFactCard
+                            ? `<div class="name-card-emoji">${c.food.emoji}</div>
+                               <div class="name-card-text" style="color:var(--yellow)">${c.food.fact}</div>
+                               <div class="name-card-sub">${c.food.sub}</div>`
+                            : `<canvas></canvas>`}
                     </div>
                 </div>`;
         } else {
@@ -485,10 +533,10 @@ function startGame() {
         el.addEventListener('click', () => flipCard(idx));
         board.appendChild(el);
 
-        // render canvas for image cards
-        if (c.type === 'image') {
+        // render canvas for image cards (not fact cards)
+        if (c.type === 'image' && !c.food.factCard) {
             const canvas = el.querySelector('canvas');
-            renderCardCanvas(canvas, c.food);
+            if (canvas) renderCardCanvas(canvas, c.food);
         }
     });
 
