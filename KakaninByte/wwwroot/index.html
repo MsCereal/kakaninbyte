@@ -197,15 +197,13 @@
             margin: 0 auto;
         }
         .section-header {
-            color: var(--orange);
-            font-size: 0.9rem;
-            font-weight: 600;
+            color: var(--muted);
+            font-size: 0.78rem;
             margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
-        .section-header::before,
         .section-header::after {
             content: '';
             flex: 1;
@@ -586,7 +584,7 @@
 <!-- FOOD GRID -->
 <div class="section">
     <div class="section-header">
-        <span class="sh-text"><span style="color:var(--orange)">export</span> const foods<span style="color:var(--muted)">[]</span></span>
+        <span class="sh-text"><span style="color:var(--orange)">export</span> <span style="color:var(--blue)">const</span> foods <span style="color:var(--muted)">{  }</span></span>
     </div>
     <div class="food-grid" id="foodGrid"></div>
 </div>
