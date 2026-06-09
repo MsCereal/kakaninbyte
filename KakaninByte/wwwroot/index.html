@@ -538,96 +538,7 @@
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
-        /* ── QR SECTION ── */
-        .qr-section {
-            border-top: 1px solid var(--border);
-            padding: 40px 32px;
-            background: var(--bg2);
-        }
-        .qr-inner {
-            max-width: 640px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-        @media (max-width: 560px) {
-            .qr-inner { flex-direction: column; gap: 24px; text-align: center; }
-        }
-        .qr-left {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .qr-label-top {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.68rem;
-            color: var(--muted);
-        }
-        .qr-label-bot {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.7rem;
-            color: var(--orange);
-            font-weight: 600;
-        }
-        #qrcode {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px solid var(--orange);
-            line-height: 0;
-        }
-        #qrcode canvas, #qrcode img { display: block; }
-        .qr-right {
-            flex: 1;
-        }
-        .qr-title {
-            font-family: 'Fira Code', monospace;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--purple);
-            margin-bottom: 10px;
-        }
-        .qr-desc {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.72rem;
-            color: var(--muted);
-            line-height: 1.7;
-            margin-bottom: 14px;
-        }
-        .qr-url {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.7rem;
-            color: var(--blue);
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-bottom: 10px;
-            word-break: break-all;
-        }
-        .qr-copy-btn {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.72rem;
-            background: var(--orange);
-            color: #000;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: opacity 0.2s;
-        }
-        .qr-copy-btn:hover { opacity: 0.85; }
-        .qr-copied {
-            display: none;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.68rem;
-            color: var(--green);
-            margin-top: 6px;
-        }
+        /* ── QR SECTION (legacy, unused) ── */
     </style>
 </head>
 <body>
@@ -743,6 +654,9 @@ const foods = [
             "Store leftovers at room temperature, covered. Reheat briefly in a pan."
         ],
         videoId: "hY47V4husOM",
+        funFact: "💡 Bibingkang Malagkit is traditionally sold outside Simbang Gabi masses during the Christmas novena — the smell of banana leaves and caramel fills the cool December air.",
+        regions: ["Luzon", "Metro Manila", "Pampanga", "Bulacan"],
+        serveWith: "Hot salabat (ginger tea), kapeng barako, or hot tsokolate. Perfect for Noche Buena and Media Noche.",
         enjoy: "Enjoy with hot salabat (ginger tea) or kapeng barako! ☕"
     },
     {
@@ -786,6 +700,9 @@ const foods = [
             "A Nueva Ecija classic — best enjoyed during town fiestas!"
         ],
         videoId: "BFQ7qI35m2A",
+        funFact: "💡 Pinipig is made from young palay (rice) harvested before full maturity — pounded flat while still green. Nueva Ecija and Bulacan are the heartland of pinipig production in the Philippines.",
+        regions: ["Nueva Ecija", "Bulacan", "Central Luzon"],
+        serveWith: "Hot tsokolate de batirol (tablea chocolate) or barako coffee. A rare merienda treat best fresh from the palengke.",
         enjoy: "Best eaten warm during merienda with hot tsokolate (tablea chocolate)! 🍫"
     },
     {
@@ -831,6 +748,9 @@ const foods = [
             "Yields about 8–10 servings. Can be served warm or chilled."
         ],
         videoId: "71CMZuOvy3Y",
+        funFact: "💡 The word 'kalamay' comes from the Sanskrit 'kala' (black) — referring to the dark color of the coconut caramel topping (latik). An old Kapampangan recipe takes 4 hours of constant stirring!",
+        regions: ["Capiz", "Bohol", "Pampanga", "Visayas", "Mindanao"],
+        serveWith: "Black coffee, barako, or warm ginger tea. The purple complements the bitterness of coffee perfectly.",
         enjoy: "Enjoy your homemade kalamay ube with coffee or tsaa (tea)! ☕🟣"
     },
     {
@@ -874,6 +794,9 @@ const foods = [
             "Adapted from Spanish manjar blanco, now fully claimed as ours. 🇵🇭"
         ],
         videoId: "PDEH-USSy0o",
+        funFact: "💡 Maja Blanca was adapted from the Spanish 'manjar blanco' during the colonial era. Filipinos swapped almonds and rice flour for coconut milk and corn — making it entirely ours. 🇵🇭",
+        regions: ["Nationwide", "Tagalog Region", "Pampanga", "Ilocos", "Pangasinan"],
+        serveWith: "Serve chilled at room temp. Pairs beautifully with hot salabat or as a palate cleanser between savory dishes at fiestas.",
         enjoy: "Best served chilled at fiestas, Noche Buena, and Sunday family gatherings! 🎉"
     }
 ];
@@ -1018,6 +941,13 @@ function openModal(id) {
     document.getElementById('modalTags').innerHTML =
         f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join('');
 
+    // Fun fact + regions + serve with — shown in left panel under tags
+    document.getElementById('modalTags').innerHTML =
+        f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join('') +
+        `<div class="fun-fact-bar"><span>💡 Did you know?</span><br>${f.funFact.replace('💡 ','')}</div>
+         <div class="region-row">${f.regions.map(r => `<span class="region-badge">📍 ${r}</span>`).join('')}</div>
+         <div class="serve-row"><strong>🍵 Serve with:</strong> ${f.serveWith}</div>`;
+
     // Ingredients
     const ingHtml = `
         <div class="code-block">
@@ -1077,7 +1007,20 @@ function openModal(id) {
         </div>
     `;
 
-    document.getElementById('modalInfo').innerHTML = ingHtml + stepsHtml + tipsHtml + videoHtml;
+    // Share buttons
+    const shareUrl = encodeURIComponent(`https://mscereal.github.io/kakaninbyte/`);
+    const shareText = encodeURIComponent(`Check out this ${f.name} recipe on KakaninByte! 🇵🇭`);
+    const shareHtml = `
+        <div class="share-row">
+            <span class="share-label">// ibahagi:</span>
+            <a class="share-btn fb" href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" target="_blank" rel="noopener">📘 Facebook</a>
+            <a class="share-btn tw" href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener">🐦 Twitter</a>
+            <button class="share-btn native" onclick="copyShareLink()">🔗 Copy Link</button>
+            <span id="shareCopied" style="display:none;font-size:0.65rem;color:var(--green)">✓ Copied!</span>
+        </div>
+    `;
+
+    document.getElementById('modalInfo').innerHTML = ingHtml + stepsHtml + tipsHtml + videoHtml + shareHtml;
     document.getElementById('overlay').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -1094,6 +1037,34 @@ function closeModal(e) {
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModalBtn();
 });
+
+/* ── SPARKLES ── */
+const heroEl = document.querySelector('.hero');
+const sparkleEmojis = ['✨','⭐','🌟','💫','🌸','🎋'];
+for (let i = 0; i < 10; i++) {
+    const s = document.createElement('span');
+    s.className = 'sparkle';
+    s.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top  = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 3) + 's';
+    s.style.animationDuration = (2 + Math.random() * 2) + 's';
+    s.style.fontSize = (0.7 + Math.random() * 0.8) + 'rem';
+    heroEl.appendChild(s);
+}
+
+/* ── BACK TO TOP ── */
+window.addEventListener('scroll', () => {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 300);
+});
+
+/* ── SHARE COPY ── */
+function copyShareLink() {
+    navigator.clipboard.writeText('https://mscereal.github.io/kakaninbyte/').then(() => {
+        const el = document.getElementById('shareCopied');
+        if (el) { el.style.display = 'inline'; setTimeout(() => el.style.display = 'none', 2000); }
+    });
+}
 </script>
 </body>
 </html>
