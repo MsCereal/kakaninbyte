@@ -1,11 +1,441 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KakaninByte — Kakanin Quiz</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;
+            --text:#e6edf3;--muted:#8b949e;--purple:#d2a8ff;--blue:#79c0ff;
+            --green:#56d364;--orange:#ffa657;--red:#ff7b72;--yellow:#e3b341;
+            --pink:#f778ba;--teal:#39d353;
+        }
+        [data-theme="light"] {
+            --bg:#ffffff;--bg2:#f6f8fa;--bg3:#eaeef2;--border:#d0d7de;
+            --text:#1f2328;--muted:#656d76;--purple:#8250df;--blue:#0969da;
+            --green:#1a7f37;--orange:#bc4c00;--red:#cf222e;--yellow:#9a6700;
+            --pink:#bf3989;--teal:#1b7c3e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Fira Code', monospace; background: var(--bg); color: var(--text); min-height: 100vh;
+            animation: fadeIn 0.35s ease; transition: background 0.3s, color 0.3s;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        .fade-out { animation: fadeOut 0.25s ease forwards; }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-8px); } }
+
+        nav {
+            background: var(--bg2); border-bottom: 1px solid var(--border);
+            padding: 14px 32px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--purple); }
+        .nav-logo span { color: var(--orange); }
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .back-link {
+            font-size: 0.72rem; color: var(--muted); text-decoration: none;
+            border: 1px solid var(--border); padding: 5px 12px; border-radius: 6px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .back-link:hover { color: var(--orange); border-color: var(--orange); }
+        .theme-btn {
+            background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+            border-radius: 6px; padding: 4px 10px; font-size: 0.75rem; cursor: pointer;
+            font-family: 'Fira Code', monospace; transition: border-color 0.2s;
+        }
+        .theme-btn:hover { border-color: var(--orange); }
+
+        .quiz-wrap { max-width: 680px; margin: 0 auto; padding: 40px 20px; }
+
+        /* START */
+        .start-screen { text-align: center; padding: 40px 20px; }
+        .start-screen h1 { font-size: 2rem; color: var(--purple); margin-bottom: 8px; }
+        .start-screen .sub { color: var(--muted); font-size: 0.82rem; margin-bottom: 28px; line-height: 1.7; }
+        .start-screen .sub span { color: var(--orange); }
+        .trophy { font-size: 4rem; margin-bottom: 16px; display: block; }
+        .start-btn {
+            background: var(--orange); color: #000; border: none;
+            padding: 14px 40px; border-radius: 8px; font-size: 1rem;
+            font-family: 'Fira Code', monospace; font-weight: 700; cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .start-btn:hover { opacity: 0.85; transform: scale(1.03); }
+
+        /* NAME INPUT */
+        .name-input-wrap { margin-bottom: 20px; }
+        .name-input-wrap label { font-size: 0.72rem; color: var(--muted); display: block; margin-bottom: 6px; }
+        .name-input {
+            width: 100%; padding: 10px 14px; background: var(--bg3);
+            border: 1px solid var(--border); border-radius: 6px;
+            color: var(--text); font-family: 'Fira Code', monospace; font-size: 0.82rem;
+            transition: border-color 0.2s;
+        }
+        .name-input:focus { outline: none; border-color: var(--purple); }
+
+        /* LEADERBOARD */
+        .leaderboard { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 24px; text-align: left; }
+        .lb-title { font-size: 0.78rem; color: var(--orange); margin-bottom: 12px; }
+        .lb-empty { font-size: 0.7rem; color: var(--muted); text-align: center; padding: 8px; }
+        .lb-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 0.72rem; border-bottom: 1px solid var(--border); }
+        .lb-row:last-child { border-bottom: none; }
+        .lb-rank { color: var(--yellow); min-width: 22px; font-weight: 700; }
+        .lb-name { color: var(--text); flex: 1; }
+        .lb-score { color: var(--green); font-weight: 700; }
+        .lb-clear { font-size: 0.62rem; color: var(--muted); background: none; border: none; cursor: pointer; float: right; }
+        .lb-clear:hover { color: var(--red); }
+
+        /* PROGRESS */
+        .progress-bar-wrap { background: var(--bg3); border-radius: 20px; height: 6px; margin-bottom: 8px; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--purple); border-radius: 20px; transition: width 0.4s; }
+        .progress-label { font-size: 0.68rem; color: var(--muted); margin-bottom: 20px; display: flex; justify-content: space-between; }
+
+        /* QUESTION */
+        .q-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+        .q-titlebar { background: var(--bg3); padding: 8px 16px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); font-size: 0.7rem; color: var(--muted); }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+        .q-body { padding: 20px 20px 16px; }
+        .q-category { font-size: 0.65rem; color: var(--blue); margin-bottom: 8px; }
+        .q-text { font-size: 0.95rem; color: var(--text); line-height: 1.6; margin-bottom: 20px; }
+
+        /* OPTIONS */
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media (max-width: 480px) { .options { grid-template-columns: 1fr; } }
+        .opt-btn {
+            background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+            padding: 12px 14px; border-radius: 8px; font-family: 'Fira Code', monospace;
+            font-size: 0.75rem; cursor: pointer; text-align: left;
+            transition: border-color 0.15s, background 0.15s; line-height: 1.4;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--purple); background: var(--bg2); }
+        .opt-btn.correct { border-color: var(--green); background: rgba(86,211,100,0.12); color: var(--green); }
+        .opt-btn.wrong   { border-color: var(--red);   background: rgba(255,123,114,0.12); color: var(--red); }
+        .opt-btn:disabled { cursor: default; }
+
+        .feedback { margin-top: 14px; padding: 12px 14px; border-radius: 8px; font-size: 0.75rem; line-height: 1.6; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: rgba(86,211,100,0.1); border: 1px solid var(--green); color: var(--green); }
+        .feedback.wrong   { background: rgba(255,123,114,0.1); border: 1px solid var(--red);  color: var(--red); }
+
+        .next-btn {
+            display: none; margin-top: 14px; width: 100%;
+            background: var(--purple); color: #000; border: none; padding: 12px;
+            border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 0.82rem;
+            font-weight: 700; cursor: pointer; transition: opacity 0.2s;
+        }
+        .next-btn:hover { opacity: 0.85; }
+        .next-btn.show { display: block; }
+
+        /* SCORE */
+        .score-screen { text-align: center; padding: 40px 20px; display: none; }
+        .score-screen.show { display: block; }
+        .score-big { font-size: 3rem; font-weight: 700; color: var(--purple); margin: 16px 0; }
+        .score-label { color: var(--muted); font-size: 0.82rem; margin-bottom: 24px; }
+        .score-result-badge { display: inline-block; padding: 10px 24px; border-radius: 20px; font-size: 1rem; font-weight: 700; margin-bottom: 24px; border: 2px solid; }
+        .score-breakdown { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 24px; text-align: left; }
+        .sb-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 0.72rem; border-bottom: 1px solid var(--border); }
+        .sb-row:last-child { border-bottom: none; }
+        .sb-q { color: var(--muted); flex: 1; }
+        .sb-correct { color: var(--green); } .sb-wrong { color: var(--red); }
+        .replay-btn { background: var(--orange); color: #000; border: none; padding: 12px 32px; border-radius: 8px; font-size: 0.9rem; font-family: 'Fira Code', monospace; font-weight: 700; cursor: pointer; transition: opacity 0.2s; margin-right: 10px; }
+        .replay-btn:hover { opacity: 0.85; }
+        .home-btn { background: var(--bg3); color: var(--text); border: 1px solid var(--border); padding: 12px 32px; border-radius: 8px; font-size: 0.9rem; font-family: 'Fira Code', monospace; cursor: pointer; text-decoration: none; display: inline-block; transition: border-color 0.2s; }
+        .home-btn:hover { border-color: var(--purple); }
+
+        /* CONFETTI CANVAS */
+        #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; display: none; }
+
+        @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+        .pop { animation: pop 0.35s ease forwards; }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<nav>
+    <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
+    <div class="nav-right">
+        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+        <a class="back-link" href="index.html" onclick="fadeToPage(event,'index.html')">← Back to Recipes</a>
+    </div>
+</nav>
+
+<div class="quiz-wrap">
+    <!-- START -->
+    <div class="start-screen" id="startScreen">
+        <span class="trophy">🏆</span>
+        <h1>Kakanin Quiz</h1>
+        <p class="sub">
+            Test your knowledge of <span>traditional Filipino kakanin</span>!<br>
+            10 questions · Multiple choice · Scored<br>
+            <span>Kaya mo 'yan! 🇵🇭</span>
+        </p>
+        <div class="name-input-wrap">
+            <label>// Enter your name for the leaderboard:</label>
+            <input class="name-input" id="playerName" type="text" placeholder="e.g. Juan dela Cruz" maxlength="24">
+        </div>
+
+        <!-- LEADERBOARD -->
+        <div class="leaderboard" id="leaderboardBox">
+            <div class="lb-title">🏅 Top Scores <button class="lb-clear" onclick="clearLeaderboard()">Clear</button></div>
+            <div id="leaderboardList"></div>
+        </div>
+
+        <button class="start-btn" onclick="startQuiz()">▶ Simulan ang Quiz</button>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quizScreen" style="display:none">
+        <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="progress-label">
+            <span id="progressLabel">Question 1 of 10</span>
+            <span id="scoreLabel">Score: 0</span>
+        </div>
+        <div class="q-card">
+            <div class="q-titlebar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span id="qFilename">.question_01</span>
+            </div>
+            <div class="q-body">
+                <div class="q-category" id="qCategory">// General</div>
+                <div class="q-text" id="qText"></div>
+                <div class="options" id="options"></div>
+                <div class="feedback" id="feedback"></div>
+                <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCORE -->
+    <div class="score-screen" id="scoreScreen">
+        <div id="scoreTrophy" style="font-size:4rem;margin-bottom:12px">🏆</div>
+        <div style="color:var(--muted);font-size:0.82rem">// Quiz completed!</div>
+        <div class="score-big" id="scoreBig"></div>
+        <div class="score-label" id="scoreLabel2"></div>
+        <div class="score-result-badge" id="scoreResultBadge"></div>
+        <div class="score-breakdown" id="scoreBreakdown"></div>
+        <button class="replay-btn" onclick="startQuiz()">🔁 Ulit!</button>
+        <a class="home-btn" href="index.html" onclick="fadeToPage(event,'index.html')">🏠 Back to Recipes</a>
+    </div>
+</div>
+
+<script>
+/* ── THEME ── */
+function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('kb-theme', isDark ? 'light' : 'dark');
+}
+(function() {
+    const saved = localStorage.getItem('kb-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+    const btn = document.getElementById('themeBtn');
+    if (btn) btn.textContent = saved === 'dark' ? '🌙' : '☀️';
+})();
+
+/* ── FADE TRANSITION ── */
+function fadeToPage(e, url) {
+    e.preventDefault();
+    document.body.classList.add('fade-out');
+    setTimeout(() => { window.location.href = url; }, 260);
+}
+
+/* ── LEADERBOARD ── */
+function getLeaderboard() {
+    return JSON.parse(localStorage.getItem('kb-leaderboard') || '[]');
+}
+function saveToLeaderboard(name, score, total) {
+    const lb = getLeaderboard();
+    lb.push({ name: name || 'Anonymous', score, total, pct: Math.round(score/total*100) });
+    lb.sort((a,b) => b.score - a.score || b.pct - a.pct);
+    lb.splice(5); // keep top 5
+    localStorage.setItem('kb-leaderboard', JSON.stringify(lb));
+}
+function renderLeaderboard() {
+    const lb = getLeaderboard();
+    const el = document.getElementById('leaderboardList');
+    if (!lb.length) { el.innerHTML = '<div class="lb-empty">No scores yet. Be the first! 🌟</div>'; return; }
+    const medals = ['🥇','🥈','🥉','4️⃣','5️⃣'];
+    el.innerHTML = lb.map((e,i) => `
+        <div class="lb-row">
+            <span class="lb-rank">${medals[i] || i+1}</span>
+            <span class="lb-name">${e.name}</span>
+            <span class="lb-score">${e.score}/${e.total} (${e.pct}%)</span>
+        </div>`).join('');
+}
+function clearLeaderboard() {
+    if (confirm('Clear all scores?')) { localStorage.removeItem('kb-leaderboard'); renderLeaderboard(); }
+}
+renderLeaderboard();
+
+/* ── CONFETTI ── */
+function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    canvas.style.display = 'block';
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+    const pieces = Array.from({length: 120}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: 8 + Math.random() * 8, h: 6 + Math.random() * 6,
+        color: ['#ffa657','#d2a8ff','#56d364','#79c0ff','#f778ba','#e3b341'][Math.floor(Math.random()*6)],
+        vy: 2 + Math.random() * 4, vx: (Math.random()-0.5)*3,
+        rot: Math.random()*360, rotV: (Math.random()-0.5)*6
+    }));
+    let frame = 0;
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+            ctx.save(); ctx.translate(p.x + p.w/2, p.y + p.h/2);
+            ctx.rotate(p.rot * Math.PI/180); ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+            p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
+        });
+        frame++;
+        if (frame < 180) requestAnimationFrame(draw);
+        else { ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display='none'; }
+    }
+    draw();
+}
+
+/* ── QUESTIONS ── */
+const allQuestions = [
+    { category:"// Origins & History", text:"Bibingkang Malagkit is traditionally sold outside which religious event during Christmas?", options:["Sinulog Festival","Simbang Gabi masses","Fiesta ng Barangay","Undas"], answer:1, explanation:"Bibingkang Malagkit is a staple outside Simbang Gabi — the 9-day Christmas dawn mass novena. The smell of banana leaves and caramel is iconic during cool December mornings." },
+    { category:"// Ingredients", text:"What makes Bibingka Malagkit different from regular Bibingka?", options:["It uses regular rice flour","It is baked in clay pots","It uses glutinous (sticky) rice flour","It has cheese on top"], answer:2, explanation:"Bibingka Malagkit uses glutinous rice flour (galapong malagkit), making it denser and chewier than regular bibingka which uses ordinary rice flour." },
+    { category:"// Pinipig", text:"What is 'pinipig' made from?", options:["Dried corn kernels","Young green glutinous rice, roasted and flattened","Ground cassava","Toasted coconut flakes"], answer:1, explanation:"Pinipig is made from young palay (glutinous rice) harvested while still green, then roasted and pounded flat. It has a unique toasted-rice aroma." },
+    { category:"// Geography", text:"Which province is known as the heartland of pinipig production?", options:["Cebu","Batangas","Nueva Ecija and Bulacan","Davao"], answer:2, explanation:"Nueva Ecija and Bulacan in Central Luzon are the traditional heartland of pinipig production, where young glutinous rice has been processed for generations." },
+    { category:"// Kalamay Ube", text:"What does the word 'kalamay' trace its roots to?", options:["Tagalog word for sticky","Sanskrit word 'kala' meaning black","Spanish word for caramel","Visayan word for sweet"], answer:1, explanation:"'Kalamay' is believed to come from the Sanskrit 'kala' (black), referring to the dark color of the coconut caramel (latik) topping." },
+    { category:"// Cooking Technique", text:"What is 'latik' in Filipino kakanin?", options:["A type of banana leaf","Toasted coconut curds from simmered coconut cream","Brown sugar syrup","Ube extract"], answer:1, explanation:"Latik is made by simmering coconut cream until the oil separates and golden-brown curds form. It's the classic topping for kakanin including Kalamay Ube and Maja Blanca." },
+    { category:"// Maja Blanca", text:"Maja Blanca was adapted from which colonial-era dessert?", options:["Portuguese arroz con leche","Spanish manjar blanco (blancmange)","American pudding","Chinese nian gao"], answer:1, explanation:"Maja Blanca was adapted from the Spanish 'manjar blanco' during the colonial era. Filipinos swapped almonds and rice flour for local coconut milk and corn." },
+    { category:"// Maja Blanca", text:"What is the most popular version of Maja Blanca called?", options:["Maja Ube","Maja Pandan","Maja Blanca con Maíz","Maja Langka"], answer:2, explanation:"Maja Blanca con Maíz (with corn) is the most popular version. Sweet corn kernels add texture and sweetness to the silky coconut pudding." },
+    { category:"// General Knowledge", text:"Which is NOT a traditional topping for Filipino kakanin?", options:["Latik (coconut curds)","Grated coconut (niyog)","Ketchup","Brown sugar glaze"], answer:2, explanation:"Ketchup is definitely not a kakanin topping! Traditional garnishes include latik, grated coconut, muscovado sugar glaze, and coconut cream." },
+    { category:"// Filipino Culture", text:"'Kakanin' comes from the root word 'kanin' which means what in Filipino?", options:["Sweet","Cook","Rice / cooked rice","Coconut"], answer:2, explanation:"'Kanin' means cooked rice in Filipino — 'kakanin' refers to rice-based native delicacies, reflecting how central rice is to Filipino culture." },
+    { category:"// Difficulty", text:"Which kakanin is known to require hours of constant stirring?", options:["Maja Blanca","Bibingka Pinipig","Kalamay Ube","Bibingkang Malagkit"], answer:2, explanation:"An old Kapampangan recipe for Kalamay Ube reportedly takes 4 hours of constant stirring! The slow cooking develops its thick, sticky texture." },
+    { category:"// Ingredients", text:"What gives Kalamay Ube its distinctive purple color?", options:["Food coloring","Pandan extract","Ube (purple yam)","Blueberry flavoring"], answer:2, explanation:"Ube (purple yam) is the star ingredient giving Kalamay Ube its beautiful deep purple color. Ube extract can intensify the color and flavor." }
+];
+
+let questions=[], current=0, score=0, answered=false, results=[];
+
+function shuffle(arr) { return [...arr].sort(()=>Math.random()-0.5); }
+
+function startQuiz() {
+    questions = shuffle(allQuestions).slice(0,10);
+    current=0; score=0; answered=false; results=[];
+    document.getElementById('startScreen').style.display='none';
+    document.getElementById('scoreScreen').classList.remove('show');
+    document.getElementById('quizScreen').style.display='block';
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const q = questions[current]; answered=false;
+    document.getElementById('progressBar').style.width = (current/questions.length*100)+'%';
+    document.getElementById('progressLabel').textContent = `Question ${current+1} of ${questions.length}`;
+    document.getElementById('scoreLabel').textContent = `Score: ${score}`;
+    document.getElementById('qFilename').textContent = `.question_${String(current+1).padStart(2,'0')}`;
+    document.getElementById('qCategory').textContent = q.category;
+    document.getElementById('qText').textContent = q.text;
+
+    const optOrder = shuffle([0,1,2,3]);
+    const optionsEl = document.getElementById('options');
+    optionsEl.innerHTML='';
+    optOrder.forEach(i => {
+        const btn = document.createElement('button');
+        btn.className='opt-btn'; btn.textContent=q.options[i]; btn.dataset.idx=i;
+        btn.onclick=()=>selectAnswer(i,btn);
+        optionsEl.appendChild(btn);
+    });
+    const fb=document.getElementById('feedback');
+    fb.className='feedback'; fb.textContent='';
+    document.getElementById('nextBtn').classList.remove('show');
+}
+
+function selectAnswer(idx, btn) {
+    if(answered) return; answered=true;
+    const q=questions[current]; const isCorrect=idx===q.answer;
+    if(isCorrect) score++;
+    results.push({q:q.text,correct:isCorrect,rightAnswer:q.options[q.answer]});
+    document.querySelectorAll('.opt-btn').forEach(b=>{
+        b.disabled=true;
+        const i=parseInt(b.dataset.idx);
+        if(i===q.answer) b.classList.add('correct');
+        else if(i===idx&&!isCorrect) b.classList.add('wrong');
+    });
+    const fb=document.getElementById('feedback');
+    fb.className='feedback show '+(isCorrect?'correct':'wrong');
+    fb.innerHTML=(isCorrect?'✓ Tama! ':'✗ Mali. ')+q.explanation;
+    fb.classList.add('pop');
+    const nextBtn=document.getElementById('nextBtn');
+    nextBtn.textContent=current+1<questions.length?'Next Question →':'See Results 🏆';
+    nextBtn.classList.add('show');
+    document.getElementById('scoreLabel').textContent=`Score: ${score}`;
+}
+
+function nextQuestion() {
+    current++;
+    if(current>=questions.length) showResults();
+    else loadQuestion();
+}
+
+function showResults() {
+    document.getElementById('quizScreen').style.display='none';
+    const ss=document.getElementById('scoreScreen'); ss.classList.add('show');
+    const pct=Math.round(score/questions.length*100);
+
+    // Save to leaderboard
+    const name = document.getElementById('playerName')?.value.trim() || 'Anonymous';
+    saveToLeaderboard(name, score, questions.length);
+
+    document.getElementById('scoreBig').textContent=`${score} / ${questions.length}`;
+    document.getElementById('scoreLabel2').textContent=`You got ${score} out of ${questions.length} correct (${pct}%)`;
+
+    let trophy,badge,badgeStyle;
+    if(pct===100)    {trophy='🏆';badge='Kakanin Master! 🌟';badgeStyle='color:var(--yellow);border-color:var(--yellow)'; launchConfetti();}
+    else if(pct>=80) {trophy='🥇';badge='Tunay na Pilipino! 🇵🇭';badgeStyle='color:var(--orange);border-color:var(--orange)';}
+    else if(pct>=60) {trophy='🥈';badge='Mahusay! Keep it up 💪';badgeStyle='color:var(--blue);border-color:var(--blue)';}
+    else if(pct>=40) {trophy='🥉';badge='Pag-aralan pa! 📚';badgeStyle='color:var(--muted);border-color:var(--muted)';}
+    else             {trophy='😅';badge='Subukan ulit! 🔁';badgeStyle='color:var(--red);border-color:var(--red)';}
+
+    document.getElementById('scoreTrophy').textContent=trophy;
+    const badgeEl=document.getElementById('scoreResultBadge');
+    badgeEl.textContent=badge; badgeEl.style.cssText=badgeStyle;
+
+    document.getElementById('scoreBreakdown').innerHTML=results.map((r,i)=>`
+        <div class="sb-row">
+            <span style="font-size:1rem">${r.correct?'✅':'❌'}</span>
+            <span class="sb-q">Q${i+1}: ${r.q.length>55?r.q.slice(0,55)+'…':r.q}</span>
+            ${r.correct?`<span class="sb-correct">Correct</span>`:`<span class="sb-wrong">→ ${r.rightAnswer}</span>`}
+        </div>`).join('');
+
+    // Update leaderboard display on start screen too
+    renderLeaderboard();
+}
+</script>
+
+<!-- FOOTER -->
+<footer style="border-top:1px solid var(--border);background:var(--bg2);padding:20px 32px;text-align:center;color:var(--muted);font-size:0.72rem;margin-top:40px">
+    <div style="color:var(--purple);font-weight:700;margin-bottom:4px">KakaninByte</div>
+    <div>Made with <span style="color:var(--red)">♥</span> by <span style="color:var(--orange)">AMDD</span></div>
+    <div style="margin-top:4px;font-size:0.65rem">
+        // Dedicated with all the <span style="color:var(--pink)">puso</span> to 
+        <span style="color:var(--purple)">cdepurificacion</span> 🌸 — 
+        <span style="color:var(--muted);font-style:italic">the one who built this from scratch, one commit at a time. Mabuhay! 🇵🇭</span>
+    </div>
+</footer>
+
+</body>
+</html>
+</script>
+</body>
+</html>
+
     <style>
         :root {
             --bg:     #0d1117; --bg2: #161b22; --bg3: #21262d;
@@ -152,25 +582,6 @@
         .pop { animation: pop 0.35s ease forwards; }
     </style>
 </head>
-<body>
-
-<nav>
-    <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
-    <a class="back-link" href="index.html">← Back to Recipes</a>
-</nav>
-
-<div class="quiz-wrap">
-    <!-- START SCREEN -->
-    <div class="start-screen" id="startScreen">
-        <span class="trophy">🏆</span>
-        <h1>Kakanin Quiz</h1>
-        <p class="sub">
-            Test your knowledge of <span>traditional Filipino kakanin</span>!<br>
-            10 questions · Multiple choice · Scored<br>
-            <span>Kaya mo 'yan! 🇵🇭</span>
-        </p>
-        <button class="start-btn" onclick="startQuiz()">▶ Simulan ang Quiz</button>
-    </div>
 
     <!-- QUIZ SCREEN -->
     <div id="quizScreen" style="display:none">

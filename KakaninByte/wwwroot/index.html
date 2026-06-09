@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        /* ── DARK THEME (default) ── */
         :root {
             --bg:       #0d1117;
             --bg2:      #161b22;
@@ -26,8 +27,47 @@
             --dot-yel:  #febc2e;
             --dot-grn:  #28c840;
         }
+        /* ── LIGHT THEME ── */
+        [data-theme="light"] {
+            --bg:       #ffffff;
+            --bg2:      #f6f8fa;
+            --bg3:      #eaeef2;
+            --border:   #d0d7de;
+            --text:     #1f2328;
+            --muted:    #656d76;
+            --purple:   #8250df;
+            --blue:     #0969da;
+            --green:    #1a7f37;
+            --orange:   #bc4c00;
+            --red:      #cf222e;
+            --yellow:   #9a6700;
+            --pink:     #bf3989;
+            --teal:     #1b7c3e;
+            --dot-red:  #ff5f57;
+            --dot-yel:  #febc2e;
+            --dot-grn:  #28c840;
+        }
+
+        /* ── PAGE TRANSITION ── */
+        body {
+            font-family: 'Fira Code', monospace;
+            background: var(--bg); color: var(--text); min-height: 100vh;
+            animation: fadeIn 0.35s ease;
+            transition: background 0.3s, color 0.3s;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-out { animation: fadeOut 0.25s ease forwards; }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-8px); } }
+
+        /* ── THEME TOGGLE BTN ── */
+        .theme-btn {
+            background: var(--bg3); border: 1px solid var(--border);
+            color: var(--text); border-radius: 6px; padding: 4px 10px;
+            font-size: 0.75rem; cursor: pointer; font-family: 'Fira Code', monospace;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .theme-btn:hover { border-color: var(--orange); }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Fira Code', monospace; background: var(--bg); color: var(--text); min-height: 100vh; }
 
         /* ── NAV ── */
         nav {
@@ -334,7 +374,8 @@
             <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
             <button class="lang-btn" id="btnFIL" onclick="setLang('fil')">FIL</button>
         </div>
-        <a href="quiz.html" style="font-size:0.72rem;background:var(--purple);color:#000;border:none;padding:5px 14px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">🎮 Quiz</a>
+        <a href="quiz.html" class="quiz-nav-btn" onclick="fadeToPage(event, 'quiz.html')" style="font-size:0.72rem;background:var(--purple);color:#000;border:none;padding:5px 14px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity=0.85" onmouseout="this.style.opacity=1">🎮 Quiz</a>
+        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
         <div style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--muted)">
             <svg width="22" height="14" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
                 <rect width="36" height="12" fill="#0038A8"/>
@@ -415,7 +456,12 @@
 <!-- FOOTER -->
 <footer>
     <div><span class="accent">KakaninByte</span> — handcrafted with <span style="color:var(--red)">♥</span> &amp; coconut milk</div>
-    <div style="margin-top:6px">// Mabuhay ang mga kakanin ng ating lupain 🌴</div>
+    <div style="margin-top:4px">Made by <span style="color:var(--orange)">AMDD</span> &nbsp;·&nbsp; // Mabuhay ang mga kakanin ng ating lupain 🌴</div>
+    <div style="margin-top:6px;font-size:0.65rem;color:var(--muted)">
+        // Dedicated with all the <span style="color:var(--pink)">puso</span> to 
+        <span style="color:var(--purple)">cdepurificacion</span> 🌸 — 
+        <span style="font-style:italic">the one who built this from scratch, one commit at a time. Mabuhay! 🇵🇭</span>
+    </div>
 </footer>
 
 <script>
@@ -841,6 +887,28 @@ const heroEl = document.querySelector('.hero');
     s.style.cssText = `left:${10+i*15}%;top:${20+Math.random()*60}%;animation-delay:${i*0.5}s;animation-duration:${2.5+Math.random()}s;font-size:${0.7+Math.random()*0.6}rem`;
     heroEl.appendChild(s);
 });
+
+/* ── THEME TOGGLE ── */
+function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('kb-theme', isDark ? 'light' : 'dark');
+}
+(function() {
+    const saved = localStorage.getItem('kb-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+    const btn = document.getElementById('themeBtn');
+    if (btn) btn.textContent = saved === 'dark' ? '🌙' : '☀️';
+})();
+
+/* ── PAGE FADE TRANSITION ── */
+function fadeToPage(e, url) {
+    e.preventDefault();
+    document.body.classList.add('fade-out');
+    setTimeout(() => { window.location.href = url; }, 260);
+}
 
 /* ── BACK TO TOP ── */
 window.addEventListener('scroll', () => {
