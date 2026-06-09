@@ -80,20 +80,23 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            flex-wrap: wrap;
             gap: 6px;
         }
+        .nav-left { display: flex; flex-direction: column; gap: 1px; }
         .nav-logo { font-size: 1rem; font-weight: 700; color: var(--purple); letter-spacing: 1px; }
         .nav-logo span { color: var(--orange); }
-        .nav-tagline { font-size: 0.65rem; color: var(--muted); font-style: italic; }
+        .nav-tagline { font-size: 0.6rem; color: var(--muted); font-style: italic; }
         .nav-right {
-            display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;
+            display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; flex-shrink: 0;
         }
-        /* hide tagline on small screens */
-        @media (max-width: 480px) {
-            .nav-tagline { display: none; }
-            .nav-right { gap: 4px; }
-            nav { padding: 8px 12px; }
+        .nav-flag {
+            display: flex; align-items: center; gap: 3px;
+            font-size: 0.65rem; color: var(--muted); white-space: nowrap;
+        }
+        .nav-flag-text { display: inline; }
+        @media (max-width: 500px) {
+            .nav-flag-text { display: none; }
+            .nav-tagline { font-size: 0.55rem; }
         }
 
         /* ── FLOATING KAKANIN CHARACTERS ── */
@@ -412,7 +415,7 @@
 
 <!-- NAV -->
 <nav>
-    <div>
+    <div class="nav-left">
         <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
         <div class="nav-tagline">// a love letter to Filipino kakanin</div>
     </div>
@@ -421,11 +424,11 @@
             <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
             <button class="lang-btn" id="btnFIL" onclick="setLang('fil')">FIL</button>
         </div>
-        <a href="quiz.html" onclick="fadeToPage(event, 'quiz.html')" style="font-size:0.7rem;background:var(--purple);color:#000;border:none;padding:5px 10px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;white-space:nowrap">🎮 Quiz</a>
-        <a href="memory.html" onclick="fadeToPage(event,'memory.html')" style="font-size:0.7rem;background:var(--teal);color:#000;border:none;padding:5px 10px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;white-space:nowrap">🃏 Memory</a>
+        <a href="quiz.html" onclick="fadeToPage(event, 'quiz.html')" style="font-size:0.7rem;background:var(--purple);color:#000;border:none;padding:5px 8px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;white-space:nowrap">🎮 Quiz</a>
+        <a href="memory.html" onclick="fadeToPage(event,'memory.html')" style="font-size:0.7rem;background:var(--teal);color:#000;border:none;padding:5px 8px;border-radius:6px;font-family:'Fira Code',monospace;font-weight:700;text-decoration:none;white-space:nowrap">🃏 Memory</a>
         <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
-        <span style="font-size:0.7rem;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:4px">
-            <svg width="18" height="12" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+        <div class="nav-flag">
+            <svg width="16" height="11" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
                 <rect width="36" height="12" fill="#0038A8"/>
                 <rect y="12" width="36" height="12" fill="#CE1126"/>
                 <polygon points="0,0 18,12 0,24" fill="white"/>
@@ -434,8 +437,8 @@
                 <text x="13" y="4" font-size="3" fill="#FCD116">★</text>
                 <text x="13" y="21" font-size="3" fill="#FCD116">★</text>
             </svg>
-            <span class="hide-mobile"><b data-en="Meryenda Ready!" data-fil="Handa na!">Meryenda Ready!</b></span>
-        </span>
+            <span class="nav-flag-text"><b data-en="Meryenda Ready!" data-fil="Handa na!">Meryenda Ready!</b></span>
+        </div>
     </div>
 </nav>
 

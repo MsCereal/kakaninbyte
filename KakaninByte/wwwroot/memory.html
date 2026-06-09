@@ -31,11 +31,11 @@
         nav {
             background: var(--bg2); border-bottom: 1px solid var(--border);
             padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 6px;
+            position: sticky; top: 0; z-index: 100; gap: 6px;
         }
         .nav-logo { font-size: 1rem; font-weight: 700; color: var(--purple); }
         .nav-logo span { color: var(--orange); }
-        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .nav-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: nowrap; }
         .nav-btn {
             font-size: 0.7rem; color: var(--muted); text-decoration: none;
             border: 1px solid var(--border); padding: 4px 12px; border-radius: 6px;
@@ -67,11 +67,15 @@
             display: flex; justify-content: center; gap: 8px; margin-bottom: 20px;
         }
         .diff-btn {
-            padding: 5px 16px; border-radius: 6px; border: 1px solid var(--border);
+            padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border);
             background: var(--bg3); color: var(--muted); font-family: 'Fira Code', monospace;
             font-size: 0.7rem; cursor: pointer; transition: all 0.15s;
+            display: flex; flex-direction: column; align-items: center; gap: 1px; min-width: 70px;
         }
-        .diff-btn.active { background: var(--purple); color: #000; border-color: var(--purple); font-weight: 700; }
+        .diff-btn .diff-name { font-weight: 700; font-size: 0.72rem; }
+        .diff-btn .diff-count { font-size: 0.6rem; opacity: 0.7; }
+        .diff-btn.active { background: var(--purple); color: #000; border-color: var(--purple); }
+        .diff-btn.active .diff-count { opacity: 0.8; }
         .diff-btn:hover:not(.active) { border-color: var(--purple); color: var(--purple); }
 
         /* GRID */
@@ -325,9 +329,9 @@
 
     <!-- DIFFICULTY -->
     <div class="diff-row">
-        <button class="diff-btn active" id="d-easy"   onclick="setDiff('easy')">Easy (4 pairs)</button>
-        <button class="diff-btn"        id="d-medium" onclick="setDiff('medium')">Medium (6 pairs)</button>
-        <button class="diff-btn"        id="d-hard"   onclick="setDiff('hard')">Hard (8 pairs)</button>
+        <button class="diff-btn active" id="d-easy"   onclick="setDiff('easy')"><span class="diff-name">Easy</span><span class="diff-count">(4 pairs)</span></button>
+        <button class="diff-btn"        id="d-medium" onclick="setDiff('medium')"><span class="diff-name">Medium</span><span class="diff-count">(6 pairs)</span></button>
+        <button class="diff-btn"        id="d-hard"   onclick="setDiff('hard')"><span class="diff-name">Hard</span><span class="diff-count">(8 pairs)</span></button>
     </div>
 
     <!-- BOARD -->
