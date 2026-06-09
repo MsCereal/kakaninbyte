@@ -197,13 +197,13 @@
             margin: 0 auto;
         }
         .section-header {
-            color: var(--muted);
-            font-size: 0.78rem;
-            margin-bottom: 20px;
+            color: var(--orange);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 12px;
             text-align: center;
         }
         .section-header::before,
@@ -212,6 +212,10 @@
             flex: 1;
             height: 1px;
             background: var(--border);
+        }
+        .sh-text {
+            white-space: nowrap;
+            color: var(--orange);
         }
 
         .food-grid {
@@ -563,7 +567,7 @@
         <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
         <div class="nav-tagline">// a love letter to Filipino kakanin</div>
     </div>
-    <div style="color:var(--muted);font-size:0.72rem">🇵🇭 &nbsp;Meryenda ready</div>
+    <div style="color:var(--muted);font-size:0.72rem">🇵🇭 &nbsp;Meryenda Ready!</div>
 </nav>
 
 <!-- HERO -->
@@ -582,7 +586,7 @@
 <!-- FOOD GRID -->
 <div class="section">
     <div class="section-header">
-        <span class="sh-text"><span style="color:var(--orange)">export</span> const foods<span style="color:var(--muted)">[]</span></span>
+        <span class="sh-text">🍃 Aming mga Kakanin 🍃</span>
     </div>
     <div class="food-grid" id="foodGrid"></div>
 </div>
@@ -725,7 +729,7 @@ const foods = [
         offsetY: -30,
         removeBg: false,
         name: "Kalamay Ube",
-        alt: "(Ube Kalamay)",
+        alt: "(Purple Yam Sticky Rice Cake)",
         blurb: "Purple, sticky, and deeply satisfying. Ube's earthy sweetness meets the richness of coconut milk in this slow-stirred labor of love — worth every minute.",
         tags: [
             { label: "ube",    cls: "tag-sweet"  },
