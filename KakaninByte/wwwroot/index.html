@@ -202,8 +202,11 @@
             margin-bottom: 20px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            text-align: center;
         }
+        .section-header::before,
         .section-header::after {
             content: '';
             flex: 1;
@@ -286,7 +289,7 @@
         }
         .card-body {
             padding: 14px;
-            text-align: center;
+            text-align: left;
         }
         .card-keyword { color: var(--orange); font-size: 0.7rem; }
         .card-name {
@@ -419,7 +422,7 @@
             margin-top: 8px;
             line-height: 1.6;
         }
-        .tag-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+        .tag-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; }
 
         .modal-info-panel {
             padding: 0;
