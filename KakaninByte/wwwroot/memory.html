@@ -30,8 +30,8 @@
         /* NAV */
         nav {
             background: var(--bg2); border-bottom: 1px solid var(--border);
-            padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 100;
+            padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 6px;
         }
         .nav-logo { font-size: 1rem; font-weight: 700; color: var(--purple); }
         .nav-logo span { color: var(--orange); }
@@ -223,7 +223,13 @@
         /* CONFETTI */
         #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; display: none; }
 
-        @keyframes shake {
+        /* smaller floats on mobile */
+        @media (max-width: 640px) {
+            .cute-float { font-size: 0.9rem !important; opacity: 0.4; }
+            .game-wrap { padding: 16px 12px; }
+            .board.easy   { max-width: 100%; }
+            .board.medium { max-width: 100%; }
+        }
             0%,100% { transform: translateX(0); }
             25% { transform: translateX(-4px); }
             75% { transform: translateX(4px); }

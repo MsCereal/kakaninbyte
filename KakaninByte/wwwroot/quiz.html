@@ -30,24 +30,28 @@
 
         nav {
             background: var(--bg2); border-bottom: 1px solid var(--border);
-            padding: 14px 32px; display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 6px;
         }
-        .nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--purple); }
+        .nav-logo { font-size: 1rem; font-weight: 700; color: var(--purple); }
         .nav-logo span { color: var(--orange); }
-        .nav-right { display: flex; align-items: center; gap: 10px; }
+        .nav-right { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
         .back-link {
-            font-size: 0.72rem; color: var(--muted); text-decoration: none;
-            border: 1px solid var(--border); padding: 5px 12px; border-radius: 6px;
-            transition: color 0.2s, border-color 0.2s;
+            font-size: 0.65rem; color: var(--muted); text-decoration: none;
+            border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px;
+            transition: color 0.2s, border-color 0.2s; white-space: nowrap;
         }
         .back-link:hover { color: var(--orange); border-color: var(--orange); }
         .theme-btn {
             background: var(--bg3); border: 1px solid var(--border); color: var(--text);
-            border-radius: 6px; padding: 4px 10px; font-size: 0.75rem; cursor: pointer;
-            font-family: 'Fira Code', monospace; transition: border-color 0.2s;
+            border-radius: 6px; padding: 4px 8px; font-size: 0.72rem; cursor: pointer;
+            font-family: 'Fira Code', monospace; transition: border-color 0.2s; flex-shrink: 0;
         }
         .theme-btn:hover { border-color: var(--orange); }
-
+        @media (max-width: 480px) {
+            .quiz-wrap { padding: 20px 12px; }
+            .start-screen h1 { font-size: 1.5rem; }
+        }
         .quiz-wrap { max-width: 680px; margin: 0 auto; padding: 40px 20px; }
 
         /* START */

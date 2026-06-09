@@ -73,18 +73,28 @@
         nav {
             background: var(--bg2);
             border-bottom: 1px solid var(--border);
-            padding: 14px 32px;
+            padding: 10px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 100;
+            flex-wrap: wrap;
+            gap: 6px;
         }
-        .nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--purple); letter-spacing: 1px; }
+        .nav-logo { font-size: 1rem; font-weight: 700; color: var(--purple); letter-spacing: 1px; }
         .nav-logo span { color: var(--orange); }
-        .nav-tagline { font-size: 0.72rem; color: var(--muted); font-style: italic; }
-        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .nav-tagline { font-size: 0.65rem; color: var(--muted); font-style: italic; }
+        .nav-right {
+            display: flex; align-items: center; gap: 6px; flex-wrap: nowrap;
+        }
+        /* hide tagline on small screens */
+        @media (max-width: 480px) {
+            .nav-tagline { display: none; }
+            .nav-right { gap: 4px; }
+            nav { padding: 8px 12px; }
+        }
 
         /* ── FLOATING KAKANIN CHARACTERS ── */
         .float-char {
@@ -100,6 +110,11 @@
             25%      { transform: translateY(-14px) rotate(3deg) scale(1.08); }
             50%      { transform: translateY(-8px) rotate(-2deg) scale(1.04); }
             75%      { transform: translateY(-18px) rotate(5deg) scale(1.1); }
+        }
+        /* smaller floating chars on mobile */
+        @media (max-width: 640px) {
+            .float-char { font-size: 0.9rem !important; opacity: 0.4; }
+            .sparkle    { font-size: 0.6rem !important; opacity: 0.35; }
         }
 
         /* ── CARD HOVER BOUNCE ── */
@@ -124,23 +139,13 @@
 
         /* ── LANG TOGGLE ── */
         .lang-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-            font-size: 0.65rem;
+            display: flex; align-items: center; gap: 0;
+            border: 1px solid var(--border); border-radius: 6px; overflow: hidden; font-size: 0.65rem;
         }
         .lang-btn {
-            padding: 4px 10px;
-            background: var(--bg3);
-            color: var(--muted);
-            border: none;
-            cursor: pointer;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.65rem;
-            transition: background 0.15s, color 0.15s;
+            padding: 4px 8px; background: var(--bg3); color: var(--muted);
+            border: none; cursor: pointer; font-family: 'Fira Code', monospace;
+            font-size: 0.65rem; transition: background 0.15s, color 0.15s;
         }
         .lang-btn.active { background: var(--orange); color: #000; font-weight: 700; }
         .lang-btn:hover:not(.active) { background: var(--bg2); color: var(--text); }
