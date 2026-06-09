@@ -176,7 +176,7 @@
         </p>
         <div class="name-input-wrap">
             <label>// Enter your name for the leaderboard:</label>
-            <input class="name-input" id="playerName" type="text" placeholder="e.g. Juan dela Cruz" maxlength="24">
+            <input class="name-input" id="playerName" type="text" placeholder="e.g. Jose Rizal" maxlength="50">
         </div>
 
         <!-- LEADERBOARD -->
@@ -331,6 +331,7 @@ function startQuiz() {
     document.getElementById('startScreen').style.display='none';
     document.getElementById('scoreScreen').classList.remove('show');
     document.getElementById('quizScreen').style.display='block';
+    document.querySelector('footer').style.display='none';
     loadQuestion();
 }
 
@@ -387,6 +388,7 @@ function nextQuestion() {
 function showResults() {
     document.getElementById('quizScreen').style.display='none';
     const ss=document.getElementById('scoreScreen'); ss.classList.add('show');
+    document.querySelector('footer').style.display='block';
     const pct=Math.round(score/questions.length*100);
 
     // Save to leaderboard
@@ -425,19 +427,17 @@ function showResults() {
     <div>// Mabuhay ang mga kakanin ng ating lupain 🌴</div>
     <div style="margin-top:10px;font-size:0.68rem;line-height:1.8">
         <span style="color:var(--orange);font-weight:700">DBP</span> &nbsp;·&nbsp;
-        <span style="color:var(--blue)">ICTS Sector</span> &nbsp;·&nbsp;
+        <span style="color:var(--blue)">ICTS </span> &nbsp;·&nbsp;
         <span style="color:var(--purple)">AMDD</span> &nbsp;·&nbsp;
-        <span style="color:var(--text)">Chelsea</span>
-        <br>© 2026. All rights reserved.
-        <br><span style="font-size:0.62rem">Made by: <span style="color:var(--purple)">cdepurificacion</span> with 🐶</span>
+        © 2026. All rights reserved.
+        <br><span style="font-size:0.5rem">Made by: <span style="color:var(--pink)">cdepurificacion</span> 🐶</span>
     </div>
 </footer>
 
 </body>
 </html>
-</script>
-</body>
-</html>
+
+
 
     <style>
         :root {
@@ -584,7 +584,7 @@ function showResults() {
         @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
         .pop { animation: pop 0.35s ease forwards; }
     </style>
-</head>
+
 
     <!-- QUIZ SCREEN -->
     <div id="quizScreen" style="display:none">
@@ -620,7 +620,7 @@ function showResults() {
         <button class="replay-btn" onclick="startQuiz()">🔁 Ulit!</button>
         <a class="home-btn" href="index.html">🏠 Back to Recipes</a>
     </div>
-</div>
+
 
 <script>
 const allQuestions = [
@@ -841,5 +841,3 @@ function showResults() {
     `).join('');
 }
 </script>
-</body>
-</html>
