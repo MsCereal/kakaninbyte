@@ -941,6 +941,17 @@ function openModal(id) {
     document.getElementById('modalTags').innerHTML =
         f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join('');
 
+    // Fun fact + regions + serve with — first block in the RIGHT info panel
+    const infoTopHtml = `
+        <div class="code-block">
+            <div class="cb-header"><div class="cb-dot"></div>.about {</div>
+            <div class="fun-fact-bar">${f.funFact}</div>
+            <div class="region-row">${f.regions.map(r => `<span class="region-badge">📍 ${r}</span>`).join('')}</div>
+            <div class="serve-row"><strong>🍵 Serve with:</strong> ${f.serveWith}</div>
+            <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
+        </div>
+    `;
+
     // Fun fact + regions + serve with — shown in left panel under tags
     document.getElementById('modalTags').innerHTML =
         f.tags.map(t => `<span class="card-tag ${t.cls}">${t.label}</span>`).join('') +
@@ -1020,7 +1031,7 @@ function openModal(id) {
         </div>
     `;
 
-    document.getElementById('modalInfo').innerHTML = ingHtml + stepsHtml + tipsHtml + videoHtml + shareHtml;
+    document.getElementById('modalInfo').innerHTML = infoTopHtml + ingHtml + stepsHtml + tipsHtml + videoHtml + shareHtml;
     document.getElementById('overlay').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
