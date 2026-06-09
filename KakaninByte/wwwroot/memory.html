@@ -229,6 +229,34 @@
             75% { transform: translateX(4px); }
         }
         .card.wrong .card-inner { animation: shake 0.35s ease; }
+
+        /* ── CUTE DECORATIONS ── */
+        .cute-floats { position: fixed; inset: 0; pointer-events: none; z-index: 10; overflow: hidden; }
+        .cute-float {
+            position: absolute; font-size: 1.8rem;
+            animation: cuteBob 3s ease-in-out infinite;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+        }
+        @keyframes cuteBob {
+            0%,100% { transform: translateY(0) rotate(-8deg); }
+            50%      { transform: translateY(-14px) rotate(8deg); }
+        }
+        .game-header h1 {
+            animation: titlePop 0.6s cubic-bezier(0.36,0.07,0.19,0.97) both;
+        }
+        @keyframes titlePop {
+            0%   { transform: scale(0.5); opacity: 0; }
+            60%  { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .matched-burst {
+            animation: matchPop 0.4s ease forwards;
+        }
+        @keyframes matchPop {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.15); box-shadow: 0 0 20px rgba(86,211,100,0.6); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -249,6 +277,21 @@
         <p>Match each kakanin image to its name. Find all pairs to win!</p>
     </div>
 
+    <!-- CUTE FLOATING CHARS — fixed to viewport edges -->
+    <div class="cute-floats">
+        <!-- left side -->
+        <span class="cute-float" style="left:1%;top:18%;animation-delay:0s;font-size:2rem">🍚</span>
+        <span class="cute-float" style="left:2%;top:40%;animation-delay:1s;font-size:1.3rem">✨</span>
+        <span class="cute-float" style="left:1.5%;top:62%;animation-delay:0.5s;font-size:1.8rem">🌿</span>
+        <span class="cute-float" style="left:3%;top:80%;animation-delay:1.8s;font-size:1.2rem">🥥</span>
+        <!-- right side -->
+        <span class="cute-float" style="right:1%;top:22%;animation-delay:0.7s;font-size:2rem">🟣</span>
+        <span class="cute-float" style="right:2%;top:44%;animation-delay:1.3s;font-size:1.3rem">💫</span>
+        <span class="cute-float" style="right:1.5%;top:65%;animation-delay:0.2s;font-size:1.8rem">🤍</span>
+        <span class="cute-float" style="right:3%;top:82%;animation-delay:2s;font-size:1.2rem">🌸</span>
+    </div>
+
+
     <!-- BEST TIMES -->
     <div class="best-times">
         <div class="best-title">⏱ Best Times</div>
@@ -264,7 +307,7 @@
     <!-- NAME INPUT -->
     <div class="name-input-wrap">
         <label>// Your name for the leaderboard:</label>
-        <input class="name-input" id="playerName" type="text" placeholder="e.g. Juan dela Cruz" maxlength="24">
+        <input class="name-input" id="playerName" type="text" placeholder="e.g. Jose Rizal" maxlength="50">
     </div>
 
     <!-- STATS -->
@@ -297,8 +340,8 @@
 </div>
 
 <footer style="border-top:1px solid var(--border);background:var(--bg2);padding:16px 24px;text-align:center;color:var(--muted);font-size:0.68rem">
-    <span style="color:var(--orange);font-weight:700">DBP</span> · <span style="color:var(--blue)">ICTS</span> · <span style="color:var(--purple)">AMDD</span> · <span style="color:var(--text)">Chelsea</span>
-    &nbsp;© 2026 · Made by: <span style="color:var(--purple)">cdepurificacion</span> 🐶
+    <span style="color:var(--orange);font-weight:700">DBP</span> · <span style="color:var(--blue)">ICTS</span> · <span style="color:var(--purple)">AMDD</span>
+    &nbsp;© 2026. All rights reserved. Made by: <span style="color:var(--purple)">cdepurificacion</span> 🐶
 </footer>
 
 <script>
@@ -471,8 +514,8 @@ function flipCard(idx) {
         if (a.c.pairId === b.c.pairId && a.c.type !== b.c.type) {
             // MATCH
             setTimeout(() => {
-                a.el.classList.add('matched');
-                b.el.classList.add('matched');
+                a.el.classList.add('matched', 'matched-burst');
+                b.el.classList.add('matched', 'matched-burst');
                 matched++;
                 document.getElementById('statPairs').textContent = `${matched}/${pairs}`;
                 flipped = [];

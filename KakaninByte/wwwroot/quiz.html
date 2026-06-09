@@ -211,6 +211,9 @@
         </div>
     </div>
 
+    <!-- MINI SCENE -->
+    <canvas id="scene-canvas" style="width:100%;height:90px;display:block;margin-top:8px;border-radius:8px;"></canvas>
+
     <!-- SCORE -->
     <div class="score-screen" id="scoreScreen">
         <div id="scoreTrophy" style="font-size:4rem;margin-bottom:12px">🏆</div>
@@ -420,6 +423,66 @@ function showResults() {
     // Update leaderboard display on start screen too
     renderLeaderboard();
 }
+
+/* ── MINI SCENE ── */
+(function() {
+    function initScene() {
+        const canvas = document.getElementById('scene-canvas');
+        if (!canvas) return;
+        canvas.width  = canvas.offsetWidth || 600;
+        canvas.height = 90;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        const trees = [
+            { x: W*0.04, sway:0 }, { x: W*0.12, sway:1 },
+            { x: W*0.85, sway:0.5 }, { x: W*0.95, sway:1.5 }
+        ];
+        const steams = Array.from({length:5}, (_,i) => ({
+            x: W*(0.38+i*0.06), y: H, alpha:0, r:3+Math.random()*4
+        }));
+        let t = 0;
+        function draw() {
+            ctx.clearRect(0,0,W,H);
+            const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+            t += 0.02;
+            // trees
+            trees.forEach(tr => {
+                const sw = Math.sin(t+tr.sway)*3;
+                ctx.save(); ctx.translate(tr.x, H);
+                ctx.strokeStyle = isDark ? '#5a4030' : '#8B5E3C';
+                ctx.lineWidth = 3;
+                ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(sw,-32); ctx.stroke();
+                ctx.fillStyle = '#2d8a2d';
+                [-10,0,10].forEach((o,i) => {
+                    ctx.beginPath();
+                    ctx.ellipse(sw+o,-35-i*3,9-i*2,4,Math.PI/4,0,Math.PI*2);
+                    ctx.fill();
+                });
+                ctx.restore();
+            });
+            // steam
+            steams.forEach((st,i) => {
+                st.y -= 0.5; st.alpha = Math.max(0,0.35-(H-st.y)/(H*0.7));
+                if(st.y<H*0.1){st.y=H;st.alpha=0;}
+                ctx.beginPath();
+                ctx.arc(st.x+Math.sin(t*2+i)*3,st.y,st.r,0,Math.PI*2);
+                ctx.fillStyle=`rgba(255,255,255,${st.alpha})`;
+                ctx.fill();
+            });
+            // floating kakanin only
+            ['🍚','🌿','🟣','🤍'].forEach((em,i) => {
+                ctx.font='16px serif';
+                const fx = W*(0.2+i*0.18);
+                const fy = 20 + Math.sin(t*1.5+i*1.2)*8;
+                ctx.fillText(em, fx, fy);
+            });
+            requestAnimationFrame(draw);
+        }
+        draw();
+    }
+    // wait for quiz screen to be visible
+    window.addEventListener('load', initScene);
+})();
 </script>
 
 <!-- FOOTER -->

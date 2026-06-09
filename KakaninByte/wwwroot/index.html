@@ -86,6 +86,42 @@
         .nav-tagline { font-size: 0.72rem; color: var(--muted); font-style: italic; }
         .nav-right { display: flex; align-items: center; gap: 12px; }
 
+        /* ── FLOATING KAKANIN CHARACTERS ── */
+        .float-char {
+            position: absolute;
+            pointer-events: none;
+            font-size: 2rem;
+            animation: floatBob 4s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+            z-index: 0;
+        }
+        @keyframes floatBob {
+            0%,100% { transform: translateY(0) rotate(-5deg) scale(1); }
+            25%      { transform: translateY(-14px) rotate(3deg) scale(1.08); }
+            50%      { transform: translateY(-8px) rotate(-2deg) scale(1.04); }
+            75%      { transform: translateY(-18px) rotate(5deg) scale(1.1); }
+        }
+
+        /* ── CARD HOVER BOUNCE ── */
+        .food-card:hover .card-img-wrap canvas {
+            animation: cardBounce 0.5s cubic-bezier(0.36,0.07,0.19,0.97);
+        }
+        @keyframes cardBounce {
+            0%,100% { transform: translateY(0) scale(1); }
+            20%     { transform: translateY(-8px) scale(1.04); }
+            40%     { transform: translateY(-4px) scale(1.02); }
+            60%     { transform: translateY(-6px) scale(1.03); }
+            80%     { transform: translateY(-2px) scale(1.01); }
+        }
+
+        /* ── CANVAS MINI SCENE ── */
+        #scene-canvas {
+            width: 100%;
+            height: 80px;
+            display: block;
+            pointer-events: none;
+        }
+
         /* ── LANG TOGGLE ── */
         .lang-toggle {
             display: flex;
@@ -421,6 +457,8 @@
         <br><i id="heroSub2" data-en="Click any card to see the full recipe." data-fil="I-click ang kahit anong card para makita ang buong recipe.">Click any card to see the full recipe.</i>
     </div>
 </div>
+
+<!-- MINI SCENE removed - moved to quiz -->
 
 <!-- FOOD GRID -->
 <div class="section">
@@ -897,8 +935,26 @@ function closeModal(e) {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
 
-/* ── SPARKLES ── */
+/* ── FLOATING KAKANIN CHARACTERS ── */
 const heroEl = document.querySelector('.hero');
+const floatItems = [
+    { emoji: '🍚', left: '8%',  top: '15%', delay: '0s',   dur: '3.8s' },
+    { emoji: '🌿', left: '18%', top: '60%', delay: '0.8s', dur: '4.2s' },
+    { emoji: '🟣', left: '80%', top: '20%', delay: '1.2s', dur: '3.5s' },
+    { emoji: '🤍', left: '90%', top: '65%', delay: '0.4s', dur: '4.6s' },
+    { emoji: '🥥', left: '50%', top: '10%', delay: '1.8s', dur: '5s'   },
+    { emoji: '🌴', left: '35%', top: '70%', delay: '2.2s', dur: '3.2s' },
+];
+floatItems.forEach(item => {
+    const s = document.createElement('span');
+    s.className = 'float-char';
+    s.textContent = item.emoji;
+    s.style.cssText = `left:${item.left};top:${item.top};animation-delay:${item.delay};animation-duration:${item.dur};font-size:${1.4 + Math.random()}rem`;
+    heroEl.appendChild(s);
+});
+
+/* ── SPARKLES ── */
+const sparkleEmojis = ['✨','⭐','🌟','💫','🌸','🎋'];
 ['✨','⭐','🌟','💫','🌸','🎋'].forEach((em, i) => {
     const s = document.createElement('span');
     s.className = 'sparkle';
@@ -906,6 +962,78 @@ const heroEl = document.querySelector('.hero');
     s.style.cssText = `left:${10+i*15}%;top:${20+Math.random()*60}%;animation-delay:${i*0.5}s;animation-duration:${2.5+Math.random()}s;font-size:${0.7+Math.random()*0.6}rem`;
     heroEl.appendChild(s);
 });
+
+/* ── CANVAS MINI SCENE ── */
+(function() {
+    const canvas = document.getElementById('scene-canvas');
+    if (!canvas) return;
+    canvas.width  = canvas.offsetWidth || window.innerWidth;
+    canvas.height = 80;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    // coconut trees
+    const trees = [
+        { x: W * 0.05, sway: 0 },
+        { x: W * 0.15, sway: 1 },
+        { x: W * 0.82, sway: 0.5 },
+        { x: W * 0.93, sway: 1.5 },
+    ];
+
+    // steam puffs
+    const steams = Array.from({length: 6}, (_, i) => ({
+        x: W * (0.35 + i * 0.06), y: H, alpha: 0, r: 4 + Math.random() * 4
+    }));
+
+    let t = 0;
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        t += 0.02;
+
+        // draw trees
+        trees.forEach(tr => {
+            const sway = Math.sin(t + tr.sway) * 3;
+            ctx.save();
+            ctx.translate(tr.x, H);
+            // trunk
+            ctx.strokeStyle = isDark ? '#5a4030' : '#8B5E3C';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(sway, -35);
+            ctx.stroke();
+            // leaves
+            ctx.fillStyle = '#3a9a3a';
+            [-12, 0, 12].forEach((offset, i) => {
+                ctx.beginPath();
+                ctx.ellipse(sway + offset, -38 - i * 4, 10 - i * 2, 5, Math.PI / 4 + sway * 0.05, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.restore();
+        });
+
+        // steam puffs from bilao
+        steams.forEach((st, i) => {
+            st.y -= 0.4;
+            st.alpha = Math.max(0, 0.4 - (H - st.y) / (H * 0.8));
+            if (st.y < H * 0.1) { st.y = H; st.alpha = 0; }
+            ctx.beginPath();
+            ctx.arc(st.x + Math.sin(t * 2 + i) * 3, st.y, st.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,255,255,${st.alpha})`;
+            ctx.fill();
+        });
+
+        // bilao cart emoji at center
+        ctx.font = '28px serif';
+        ctx.textAlign = 'center';
+        const cartBob = Math.sin(t * 2) * 2;
+        ctx.fillText('🥘', W / 2, H - 10 + cartBob);
+
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
 
 /* ── THEME TOGGLE ── */
 function toggleTheme() {
