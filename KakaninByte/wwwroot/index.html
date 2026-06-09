@@ -204,7 +204,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            text-align: center;
         }
         .section-header::before,
         .section-header::after {
@@ -215,7 +214,6 @@
         }
         .sh-text {
             white-space: nowrap;
-            color: var(--orange);
         }
 
         .food-grid {
@@ -569,7 +567,7 @@
         <div class="nav-logo">Kakanin<span>Byte</span> <span style="color:var(--muted);font-weight:300">{}</span></div>
         <div class="nav-tagline">// a love letter to Filipino kakanin</div>
     </div>
-    <div style="color:var(--muted);font-size:0.72rem">🇵🇭 &nbsp;Meryenda Ready!</div>
+    <div style="color:var(--muted);font-size:0.72rem">🇵🇭 &nbsp;<b>Meryenda Ready!</b></div>
 </nav>
 
 <!-- HERO -->
@@ -588,7 +586,7 @@
 <!-- FOOD GRID -->
 <div class="section">
     <div class="section-header">
-        <span class="sh-text">🍃 Aming mga Kakanin 🍃</span>
+        <span class="sh-text"><span style="color:var(--orange)">export</span> const foods<span style="color:var(--muted)">[]</span></span>
     </div>
     <div class="food-grid" id="foodGrid"></div>
 </div>
