@@ -584,6 +584,7 @@
         <div class="nav-tagline">// a love letter to Filipino kakanin</div>
         <div style="display:flex;align-items:center;gap:6px">
             <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+            <button class="theme-btn mute-btn" onclick="toggleMute()" title="Mute sounds">🔊</button>
             <div class="nav-flag">
                 <svg width="20" height="13" viewBox="0 0 36 24" style="border-radius:2px;flex-shrink:0;display:block" xmlns="http://www.w3.org/2000/svg">
                     <rect width="36" height="12" fill="#0038A8"/>
@@ -739,7 +740,7 @@
                 <span style="color:var(--purple)">tradisyon</span>, at <span style="color:var(--orange)">pamilya</span>.
                 Sa bawat sticky rice, may kwento ng ating kasaysayan.
             </div>
-            <div style="font-size:0.9rem;font-weight:800;letter-spacing:1px;line-height:1.8;margin-bottom:28px;text-align:center;padding:12px 16px;border-radius:8px;background:linear-gradient(135deg,rgba(0,56,168,0.15),rgba(206,17,38,0.15));border:1px solid rgba(252,209,22,0.3)">
+            <div style="font-size:0.9rem;font-weight:800;letter-spacing:1px;line-height:1.8;margin-bottom:28px;text-align:center;padding:12px 16px;border-radius:8px;background:linear-gradient(135deg,rgba(0,56,168,0.7),rgba(206,17,38,0.15));border:1px solid rgba(252,209,22,0.3)">
                 <span style="color:White">Tatak Pilipino. Gawang Pilipino. Ipinagmamalaking Pilipino.</span><br>
                 <span style="font-size:1.2rem">🇵🇭✨</span>
             </div>
@@ -764,7 +765,7 @@
         <span style="color:var(--blue)">ICTS </span> &nbsp;·&nbsp;
         <span style="color:var(--purple)">AMDD</span> &nbsp;·&nbsp;
         © 2026. All rights reserved. 
-        <br><span style="font-size:0.5rem">Made by: <span style="color:var(--pink)">cdepurificacion</span> 🐶</span>
+        <br><span style="font-size:0.5rem">Made by: <span style="color:var(--pink)">cdepurificacion</span> 🐶✨</span>
     </div>
 </footer>
 
@@ -1346,13 +1347,12 @@ let exitIdx = 0;
 
 function showLanding() {
     const el = document.getElementById('landing');
-    // reset to main screen
     document.getElementById('landingMain').style.display = 'block';
     document.getElementById('landingExit').style.display = 'none';
     el.style.display = 'flex';
     el.style.animation = 'fadeIn 0.4s ease';
     sessionStorage.removeItem('kb-entered');
-    playSound('whoosh');
+    setTimeout(() => playSound('welcome'), 300);
 }
 
 function enterSite() {
@@ -1404,58 +1404,80 @@ if (sessionStorage.getItem('kb-entered')) {
 /* ── SOUNDS (Web Audio API — no files needed) ── */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx = null;
+let isMuted = localStorage.getItem('kb-mute') === '1';
+
 function getAudio() {
     if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
     return audioCtx;
 }
+
 function playSound(type) {
+    if (isMuted) return;
     try {
         const ctx = getAudio();
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.connect(g); g.connect(ctx.destination);
-        if (type === 'enter') {
-            // happy ascending chime
-            o.type = 'sine';
-            o.frequency.setValueAtTime(523, ctx.currentTime);
-            o.frequency.exponentialRampToValueAtTime(784, ctx.currentTime + 0.15);
-            o.frequency.exponentialRampToValueAtTime(1047, ctx.currentTime + 0.3);
-            g.gain.setValueAtTime(0.3, ctx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
-            o.start(); o.stop(ctx.currentTime + 0.5);
+        const now = ctx.currentTime;
+        const note = (freq, start, dur, vol=0.18, wave='sine') => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination);
+            o.type = wave; o.frequency.value = freq;
+            g.gain.setValueAtTime(vol, now+start);
+            g.gain.exponentialRampToValueAtTime(0.001, now+start+dur);
+            o.start(now+start); o.stop(now+start+dur);
+        };
+        if (type === 'welcome') {
+            // soft mellow ambient
+            [[261.6,0],[329.6,0.4],[392,0.8],[523.3,1.2]].forEach(([f,t]) => note(f,t,1.2,0.07));
+        } else if (type === 'ting') {
+            note(1047,0,1.5,0.35); note(1319,0.05,1.2,0.2); note(1568,0.1,1.0,0.1);
+        } else if (type === 'fanfare') {
+            [[523,0,0.1],[659,0.12,0.1],[784,0.24,0.1],[1047,0.36,0.35,'triangle']].forEach(([f,t,d,w='square'])=>note(f,t,d,0.15,w));
+        } else if (type === 'confetti-pop') {
+            for(let i=0;i<6;i++) note(300+Math.random()*700, i*0.07, 0.12, 0.12);
+        } else if (type === 'correct') {
+            [[523,0,0.2],[659,0.12,0.2],[784,0.24,0.3]].forEach(([f,t,d])=>note(f,t,d,0.2));
+        } else if (type === 'wrong') {
+            note(250,0,0.35,0.18,'sawtooth'); note(200,0.15,0.3,0.12,'sawtooth');
+        } else if (type === 'victory') {
+            [[523,0,0.1],[523,0.12,0.1],[523,0.24,0.1],[415,0.36,0.15],[523,0.54,0.2],[659,0.76,0.2],[784,0.98,0.5,'triangle']]
+            .forEach(([f,t,d,w='square'])=>note(f,t,d,0.15,w));
+        } else if (type === 'consolation') {
+            [[523,0,0.3],[494,0.18,0.3],[440,0.36,0.3],[392,0.54,0.5]].forEach(([f,t,d])=>note(f,t,d,0.12));
+        } else if (type === 'match') {
+            note(784,0,0.35,0.2); note(1047,0.15,0.5,0.2);
+        } else if (type === 'nomatch') {
+            note(330,0,0.15,0.15); note(220,0.15,0.25,0.12);
+        } else if (type === 'enter') {
+            [[523,0,0.15],[784,0.12,0.15],[1047,0.24,0.3]].forEach(([f,t,d])=>note(f,t,d,0.2));
         } else if (type === 'boing') {
-            // funny descending boing
-            o.type = 'sine';
-            o.frequency.setValueAtTime(800, ctx.currentTime);
-            o.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.4);
-            g.gain.setValueAtTime(0.25, ctx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-            o.start(); o.stop(ctx.currentTime + 0.4);
-        } else if (type === 'whoosh') {
-            // soft swoosh
-            const buf = ctx.createBuffer(1, ctx.sampleRate * 0.3, ctx.sampleRate);
-            const d = buf.getChannelData(0);
-            for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
-            const src = ctx.createBufferSource();
-            src.buffer = buf;
-            const f = ctx.createBiquadFilter();
-            f.type = 'bandpass'; f.frequency.value = 1200;
-            src.connect(f); f.connect(g); g.connect(ctx.destination);
-            g.gain.setValueAtTime(0.15, ctx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-            src.start(); src.stop(ctx.currentTime + 0.3);
-            return;
+            const o=ctx.createOscillator(),g=ctx.createGain();
+            o.connect(g);g.connect(ctx.destination);o.type='sine';
+            o.frequency.setValueAtTime(800,now);o.frequency.exponentialRampToValueAtTime(200,now+0.4);
+            g.gain.setValueAtTime(0.25,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.4);
+            o.start(now);o.stop(now+0.4);
         } else if (type === 'click') {
-            o.type = 'square';
-            o.frequency.setValueAtTime(440, ctx.currentTime);
-            g.gain.setValueAtTime(0.1, ctx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-            o.start(); o.stop(ctx.currentTime + 0.08);
+            note(440,0,0.08,0.08,'square');
         }
-    } catch(e) { /* silent fail */ }
+    } catch(e) { /* silent */ }
 }
 
-// play click sound on all card clicks and buttons
+function toggleMute() {
+    isMuted = !isMuted;
+    localStorage.setItem('kb-mute', isMuted ? '1' : '0');
+    document.querySelectorAll('.mute-btn').forEach(b => {
+        b.textContent = isMuted ? '🔇' : '🔊';
+        b.title = isMuted ? 'Unmute sounds' : 'Mute sounds';
+    });
+    if (!isMuted) playSound('click');
+}
+// restore mute state
+document.querySelectorAll('.mute-btn').forEach(b => {
+    b.textContent = isMuted ? '🔇' : '🔊';
+    b.title = isMuted ? 'Unmute sounds' : 'Mute sounds';
+});
+
+// welcome ambient on landing open
 document.addEventListener('click', (e) => {
     if (e.target.closest('.food-card') || e.target.closest('.card-tag') || e.target.closest('.lang-btn')) {
         playSound('click');
@@ -1473,8 +1495,9 @@ function openPhModal() {
 function showPhStep2() {
     document.getElementById('phStep1').classList.remove('active');
     document.getElementById('phStep2').classList.add('active');
-    playSound('enter');
-    // launch confetti for the reveal
+    playSound('ting');
+    setTimeout(() => playSound('confetti-pop'), 400);
+    setTimeout(() => playSound('fanfare'), 800);
     launchConfetti && launchConfetti();
 }
 function closePhModal(e) {
@@ -1490,16 +1513,16 @@ function trackCardOpen(id) {
 
     const msgs = {
         en: [
-            '💡 Open all 4 kakanin cards for a special surprise! 🇵🇭',
-            '🍚 Two down! The flavors are getting richer... keep going! 😋',
-            '👀 One more! Something special awaits when you open all cards... 🇵🇭',
-            '🇵🇭 You opened them all! Click the flag at the bottom-left! ✨'
+            '🍚 You found a kakanin card... what could be inside? 😋',
+            '👀 Another one opened... the surprise is getting closer 🇵🇭',
+            '✨ You’re so close... just one more to unlock something special!',
+            '🇵🇭 SURPRISE UNLOCKED! Tap the flag below to reveal your Filipino message! ✨'
         ],
         fil: [
-            '💡 Buksan ang lahat ng 4 na kakanin card para sa isang sorpresa! 🇵🇭',
-            '🍚 Dalawa na! Lalong sumasarap... ituloy mo! 😋',
-            '👀 Isa pa lang! May sorpresa para sa iyo kapag nabuksan mo lahat... 🇵🇭',
-            '🇵🇭 Nabuksan mo na lahat! I-click ang flag sa ibaba-kaliwa! ✨'
+            '🍚 May nahanap kang kakanin card... ano kaya ang laman? 😋',
+            '👀 May isa pang nabuksan... papalapit na ang sorpresa 🇵🇭',
+            '✨ Malapit na... isa na lang para ma-unlock ang espesyal!',
+            '🇵🇭 NA-UNLOCK ANG SORPRESA! I-tap ang flag sa ibaba para sa espesyal na mensahe para sa bawat Pilipino! ✨'
         ]
     };
 
@@ -1574,6 +1597,7 @@ function toggleTheme() {
     btn.textContent = next === 'dark' ? '🌙' : next === 'light' ? '☀️' : '🌅';
     btn.title = next === 'pilipinas' ? 'Pilipinas Mode 🇵🇭' : '';
     localStorage.setItem('kb-theme', next);
+    playSoundQ('click');
     grid.innerHTML = '';
     renderCards();
 }
@@ -1590,6 +1614,11 @@ function fadeToPage(e, url) {
     document.body.classList.add('fade-out');
     setTimeout(() => { window.location.href = url; }, 260);
 }
+
+// play welcome on initial page load if landing is showing
+window.addEventListener('load', () => {
+    if (!sessionStorage.getItem('kb-entered')) setTimeout(() => playSound('welcome'), 500);
+});
 
 /* ── BACK TO TOP ── */
 window.addEventListener('scroll', () => {

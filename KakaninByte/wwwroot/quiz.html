@@ -171,6 +171,7 @@
         <div class="nav-logo" style="cursor:pointer" onclick="window.location.href='index.html'">Kakanin<span>Byte</span><span style="color:var(--muted);font-weight:300">{}</span></div>
         <div class="nav-right">
             <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+            <button class="theme-btn mute-btn" id="muteBtn" onclick="toggleMute()" title="Mute sounds">🔊</button>
             <a class="back-link" href="memory.html" onclick="fadeToPage(event,'memory.html')" style="background:var(--teal);color:#000;border-color:var(--teal);font-weight:700;text-decoration:none;font-size:0.65rem;padding:4px 8px;">🃏 Memory</a>
             <a class="back-link" href="index.html" onclick="fadeToPage(event,'index.html')" style="font-size:0.65rem;padding:4px 8px;">← Recipes</a>
         </div>
@@ -263,6 +264,7 @@ function toggleTheme() {
     html.setAttribute('data-theme', next);
     document.getElementById('themeBtn').textContent = next === 'dark' ? '🌙' : next === 'light' ? '☀️' : '🌅';
     localStorage.setItem('kb-theme', next);
+    playSoundQ('click');
 }
 (function() {
     const saved = localStorage.getItem('kb-theme') || 'dark';
@@ -405,7 +407,7 @@ function selectAnswer(idx, btn) {
     fb.className='feedback show '+(isCorrect?'correct':'wrong');
     fb.innerHTML=(isCorrect?'✓ Tama! ':'✗ Mali. ')+q.explanation;
     fb.classList.add('pop');
-    const nextBtn=document.getElementById('nextBtn');
+    playSoundQ(isCorrect ? 'correct' : 'wrong');
     nextBtn.textContent=current+1<questions.length?'Next Question →':'See Results 🏆';
     nextBtn.classList.add('show');
     document.getElementById('scoreLabel').textContent=`Score: ${score}`;
@@ -431,11 +433,10 @@ function showResults() {
     document.getElementById('scoreLabel2').textContent=`You got ${score} out of ${questions.length} correct (${pct}%)`;
 
     let trophy,badge,badgeStyle;
-    if(pct===100)    {trophy='🏆';badge='Kakanin Master! 🌟';badgeStyle='color:var(--yellow);border-color:var(--yellow)'; launchConfetti();}
-    else if(pct>=80) {trophy='🥇';badge='Tunay na Pilipino! 🇵🇭';badgeStyle='color:var(--orange);border-color:var(--orange)';}
-    else if(pct>=60) {trophy='🥈';badge='Mahusay! Keep it up 💪';badgeStyle='color:var(--blue);border-color:var(--blue)';}
-    else if(pct>=40) {trophy='🥉';badge='Pag-aralan pa! 📚';badgeStyle='color:var(--muted);border-color:var(--muted)';}
-    else             {trophy='😅';badge='Subukan ulit! 🔁';badgeStyle='color:var(--red);border-color:var(--red)';}
+    if(pct===100)    {trophy='🏆';badge='Kakanin Master! 🌟';badgeStyle='color:var(--yellow);border-color:var(--yellow)'; launchConfetti(); playSoundQ('victory');}
+    else if(pct>=80) {trophy='🥇';badge='Tunay na Pilipino! 🇵🇭';badgeStyle='color:var(--orange);border-color:var(--orange)'; playSoundQ('victory');}
+    else if(pct>=60) {trophy='🥈';badge='Mahusay! Keep it up 💪';badgeStyle='color:var(--blue);border-color:var(--blue)'; playSoundQ('correct');}
+    else             {trophy=pct>=40?'🥉':'😅'; badge=pct>=40?'Pag-aralan pa! 📚':'Subukan ulit! 🔁'; badgeStyle=`color:var(--muted);border-color:var(--muted)`; playSoundQ('consolation');}
 
     document.getElementById('scoreTrophy').textContent=trophy;
     const badgeEl=document.getElementById('scoreResultBadge');
@@ -452,7 +453,46 @@ function showResults() {
     renderLeaderboard();
 }
 
-/* ── MINI SCENE ── */
+/* ── SOUNDS ── */
+let audioCtxQ = null;
+let isMutedQ = localStorage.getItem('kb-mute') === '1';
+function getAudioQ() {
+    if (!audioCtxQ) audioCtxQ = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtxQ.state === 'suspended') audioCtxQ.resume();
+    return audioCtxQ;
+}
+function playSoundQ(type) {
+    if (isMutedQ) return;
+    try {
+        const ctx = getAudioQ(); const now = ctx.currentTime;
+        const note = (freq, start, dur, vol=0.18, wave='sine') => {
+            const o=ctx.createOscillator(),g=ctx.createGain();
+            o.connect(g);g.connect(ctx.destination);
+            o.type=wave;o.frequency.value=freq;
+            g.gain.setValueAtTime(vol,now+start);
+            g.gain.exponentialRampToValueAtTime(0.001,now+start+dur);
+            o.start(now+start);o.stop(now+start+dur);
+        };
+        if (type==='correct') { [[523,0,0.2],[659,0.12,0.2],[784,0.24,0.3]].forEach(([f,t,d])=>note(f,t,d,0.2)); }
+        else if (type==='wrong') { note(250,0,0.35,0.18,'sawtooth'); note(200,0.15,0.3,0.12,'sawtooth'); }
+        else if (type==='welcome') { [[261.6,0],[329.6,0.4],[392,0.8],[523.3,1.2]].forEach(([f,t])=>note(f,t,1.2,0.07)); }
+        else if (type==='victory') { [[523,0,0.1],[523,0.12,0.1],[523,0.24,0.1],[415,0.36,0.15],[523,0.54,0.2],[659,0.76,0.2],[784,0.98,0.5,'triangle']].forEach(([f,t,d,w='square'])=>note(f,t,d,0.15,w)); }
+        else if (type==='consolation') { [[523,0,0.3],[494,0.18,0.3],[440,0.36,0.3],[392,0.54,0.5]].forEach(([f,t,d])=>note(f,t,d,0.12)); }
+        else if (type==='click') { note(440,0,0.08,0.08,'square'); }
+    } catch(e) {}
+}
+function toggleMute() {
+    isMutedQ = !isMutedQ;
+    localStorage.setItem('kb-mute', isMutedQ ? '1' : '0');
+    document.getElementById('muteBtn').textContent = isMutedQ ? '🔇' : '🔊';
+    if (!isMutedQ) playSoundQ('click');
+}
+document.getElementById('muteBtn').textContent = isMutedQ ? '🔇' : '🔊';
+
+// welcome chime on page open
+window.addEventListener('load', () => {
+    setTimeout(() => playSoundQ('welcome'), 400);
+});
 (function() {
     function initScene() {
         const canvas = document.getElementById('scene-canvas');
@@ -522,7 +562,7 @@ function showResults() {
         <span style="color:var(--blue)">ICTS </span> &nbsp;·&nbsp;
         <span style="color:var(--purple)">AMDD</span> &nbsp;·&nbsp;
         © 2026. All rights reserved.
-        <br><span style="font-size:0.5rem">Made by: <span style="color:var(--pink)">cdepurificacion</span> 🐶</span>
+        <br><span style="font-size:0.5rem">Made by: <span style="color:var(--pink)">cdepurificacion</span> 🐶✨</span>
     </div>
 </footer>
 

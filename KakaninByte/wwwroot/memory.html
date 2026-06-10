@@ -259,6 +259,11 @@
             75% { transform: translateX(4px); }
         }
         .card.wrong .card-inner { animation: shake 0.35s ease; }
+        .card.wrong .card-front {
+            border-color: var(--red) !important;
+            background: rgba(255,123,114,0.2) !important;
+            box-shadow: 0 0 16px rgba(255,123,114,0.5) !important;
+        }
 
         /* ── CUTE DECORATIONS ── */
         .cute-floats { position: fixed; inset: 0; pointer-events: none; z-index: 10; overflow: hidden; }
@@ -297,6 +302,7 @@
         <div class="nav-logo" style="cursor:pointer" onclick="window.location.href='index.html'">Kakanin<span>Byte</span><span style="color:var(--muted);font-weight:300">{}</span></div>
         <div class="nav-right">
             <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
+            <button class="nav-btn theme-btn" id="muteBtn" onclick="toggleMuteM()" style="font-size:0.75rem;padding:4px 8px;" title="Mute">🔊</button>
             <a class="nbtn purple" href="quiz.html" onclick="fadeToPage(event,'quiz.html')">🎮 Quiz</a>
             <a class="nbtn" href="index.html" onclick="fadeToPage(event,'index.html')">← Recipes</a>
         </div>
@@ -388,7 +394,7 @@
 
 <footer style="border-top:1px solid var(--border);background:var(--bg2);padding:16px 24px;text-align:center;color:var(--muted);font-size:0.68rem">
     <span style="color:var(--orange);font-weight:700">DBP</span> · <span style="color:var(--blue)">ICTS</span> · <span style="color:var(--purple)">AMDD</span>
-    &nbsp;© 2026. All rights reserved. Made by: <span style="color:var(--purple)">cdepurificacion</span> 🐶
+    &nbsp;© 2026. All rights reserved. Made by: <span style="color:var(--purple)">cdepurificacion</span> 🐶✨
 </footer>
 
 <script>
@@ -400,6 +406,7 @@ function toggleTheme() {
     html.setAttribute('data-theme', next);
     document.getElementById('themeBtn').textContent = next === 'dark' ? '🌙' : next === 'light' ? '☀️' : '🌅';
     localStorage.setItem('kb-theme', next);
+    playSoundM('click');
 }
 (function() {
     const saved = localStorage.getItem('kb-theme') || 'dark';
@@ -569,6 +576,7 @@ function flipCard(idx) {
 
     el.classList.add('flipped');
     flipped.push({ idx, el, c });
+    playSoundM('flip');
 
     if (flipped.length === 2) {
         moves++;
@@ -581,6 +589,7 @@ function flipCard(idx) {
             setTimeout(() => {
                 a.el.classList.add('matched', 'matched-burst');
                 b.el.classList.add('matched', 'matched-burst');
+                playSoundM('match');
                 matched++;
                 document.getElementById('statPairs').textContent = `${matched}/${pairs}`;
                 flipped = [];
@@ -592,6 +601,7 @@ function flipCard(idx) {
             setTimeout(() => {
                 a.el.classList.add('wrong');
                 b.el.classList.add('wrong');
+                playSoundM('nomatch');
                 setTimeout(() => {
                     a.el.classList.remove('flipped', 'wrong');
                     b.el.classList.remove('flipped', 'wrong');
@@ -606,6 +616,7 @@ function flipCard(idx) {
 /* ── END GAME ── */
 function endGame() {
     clearInterval(timer);
+    playSoundM('victory');
     const name = document.getElementById('playerName')?.value.trim() || 'Anonymous';
     saveToMemoryLB(name, seconds, moves, difficulty);
     saveBestTime();
@@ -707,7 +718,48 @@ function launchConfetti() {
     draw();
 }
 
-// start on load
+/* ── SOUNDS ── */
+let audioCtxM = null;
+let isMutedM = localStorage.getItem('kb-mute') === '1';
+function getAudioM() {
+    if (!audioCtxM) audioCtxM = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtxM.state === 'suspended') audioCtxM.resume();
+    return audioCtxM;
+}
+function playSoundM(type) {
+    if (isMutedM) return;
+    try {
+        const ctx = getAudioM(); const now = ctx.currentTime;
+        const note = (freq, start, dur, vol=0.18, wave='sine') => {
+            const o=ctx.createOscillator(),g=ctx.createGain();
+            o.connect(g);g.connect(ctx.destination);
+            o.type=wave;o.frequency.value=freq;
+            g.gain.setValueAtTime(vol,now+start);
+            g.gain.exponentialRampToValueAtTime(0.001,now+start+dur);
+            o.start(now+start);o.stop(now+start+dur);
+        };
+        if (type==='match')       { note(784,0,0.3,0.2); note(1047,0.15,0.5,0.2); }
+        else if (type==='nomatch'){ note(330,0,0.15,0.15); note(220,0.15,0.25,0.12); }
+        else if (type==='welcome'){ [[261.6,0],[329.6,0.4],[392,0.8],[523.3,1.2]].forEach(([f,t])=>note(f,t,1.2,0.07)); }
+        else if (type==='victory'){ [[523,0,0.1],[659,0.12,0.1],[784,0.24,0.1],[1047,0.36,0.5,'triangle']].forEach(([f,t,d,w='square'])=>note(f,t,d,0.15,w)); }
+        else if (type==='click')  { note(440,0,0.08,0.08,'square'); }
+        else if (type==='flip')   { note(600,0,0.06,0.06,'sine'); }
+    } catch(e) {}
+}
+function toggleMuteM() {
+    isMutedM = !isMutedM;
+    localStorage.setItem('kb-mute', isMutedM ? '1' : '0');
+    document.getElementById('muteBtn').textContent = isMutedM ? '🔇' : '🔊';
+    if (!isMutedM) playSoundM('click');
+}
+document.getElementById('muteBtn').textContent = isMutedM ? '🔇' : '🔊';
+
+// welcome chime on page open
+window.addEventListener('load', () => {
+    setTimeout(() => playSoundM('welcome'), 400);
+});
+
+// start game on load
 startGame();
 </script>
 </body>
