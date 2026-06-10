@@ -1460,13 +1460,37 @@ function closePhModal(e) {
 const openedCards = new Set();
 function trackCardOpen(id) {
     openedCards.add(id);
+    // hint after 3rd card
+    if (openedCards.size === foods.length - 1) {
+        showHintToast('👀 Isa pa lang! May sorpresa para sa iyo kapag nabuksan mo lahat... 🇵🇭');
+    }
     if (openedCards.size >= foods.length) {
         // all 4 cards opened — show flag with a little fanfare
         setTimeout(() => {
             document.getElementById('phFlagBtn').classList.add('show');
+            showHintToast('🇵🇭 Nabuksan mo na lahat! I-click ang flag sa ibaba-kaliwa! ✨');
             playSound('enter');
         }, 600);
     }
+}
+
+function showHintToast(msg) {
+    const existing = document.getElementById('hintToast');
+    if (existing) existing.remove();
+    const t = document.createElement('div');
+    t.id = 'hintToast';
+    t.style.cssText = `
+        position:fixed;bottom:20px;right:20px;z-index:400;
+        background:var(--bg2);border:1px solid var(--yellow);
+        color:var(--text);font-family:'Fira Code',monospace;
+        font-size:0.72rem;padding:10px 16px;border-radius:8px;
+        max-width:260px;line-height:1.5;
+        box-shadow:0 4px 16px rgba(252,209,22,0.25);
+        animation:fadeIn 0.3s ease;
+    `;
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.animation = 'fadeOut 0.4s ease forwards'; setTimeout(() => t.remove(), 420); }, 4000);
 }
 
 /* ── CONFETTI helper for ph reveal ── */
