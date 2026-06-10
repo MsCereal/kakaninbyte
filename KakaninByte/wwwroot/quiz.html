@@ -19,6 +19,12 @@
             --green:#1a7f37;--orange:#bc4c00;--red:#cf222e;--yellow:#9a6700;
             --pink:#bf3989;--teal:#1b7c3e;
         }
+        [data-theme="pilipinas"] {
+            --bg:#2c1a0e;--bg2:#3d2410;--bg3:#4e2f14;--border:#7a4a1e;
+            --text:#fdf0dc;--muted:#c4956a;--purple:#ffd700;--blue:#4fc3f7;
+            --green:#81c784;--orange:#ff8f00;--red:#CE1126;--yellow:#FCD116;
+            --pink:#ffb74d;--teal:#4caf50;
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Fira Code', monospace; background: var(--bg); color: var(--text); min-height: 100vh;
@@ -181,7 +187,7 @@
                 <text x="13" y="4" font-size="3" fill="#FCD116">★</text>
                 <text x="13" y="21" font-size="3" fill="#FCD116">★</text>
             </svg>
-            <span style="font-size:0.68rem;color:var(--muted);font-weight:700">Meryenda Ready!</span>
+            <span style="font-size:0.68rem;color:var(--text);font-weight:700">Meryenda Ready!</span>
         </div>
     </div>
 </nav>
@@ -252,16 +258,17 @@
 /* ── THEME ── */
 function toggleTheme() {
     const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('kb-theme', isDark ? 'light' : 'dark');
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : current === 'light' ? 'pilipinas' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.getElementById('themeBtn').textContent = next === 'dark' ? '🌙' : next === 'light' ? '☀️' : '🌅';
+    localStorage.setItem('kb-theme', next);
 }
 (function() {
     const saved = localStorage.getItem('kb-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
     const btn = document.getElementById('themeBtn');
-    if (btn) btn.textContent = saved === 'dark' ? '🌙' : '☀️';
+    if (btn) btn.textContent = saved === 'dark' ? '🌙' : saved === 'light' ? '☀️' : '🌅';
 })();
 
 /* ── FADE TRANSITION ── */

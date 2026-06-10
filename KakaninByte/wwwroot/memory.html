@@ -17,6 +17,12 @@
             --text:#1f2328;--muted:#656d76;--purple:#8250df;--blue:#0969da;
             --green:#1a7f37;--orange:#bc4c00;--red:#cf222e;--yellow:#9a6700;
         }
+        [data-theme="pilipinas"] {
+            --bg:#2c1a0e;--bg2:#3d2410;--bg3:#4e2f14;--border:#7a4a1e;
+            --text:#fdf0dc;--muted:#c4956a;--purple:#ffd700;--blue:#4fc3f7;
+            --green:#81c784;--orange:#ff8f00;--red:#CE1126;--yellow:#FCD116;
+            --pink:#ffb74d;--teal:#4caf50;
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Fira Code', monospace;
@@ -389,15 +395,16 @@
 /* ── THEME ── */
 function toggleTheme() {
     const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('themeBtn').textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('kb-theme', isDark ? 'light' : 'dark');
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : current === 'light' ? 'pilipinas' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.getElementById('themeBtn').textContent = next === 'dark' ? '🌙' : next === 'light' ? '☀️' : '🌅';
+    localStorage.setItem('kb-theme', next);
 }
 (function() {
     const saved = localStorage.getItem('kb-theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
-    document.getElementById('themeBtn').textContent = saved === 'dark' ? '🌙' : '☀️';
+    document.getElementById('themeBtn').textContent = saved === 'dark' ? '🌙' : saved === 'light' ? '☀️' : '🌅';
 })();
 
 function fadeToPage(e, url) {
