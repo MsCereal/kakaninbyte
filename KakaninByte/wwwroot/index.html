@@ -29,23 +29,23 @@
         }
         /* ── PILIPINAS MODE ── */
         [data-theme="pilipinas"] {
-            --bg:       #2c1a0e;
-            --bg2:      #3d2410;
-            --bg3:      #4e2f14;
-            --border:   #7a4a1e;
-            --text:     #fdf0dc;
-            --muted:    #c4956a;
-            --purple:   #ffd700;
-            --blue:     #4fc3f7;
-            --green:    #81c784;
-            --orange:   #ff8f00;
+            --bg:       #1a0f00;
+            --bg2:      #2d1800;
+            --bg3:      #3f2200;
+            --border:   #8B4513;
+            --text:     #FFE4B5;
+            --muted:    #DEB887;
+            --purple:   #FFD700;
+            --blue:     #87CEEB;
+            --green:    #90EE90;
+            --orange:   #FF6B00;
             --red:      #CE1126;
             --yellow:   #FCD116;
-            --pink:     #ffb74d;
-            --teal:     #4caf50;
+            --pink:     #FFA500;
+            --teal:     #3CB371;
             --dot-red:  #CE1126;
             --dot-yel:  #FCD116;
-            --dot-grn:  #4caf50;
+            --dot-grn:  #3CB371;
         }
         [data-theme="light"] {
             --bg:       #ffffff;
@@ -104,7 +104,7 @@
         .nav-row2 { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
         .nav-logo { font-size: 1.1rem; font-weight: 700; color: var(--purple); letter-spacing: 1px; white-space: nowrap; }
         .nav-logo span { color: var(--orange); }
-        .nav-tagline { font-size: 0.62rem; color: var(--muted); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nav-tagline { font-size: 0.62rem; color: var(--text); font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.7; }
         .nav-right { display: flex; align-items: center; gap: 4px; flex-wrap: nowrap; }
         .nav-flag { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
         .nav-flag-text { font-size: 0.68rem; color: var(--text); font-weight: 700; white-space: nowrap; }        /* smaller buttons */
@@ -223,6 +223,11 @@
             border-color: #d0d7de;
             filter: drop-shadow(0 4px 12px rgba(0,56,168,0.25));
         }
+        [data-theme="pilipinas"] .ph-flag-btn {
+            background: #3d2410;
+            border-color: #FCD116;
+            filter: drop-shadow(0 4px 16px rgba(252,209,22,0.5));
+        }
 
         .ph-modal-overlay {
             display: none;
@@ -240,19 +245,22 @@
         .ph-modal {
             max-width: 460px;
             width: 100%;
-            background: linear-gradient(135deg, #0d1117, #0a1428, #160014);
-            border: 1px solid #0038A8;
+            background: var(--bg2);
+            border: 2px solid #0038A8;
             border-radius: 16px;
             padding: 32px 28px;
             text-align: center;
             box-shadow: 0 0 40px rgba(0,56,168,0.3), 0 0 80px rgba(206,17,38,0.15);
         }
+        [data-theme="pilipinas"] .ph-modal {
+            background: linear-gradient(135deg, #2d1800, #1a0f00, #1a0008);
+            border-color: #FCD116;
+            box-shadow: 0 0 40px rgba(252,209,22,0.3), 0 0 60px rgba(206,17,38,0.2);
+        }
         [data-theme="light"] .ph-modal {
             background: linear-gradient(135deg, #f0f4ff, #fff0f0);
             border-color: #0038A8;
-            box-shadow: 0 0 40px rgba(0,56,168,0.15);
         }
-        [data-theme="light"] .ph-modal .sub-text { color: #444; }
         .ph-modal-step { display: none; }
         .ph-modal-step.active { display: block; animation: fadeIn 0.4s ease; }
         .back-top {
@@ -657,7 +665,7 @@
 </div>
 
 <!-- PH FLAG FLOATING BUTTON -->
-<button class="ph-flag-btn" id="phFlagBtn" onclick="openPhModal()" title="May mensahe para sa iyo "><span>🇵🇭</span>
+<button class="ph-flag-btn" id="phFlagBtn" onclick="openPhModal()" title="May mensahe para sa iyo 🇵🇭">
     <svg width="44" height="30" viewBox="0 0 36 24" style="border-radius:4px;display:block" xmlns="http://www.w3.org/2000/svg">
         <rect width="36" height="12" fill="#0038A8"/>
         <rect y="12" width="36" height="12" fill="#CE1126"/>
@@ -684,23 +692,21 @@
     <div class="ph-modal">
         <!-- Step 1: Intro -->
         <div class="ph-modal-step active" id="phStep1">
-            <div style="font-size: 1.2rem; font-weight: 700; color: #FCD116; margin-bottom: 12px; line-height: 1.4">
-                CONGRATS!
-            </div>
+            <div style="font-size:1.2rem;font-weight:700;color:var(--yellow);margin-bottom:8px;line-height:1.4">CONGRATS!</div>
             <div style="font-size:2.5rem;margin-bottom:16px">🍚✨</div>
-            <div style="font-size:1.2rem;font-weight:700;color:#d2a8ff;margin-bottom:12px;line-height:1.4">
+            <div style="font-size:1.2rem;font-weight:700;color:var(--purple);margin-bottom:12px;line-height:1.4">
                 Tapos ka na sa Kakanin Journey!
             </div>
-            <div style="font-size:0.78rem;color:#8b949e;line-height:1.8;margin-bottom:28px">
+            <div style="font-size:0.78rem;color:var(--muted);line-height:1.8;margin-bottom:28px">
                 Ngayon, panahon na para alalahanin kung bakit natin ito ipinagdiriwang...
             </div>
             <button onclick="showPhStep2()" style="
-                background:#ffa657;color:#000;border:none;
+                background:var(--orange);color:#000;border:none;
                 padding:12px 28px;border-radius:10px;font-size:0.9rem;
                 font-family:'Fira Code',monospace;font-weight:700;cursor:pointer;
-                box-shadow:0 4px 16px rgba(255,166,87,0.4);transition:transform 0.2s;
+                transition:transform 0.2s;
             " onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-                Reveal the Flag
+                🇵🇭 Reveal the Flag
             </button>
         </div>
         <!-- Step 2: Main message -->
@@ -725,19 +731,19 @@
                 <text x="13" y="4" font-size="3" fill="#FCD116">★</text>
                 <text x="13" y="21" font-size="3" fill="#FCD116">★</text>
             </svg>
-            <div style="font-size:1.4rem;font-weight:700;color:#FCD116;margin-bottom:12px;letter-spacing:1px">
-                Mabuhay ang Pilipinas!
+            <div style="font-size:1.4rem;font-weight:700;color:var(--yellow);margin-bottom:12px;letter-spacing:1px">
+                Mabuhay ang Pilipinas! 🇵🇭
             </div>
-            <div style="font-size:0.78rem;color:#8b949e;line-height:1.9;margin-bottom:28px;border-left:3px solid #0038A8;padding-left:14px;text-align:left">
-                Ang bawat kakanin ay paalala ng ating mayamang <span style="color:#56d364">kultura</span>,
-                <span style="color:#d2a8ff">tradisyon</span>, at <span style="color:#ffa657">pamilya</span>.
+            <div style="font-size:0.78rem;color:var(--muted);line-height:1.9;margin-bottom:28px;border-left:3px solid #0038A8;padding-left:14px;text-align:left">
+                Ang bawat kakanin ay paalala ng ating mayamang <span style="color:var(--green)">kultura</span>,
+                <span style="color:var(--purple)">tradisyon</span>, at <span style="color:var(--orange)">pamilya</span>.
                 Sa bawat sticky rice, may kwento ng ating kasaysayan.
             </div>
             <button onclick="closePhModal()" style="
                 background:linear-gradient(135deg,#0038A8,#CE1126);color:white;border:none;
                 padding:12px 28px;border-radius:10px;font-size:0.9rem;
                 font-family:'Fira Code',monospace;font-weight:700;cursor:pointer;
-                box-shadow:0 4px 16px rgba(0,56,168,0.4);transition:transform 0.2s;
+                transition:transform 0.2s;
             " onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
                 Uwi na sa KakaninByte 🏠
             </button>
