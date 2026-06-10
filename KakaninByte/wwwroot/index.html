@@ -829,6 +829,7 @@ const foods = [
             "Store leftovers at room temperature, covered. Reheat briefly in a pan."
         ],
         videoId: "hY47V4husOM",
+        history: { en: "Bibingkang Malagkit dates back to pre-colonial Philippines, where glutinous rice (malagkit) was a sacred crop offered during harvest festivals. During the Spanish era, it became a staple dessert served at fiestas and simbang gabi. Today it is sold outside Christmas dawn masses, its caramel aroma a beloved scent of the Philippine holiday season.", fil: "Ang Bibingkang Malagkit ay umaabot pa sa panahon bago dumating ang mga Espanyol, kung saan ang malagkit na bigas ay isang sagradong pananim na inialok tuwing tag-ani. Naging paboritong dessert ito sa mga fiesta at simbang gabi. Ngayon, ipinagbibili pa rin ito sa labas ng simbahan tuwing Pasko." },
         funFact: "💡 Bibingkang Malagkit is traditionally sold outside Simbang Gabi masses during the Christmas novena — the smell of banana leaves and caramel fills the cool December air.",
         regions: ["Luzon", "Metro Manila", "Pampanga", "Bulacan"],
         serveWith: "Hot salabat (ginger tea), kapeng barako, or hot tsokolate. Perfect for Noche Buena and Media Noche.",
@@ -877,6 +878,7 @@ const foods = [
             "A Nueva Ecija classic — best enjoyed during town fiestas!"
         ],
         videoId: "BFQ7qI35m2A",
+        history: { en: "Bibingka Pinipig originated in the rice-growing provinces of Nueva Ecija and Bulacan in Central Luzon. Pinipig — young green glutinous rice flattened while still unripe — has been harvested by Filipino farmers for centuries. This kakanin was traditionally made during planting and harvest seasons as a celebration of the earth's bounty.", fil: "Ang Bibingkang Pinipig ay nagmula sa mga lalawigan ng Nueva Ecija at Bulacan sa Gitnang Luzon. Ang pinipig — batang berdeng malagkit na tinapilok habang hilaw pa — ay inani ng mga magsasaka sa loob ng daan-daang taon. Ginagawa ang kakaninang ito tuwing pagtatanim at pag-ani bilang pagdiriwang ng yaman ng lupa." },
         funFact: "💡 Pinipig is made from young palay harvested before full maturity — pounded flat while still green. Nueva Ecija and Bulacan are the heartland of pinipig production.",
         regions: ["Nueva Ecija", "Bulacan", "Central Luzon"],
         serveWith: "Hot tsokolate de batirol (tablea chocolate) or barako coffee. Best fresh from the palengke.",
@@ -927,6 +929,7 @@ const foods = [
             "Yields about 8–10 servings. Can be served warm or chilled."
         ],
         videoId: "71CMZuOvy3Y",
+        history: { en: "Kalamay Ube has roots in the Visayas and Pampanga, where kalamay (sticky rice desserts) have been made since pre-colonial times. The use of ube (purple yam) adds a uniquely Filipino twist — ube has been cultivated in the Philippines for thousands of years and is deeply tied to Filipino identity. An old Kapampangan recipe reportedly requires 4 hours of constant stirring.", fil: "Ang Kalamay Ube ay may ugat sa Visayas at Pampanga, kung saan ginagawa ang kalamay mula pa sa panahon bago dumating ang mga Espanyol. Ang paggamit ng ube (lilang kamote) ay nagbibigay ng natatanging Filipino na lasa — ang ube ay pinapalaki sa Pilipinas sa loob ng libu-libong taon at malalim na nakaugnay sa pagkakakilanlan ng Filipino." },
         funFact: "💡 The word 'kalamay' comes from Sanskrit 'kala' — referring to the dark latik topping. An old Kapampangan recipe takes 4 hours of constant stirring!",
         regions: ["Capiz", "Bohol", "Pampanga", "Visayas", "Mindanao"],
         serveWith: "Black coffee, barako, or warm ginger tea. The purple complements the bitterness of coffee perfectly.",
@@ -975,6 +978,7 @@ const foods = [
             "Adapted from Spanish manjar blanco, now fully claimed as ours. 🇵🇭"
         ],
         videoId: "PDEH-USSy0o",
+        history: { en: "Maja Blanca was adapted from the Spanish 'manjar blanco' (blancmange) introduced during the 300-year Spanish colonial period (1565–1898). Filipino cooks brilliantly replaced European ingredients with local ones — coconut milk instead of almonds, sweet corn for texture. What began as a colonial import became a fully Filipino creation, now inseparable from fiesta tables and Noche Buena feasts.", fil: "Ang Maja Blanca ay hango sa Espanyol na 'manjar blanco' na ipinakilala noong panahon ng kolonyalismo (1565–1898). Pinalitan ng mga Filipino ang mga sangkap — gata imbes na almendras, mais para sa texture. Ang dating kolonyalistang pagkain ay naging ganap na Filipino, at hindi na maaaring ihiwalay sa mga handaan at Noche Buena." },
         funFact: "💡 Maja Blanca was adapted from Spanish 'manjar blanco' during the colonial era. Filipinos swapped almonds and rice flour for coconut milk and corn — making it entirely ours. 🇵🇭",
         regions: ["Nationwide", "Tagalog Region", "Pampanga", "Ilocos", "Pangasinan"],
         serveWith: "Serve chilled. Pairs beautifully with hot salabat or as a palate cleanser between savory dishes at fiestas.",
@@ -1189,7 +1193,15 @@ function openModal(id) {
             <span id="shareCopied" style="display:none;font-size:0.65rem;color:var(--green)">✓ Copied!</span>
         </div>`;
 
-    document.getElementById('modalInfo').innerHTML = mapHtml + ingHtml + stepsHtml + tipsHtml + videoHtml + shareHtml;
+    const historyHtml = `
+        <div class="code-block">
+            <div class="cb-header"><div class="cb-dot"></div>.history {</div>
+            <div style="font-size:0.72rem;color:var(--muted);line-height:1.8;text-align:justify">${f.history[lang]}</div>
+            <div style="color:var(--muted);font-size:0.68rem;margin-top:6px">}</div>
+        </div>
+    `;
+
+    document.getElementById('modalInfo').innerHTML = mapHtml + ingHtml + stepsHtml + tipsHtml + historyHtml + videoHtml + shareHtml;
     document.getElementById('overlay').classList.add('active');
     document.body.style.overflow = 'hidden';
     trackCardOpen(f.id);
